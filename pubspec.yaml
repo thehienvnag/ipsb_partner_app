@@ -52,12 +52,6 @@ dependencies:
   # QR Code Generator
   qr_flutter: ^4.0.0
 
-  # Display view with svg view
-  flutter_svg: ^0.22.0
-
-  # Dashed line
-  path_drawing: ^0.5.1
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

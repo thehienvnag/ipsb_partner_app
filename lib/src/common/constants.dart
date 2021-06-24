@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/algorithm/shortest_path/node.dart';
 import 'package:indoor_positioning_visitor/src/models/location.dart';
 
 class Constants {
