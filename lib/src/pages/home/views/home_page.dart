@@ -9,7 +9,28 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Text(Formatter.fromPrice(1333332222.4)),
+        child: Column(
+          children: [
+            Text(Formatter.fromPrice(1333332222.4)),
+            OutlinedButton(
+              onPressed: () {
+                controller.remove();
+              },
+              child: Text('Remove 1'),
+            ),
+            Obx(() {
+              final list = controller.listCoupon;
+              return Expanded(
+                child: ListView.builder(
+                  itemBuilder: (context, index) => Text(
+                    list[index].id.toString(),
+                  ),
+                  itemCount: list.length,
+                ),
+              );
+            })
+          ],
+        ),
       ),
     );
   }
