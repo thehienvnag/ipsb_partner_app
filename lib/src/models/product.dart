@@ -4,6 +4,7 @@ part 'product.g.dart';
 
 @JsonSerializable()
 class Product {
+  bool? isSelected = false;
   final int? id;
   final String? name, description, imageUrl;
   final double? price;
