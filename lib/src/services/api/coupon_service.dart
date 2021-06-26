@@ -5,6 +5,8 @@ import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin ICouponService {
   Future<Paging<Coupon>> getCoupons();
+  Future<Paging<Coupon>> getCouponsByStoreId(int storeId);
+  Future<bool> removeCoupon(int couponId);
 }
 
 class CouponService extends BaseService<Coupon> implements ICouponService {
@@ -20,5 +22,20 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
 
   Future<Paging<Coupon>> getCoupons() async {
     return getPagingBase({});
+  }
+
+  @override
+  Future<Paging<Coupon>> getCouponsByStoreId(int storeId) {
+    return getPagingBase(
+      {
+        'storeId': storeId.toString(),
+        'status': 'Active',
+      },
+    );
+  }
+
+  @override
+  Future<bool> removeCoupon(int couponId) {
+    return deleteBase(couponId);
   }
 }
