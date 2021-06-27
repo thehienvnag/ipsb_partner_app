@@ -80,6 +80,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) =>
+                      controller.inputValue(CouponFieldsName.name, value),
                   decoration: InputDecoration(
                     labelText: 'Tên ưu đãi:',
                     border: OutlineInputBorder(),
@@ -97,6 +99,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) =>
+                      controller.inputValue(CouponFieldsName.code, value),
                   decoration: InputDecoration(
                     labelText: 'Mã khuyến mãi:',
                     border: OutlineInputBorder(),
@@ -120,12 +124,21 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               ),
               Container(
                 height: 47,
-                child: DropdownSearch<String>(
+                child: DropdownSearch<DropdownItem>(
+                  itemAsString: (item) => item.display!,
                   mode: Mode.DIALOG,
-                  showSelectedItem: true,
-                  items: ["Giảm giá trực tiếp", "Giảm giá theo % đơn hàng"],
+                  showSelectedItem: false,
+                  items: [
+                    DropdownItem(
+                        value: 'Fixed',
+                        display: 'Giảm trực tiếp trên giá tiền'),
+                    DropdownItem(
+                        value: 'Percentage',
+                        display: 'Giảm giá theo phần trăm đơn hàng'),
+                  ],
                   label: "Loại Khuyến mãi",
-                  onChanged: print,
+                  onChanged: (value) => controller.inputDropdown(
+                      CouponFieldsName.discountType, value),
                 ),
               ),
               SizedBox(
@@ -134,6 +147,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) =>
+                      controller.inputValue(CouponFieldsName.amount, value),
                   decoration: InputDecoration(
                     labelText: 'Giá trị khuyến mãi:',
                     border: OutlineInputBorder(),
@@ -150,6 +165,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               ),
               Container(
                 child: TextFormField(
+                  onFieldSubmitted: (value) => controller.inputValue(
+                      CouponFieldsName.description, value),
                   decoration: InputDecoration(
                     labelText: 'Chi tiết ưu đãi:',
                     border: OutlineInputBorder(),
@@ -209,6 +226,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) =>
+                      controller.inputValue(CouponFieldsName.limit, value),
                   decoration: InputDecoration(
                     labelText: 'Giới hạn lượt sử dụng:',
                     border: OutlineInputBorder(),
@@ -239,6 +258,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                       ),
                     ),
                     format: DateFormat('dd-MM-yyyy hh:mm'),
+                    //onChanged: (value) => ,
                     onShowPicker: (context, currentValue) async {
                       final date = await showDatePicker(
                           context: context,
@@ -351,6 +371,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) => controller.inputValue(
+                      CouponFieldsName.maxDiscount, value),
                   decoration: InputDecoration(
                     labelText: 'Giá trị ưu đãi tối đa:',
                     border: OutlineInputBorder(),
@@ -366,6 +388,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
               Container(
                 height: 45,
                 child: TextFormField(
+                  onFieldSubmitted: (value) =>
+                      controller.inputValue(CouponFieldsName.minSpend, value),
                   decoration: InputDecoration(
                     labelText: 'Giá trị đơn hàng tối thiểu:',
                     border: OutlineInputBorder(),
@@ -396,7 +420,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                               // Button color
                               child: InkWell(
                                 splashColor: Colors.blueAccent, // Splash color
-                                onTap: () => controller.chooseProducts(),
+                                onTap: () =>
+                                    controller.chooseProducts('productInclude'),
                                 child: Icon(
                                   Icons.add,
                                   size: 30,
@@ -411,7 +436,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                       height: 40,
                       margin: const EdgeInsets.only(top: 10),
                       child: Obx(() {
-                        final chosen = controller.chosenProducts;
+                        final chosen = controller.chosenProductsInclude;
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: chosen
@@ -451,7 +476,8 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                               // Button color
                               child: InkWell(
                                 splashColor: Colors.blueAccent, // Splash color
-                                onTap: () => controller.chooseProducts(),
+                                onTap: () =>
+                                    controller.chooseProducts('productExclude'),
                                 child: Icon(
                                   Icons.add,
                                   size: 30,
@@ -466,7 +492,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                       height: 40,
                       margin: const EdgeInsets.only(top: 10),
                       child: Obx(() {
-                        final chosen = controller.chosenProducts;
+                        final chosen = controller.chooseProductExclude;
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: chosen
