@@ -12,6 +12,19 @@ class ManageCouponPage extends GetView<ManageCouponController> {
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              icon: Icon(
+                Icons.add_circle_outline_outlined,
+                color: Colors.black,
+                size: 35,
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ],
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -49,39 +62,46 @@ Widget _buildCoupons(List<Coupon> coupons) {
       itemBuilder: (context, index) {
         final coupon = coupons[index];
         return SlidableWidget(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                coupon.imageUrl ?? '',
-                height: 80,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 10),
-                    width: 240,
-                    child: Text(coupon.name ?? '',
-                        style: TextStyle(fontWeight: FontWeight.w700)),
+          couponId: coupon.id!,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.network(
+                  coupon.imageUrl ?? '',
+                  height: 80,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 10, left: 10),
+                        width: 240,
+                        child: Text(coupon.name ?? '',
+                            style: TextStyle(fontWeight: FontWeight.w700)),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 5, left: 10),
+                        width: 240,
+                        child: Text(
+                          coupon.description ?? '',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.info),
+                        label: Text('Xem chi tiết'),
+                      ),
+                    ],
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 10),
-                    width: 240,
-                    child: Text(
-                      coupon.description ?? '',
-                      style: TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.info),
-                    label: Text('Xem chi tiết'),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         );
       },
