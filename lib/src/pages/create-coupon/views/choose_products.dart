@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/controllers/create_coupon_controller.dart';
 
 class ChooseProducts extends GetView<CreateCouponController> {
+  final String type;
+  ChooseProducts({
+    required this.type,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +83,8 @@ class ChooseProducts extends GetView<CreateCouponController> {
                       title: Text(pro.name!),
                       subtitle: Text(pro.description!.substring(0, 40) + '...'),
                       trailing: Checkbox(
-                        onChanged: (value) => controller.choose(value, pro),
+                        onChanged: (value) =>
+                            controller.choose(value, pro, type),
                         value: pro.isSelected,
                       ),
                     );
