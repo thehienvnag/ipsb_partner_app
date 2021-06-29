@@ -2,7 +2,11 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/controllers/create_coupon_controller.dart';
+
+import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_select.dart';
 import 'package:intl/intl.dart';
 
 class CreateCouponPage extends GetView<CreateCouponController> {
@@ -126,7 +130,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                 height: 47,
                 child: DropdownSearch<DropdownItem>(
                   itemAsString: (item) => item.display!,
-                  mode: Mode.DIALOG,
+                  mode: Mode.BOTTOM_SHEET,
                   showSelectedItem: false,
                   items: [
                     DropdownItem(
@@ -402,116 +406,48 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                 ),
               ),
               SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black38),
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Chọn sản phẩm áp dụng: '),
-                        Container(
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.grey.shade300,
-                              // Button color
-                              child: InkWell(
-                                splashColor: Colors.blueAccent, // Splash color
-                                onTap: () =>
-                                    controller.chooseProducts('productInclude'),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 40,
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Obx(() {
-                        final chosen = controller.chosenProductsInclude;
-                        return ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: chosen
-                              .map((pro) => Container(
-                                    margin: const EdgeInsets.only(right: 15),
-                                    child: Chip(
-                                      avatar: CircleAvatar(
-                                        backgroundColor: Colors.grey.shade800,
-                                        child: Image.network(pro.imageUrl!),
-                                      ),
-                                      label: Text(pro.name!),
-                                    ),
-                                  ))
-                              .toList(),
-                        );
-                      }),
-                    ),
-                  ],
+              CustomSelect<Product>(
+                label: 'Chọn sản phẩm áp dụng:',
+                items: controller.products,
+                itemBuilder: (item, selected, changeSelected) => ListTile(
+                  leading: Image.network(item.imageUrl!),
+                  title: Text(Formatter.shorten(item.name)),
+                  subtitle: Text(Formatter.shorten(item.description)),
+                  trailing: Checkbox(
+                    value: selected,
+                    onChanged: (value) => changeSelected(value!),
+                  ),
                 ),
+                selectedItemBuilder: (item, remove) => Chip(
+                  avatar: Image.network(item.imageUrl!),
+                  label: Text(item.name!),
+                  deleteIcon: Icon(Icons.close),
+                  onDeleted: () => remove(),
+                ),
+                onSubmitted: (items) => print(items?.length),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black38),
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Chọn sản phẩm không áp dụng: '),
-                        Container(
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.grey.shade300,
-                              // Button color
-                              child: InkWell(
-                                splashColor: Colors.blueAccent, // Splash color
-                                onTap: () =>
-                                    controller.chooseProducts('productExclude'),
-                                child: Icon(
-                                  Icons.add,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 40,
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Obx(() {
-                        final chosen = controller.chooseProductExclude;
-                        return ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: chosen
-                              .map((pro) => Container(
-                                    margin: const EdgeInsets.only(right: 15),
-                                    child: Chip(
-                                      avatar: CircleAvatar(
-                                        backgroundColor: Colors.grey.shade800,
-                                        child: Image.network(pro.imageUrl!),
-                                      ),
-                                      label: Text(pro.name!),
-                                    ),
-                                  ))
-                              .toList(),
-                        );
-                      }),
-                    ),
-                  ],
+              SizedBox(
+                height: 20,
+              ),
+              CustomSelect<Product>(
+                label: 'Chọn sản phẩm không áp dụng:',
+                items: controller.products,
+                itemBuilder: (item, selected, changeSelected) => ListTile(
+                  leading: Image.network(item.imageUrl!),
+                  title: Text(Formatter.shorten(item.name)),
+                  subtitle: Text(Formatter.shorten(item.description)),
+                  trailing: Checkbox(
+                    value: selected,
+                    onChanged: (value) => changeSelected(value!),
+                  ),
                 ),
+                selectedItemBuilder: (item, remove) => Chip(
+                  avatar: Image.network(item.imageUrl!),
+                  label: Text(item.name!),
+                  deleteIcon: Icon(Icons.close),
+                  onDeleted: () => remove(),
+                ),
+                onSubmitted: (items) => print(items?.length),
               ),
             ],
           ),

@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/product.dart';
-import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/choose_products.dart';
 
 class DropdownItem {
   final String? value;
@@ -58,11 +56,7 @@ class CreateCouponController extends GetxController {
 
   void inputDropdown(String key, DropdownItem? value) {
     if (value == null) return;
-    if (couponData.containsKey(key)) {
-      couponData[key] = value.value;
-    } else {
-      couponData.putIfAbsent(key, () => value.value);
-    }
+    return inputValue(key, value);
   }
 
   /// Products
@@ -73,33 +67,7 @@ class CreateCouponController extends GetxController {
 
   final chooseProductExclude = <Product>[].obs;
 
-  void chooseProducts(String type) async {
-    Get.to(() => ChooseProducts(type: type));
-  }
-
-  void choose(bool? isSelected, Product pro, String type) {
-    products.value = products.map((p) {
-      if (p.id == pro.id) {
-        p.isSelected = isSelected;
-      }
-      return p;
-    }).toList();
-    if (type == 'productInclude') {
-      chosenProductsInclude.value =
-          products.where((p) => p.isSelected!).toList();
-      String productInclude =
-          chosenProductsInclude.map((e) => e.id).toList().join(',');
-      couponData[CouponFieldsName.productInclude] = productInclude;
-    }
-    if (type == 'productExclude') {
-      chooseProductExclude.value =
-          products.where((p) => p.isSelected!).toList();
-      String productExclude =
-          chooseProductExclude.map((e) => e.id).toList().join(',');
-      couponData[CouponFieldsName.productExclude] = productExclude;
-    }
-    print(couponData);
-  }
+  void chooseProducts(String type) async {}
 
   void clearChosen() {
     chosenProductsInclude.value = [];
