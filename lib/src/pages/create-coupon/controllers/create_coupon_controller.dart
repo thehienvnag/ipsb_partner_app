@@ -1,14 +1,21 @@
+import 'dart:io';
+
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 
 import 'package:indoor_positioning_visitor/src/models/product.dart';
+import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 
 class DropdownItem {
   final String? value;
   final String? display;
 
   DropdownItem({
-    this.value,
-    this.display,
+    this.value = '',
+    this.display = '',
   });
 }
 
@@ -31,48 +38,134 @@ class CouponFieldsName {
 }
 
 class CreateCouponController extends GetxController {
+  final formStates = List.generate(3, (index) => GlobalKey<FormState>());
+
   /// Current step
-  final currentStep = 1.obs;
+  final currentStep = 0.obs;
 
   /// Move to next step
   void moveToNext() {
-    currentStep.value++;
+    if (validate()) {
+      save();
+      currentStep.value++;
+    }
   }
 
   /// Back to previous step
   void backToPrevious() {
+    save();
     currentStep.value--;
   }
 
-  final couponData = {}.obs;
+  void gotoStep(int step) {
+    if (step < currentStep.value) {
+      currentStep.value = step;
+    }
+    if (!validate()) return;
+    currentStep.value = step;
+    save();
+  }
 
-  void inputValue(String key, dynamic value) {
+  final productIncludes = <Product>[].obs;
+  final productExcludes = <Product>[].obs;
+
+  bool notExceedStep(step) {
+    int current = currentStep.value;
+    if (current == 3) return true;
+    save();
+    if (validate() && current == 2) return true;
+    if (validate() && current == 1 && step == 2) return true;
+    return false;
+  }
+
+  bool validate() {
+    return formStates[currentStep.value].currentState?.validate() ?? false;
+  }
+
+  void save() {
+    formStates[currentStep.value].currentState?.save();
+  }
+
+  final couponData = <String, dynamic>{}.obs;
+
+  void inputValue(String key, dynamic value, [dynamic realValue]) {
+    if (realValue != null) {
+      value = realValue;
+    }
     if (couponData.containsKey(key)) {
       couponData[key] = value;
     } else {
       couponData.putIfAbsent(key, () => value);
     }
+    print(couponData);
   }
 
+  /// Selected
+  final selectedItem = Rx<DropdownItem?>(null);
   void inputDropdown(String key, DropdownItem? value) {
     if (value == null) return;
-    return inputValue(key, value);
+    selectedItem.value = value;
+    return inputValue(key, value.value);
   }
 
   /// Products
   final products = listProduct.obs;
 
-  /// Chosen products
-  final chosenProductsInclude = <Product>[].obs;
+  void chooseProducts(String key, List<Product>? value) async {
+    if (value == null) return;
+    if (key == CouponFieldsName.productInclude) productIncludes.value = value;
+    if (key == CouponFieldsName.productExclude) productExcludes.value = value;
+    String products = value.map((e) => e.id.toString()).toList().join(',');
+    return inputValue(key, products);
+  }
 
-  final chooseProductExclude = <Product>[].obs;
+  /// dropdown items
+  final dropdownItems = dropdownFinal.obs;
 
-  void chooseProducts(String type) async {}
+  ImagePicker _imagePicker = Get.find();
 
-  void clearChosen() {
-    chosenProductsInclude.value = [];
+  Future<void> getImage() async {
+    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
+    filePath.value = picked?.path ?? '';
+  }
+
+  Image showImage() {
+    if (filePath.isNotEmpty) {
+      return Image.file(File(filePath.value));
+    } else {
+      return Image.asset('assets/images/upload_image_icon.png');
+    }
+  }
+
+  ICouponService _couponService = Get.find();
+  final filePath = ''.obs;
+  Future<void> submitForm() async {
+    validate();
+    print(couponData);
+    final postValue = <String, dynamic>{};
+    postValue.addAll(couponData);
+    couponData.keys.forEach((key) {
+      switch (key) {
+        case CouponFieldsName.amount:
+        case CouponFieldsName.minSpend:
+        case CouponFieldsName.maxDiscount:
+        case CouponFieldsName.limit:
+          postValue[key] = int.parse(couponData[key]);
+          break;
+      }
+    });
+    postValue.putIfAbsent('storeId', () => 18);
+    BotToast.showSimpleNotification(title: "Đang tạo mới!");
+    await _couponService.addCoupon(postValue, [filePath.value]);
+    BotToast.showSimpleNotification(title: "Đã tạo thành công!");
   }
 }
+
+List<DropdownItem> dropdownFinal = [
+  DropdownItem(value: 'Fixed', display: 'Giảm trực tiếp trên giá tiền'),
+  DropdownItem(
+      value: 'Percentage', display: 'Giảm giá theo phần trăm đơn hàng'),
+];
 
 List<Product> listProduct = [
   Product(

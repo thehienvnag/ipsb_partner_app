@@ -1,13 +1,14 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+import 'dart:io';
+
+import 'package:cupertino_stepper/cupertino_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/controllers/create_coupon_controller.dart';
-
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_select.dart';
-import 'package:intl/intl.dart';
+import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/discount_type_dropdown.dart';
+import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/select_product.dart';
+import 'package:indoor_positioning_visitor/src/utils/utils.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_text_field.dart';
+import 'package:indoor_positioning_visitor/src/widgets/date_time_picker.dart';
 
 class CreateCouponPage extends GetView<CreateCouponController> {
   @override
@@ -26,433 +27,290 @@ class CreateCouponPage extends GetView<CreateCouponController> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Obx(() {
-            return _buildStep(controller.currentStep.value);
-          }),
+          child: Column(
+            children: [
+              Obx(() => _buildStepsDisplay(controller.currentStep.value)),
+              Obx(() {
+                return GestureDetector(
+                  onTap: () => controller.getImage(),
+                  child: Container(
+                    width: 240,
+                    height: 140,
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: controller.showImage(),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black12),
+                    ),
+                  ),
+                );
+              }),
+              Obx(() => _buildStep(controller.currentStep.value)),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildStepsDisplay(int step) {
+    return Container(
+      height: 75,
+      child: CupertinoStepper(
+        currentStep: step,
+        onStepTapped: (value) => controller.gotoStep(value),
+        type: StepperType.horizontal,
+        controlsBuilder: (context, {onStepCancel, onStepContinue}) =>
+            SizedBox(),
+        steps: [
+          Step(
+            title: Text(''),
+            content: SizedBox(),
+            isActive: step == 0,
+          ),
+          Step(
+            title: Text(''),
+            content: SizedBox(),
+            isActive: step == 1,
+          ),
+          Step(
+            title: Text(''),
+            content: SizedBox(),
+            isActive: step == 2,
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildStep(int stepIndex) {
     switch (stepIndex) {
+      case 0:
+        return _buildStepGeneral(stepIndex);
       case 1:
-        return _buildStepGeneral();
+        return _buildStepDetails(stepIndex);
       case 2:
-        return _buildStepDetails();
-      case 3:
-        return _buildStepFinal();
-      default:
-        return _buildStepGeneral();
+        return _buildStepFinal(stepIndex);
     }
+    return _buildStepGeneral(stepIndex);
   }
 
-  Widget _buildStepGeneral() {
-    return Column(
-      children: [
-        Container(
-          width: 240,
-          height: 140,
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Image.asset('assets/images/upload_image_icon.png'),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black12),
-          ),
+  Widget _buildStepGeneral(int step) {
+    final couponData = controller.couponData;
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 25.0, // soften the shadow
+            spreadRadius: 5.0, //extend the shadow
+            offset: Offset(
+              5.0, // Move to right 10  horizontally
+              5.0, // Move to bottom 10 Vertically
+            ),
+          )
+        ],
+      ),
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Form(
+        key: controller.formStates[step],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              value: couponData[CouponFieldsName.name],
+              label: 'Tên ưu đãi',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.name, value),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              value: couponData[CouponFieldsName.code] ?? '',
+              label: 'Mã ưu đãi',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) => controller.inputValue(
+                  CouponFieldsName.code, value?.toUpperCase()),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            ElevatedButton(
+              onPressed: () => controller.inputValue(
+                  CouponFieldsName.code, Utils.genRandStr(10)),
+              child: Text('TẠO NGẪU NHIÊN'),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            DiscountTypeDropdown(
+              label: 'Loại khuyến mãi',
+              fieldName: CouponFieldsName.discountType,
+              items: controller.dropdownItems,
+              onChanged: (value, fieldName) =>
+                  controller.inputDropdown(fieldName, value),
+              selectedItem: controller.selectedItem.value,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              value: couponData[CouponFieldsName.amount],
+              label: 'Giá trị khuyến mãi',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.amount, value),
+              counterText: 'VNĐ',
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              value: couponData[CouponFieldsName.description],
+              label: 'Chi tiết ưu đãi',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.description, value),
+            ),
+          ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 25.0, // soften the shadow
-                spreadRadius: 5.0, //extend the shadow
-                offset: Offset(
-                  5.0, // Move to right 10  horizontally
-                  5.0, // Move to bottom 10 Vertically
-                ),
-              )
-            ],
-          ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) =>
-                      controller.inputValue(CouponFieldsName.name, value),
-                  decoration: InputDecoration(
-                    labelText: 'Tên ưu đãi:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) =>
-                      controller.inputValue(CouponFieldsName.code, value),
-                  decoration: InputDecoration(
-                    labelText: 'Mã khuyến mãi:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('TẠO MÃ ƯU ĐÃI NGẪU NHIÊN'),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                height: 47,
-                child: DropdownSearch<DropdownItem>(
-                  itemAsString: (item) => item.display!,
-                  mode: Mode.BOTTOM_SHEET,
-                  showSelectedItem: false,
-                  items: [
-                    DropdownItem(
-                        value: 'Fixed',
-                        display: 'Giảm trực tiếp trên giá tiền'),
-                    DropdownItem(
-                        value: 'Percentage',
-                        display: 'Giảm giá theo phần trăm đơn hàng'),
-                  ],
-                  label: "Loại Khuyến mãi",
-                  onChanged: (value) => controller.inputDropdown(
-                      CouponFieldsName.discountType, value),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) =>
-                      controller.inputValue(CouponFieldsName.amount, value),
-                  decoration: InputDecoration(
-                    labelText: 'Giá trị khuyến mãi:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: TextFormField(
-                  onFieldSubmitted: (value) => controller.inputValue(
-                      CouponFieldsName.description, value),
-                  decoration: InputDecoration(
-                    labelText: 'Chi tiết ưu đãi:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.newline,
-                  minLines: 4,
-                  maxLines: 4,
-                ),
-              )
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
-  Widget _buildStepFinal() {
-    return Column(
-      children: [
-        Container(
-          width: 240,
-          height: 140,
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Image.asset('assets/images/upload_image_icon.png'),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black12),
-          ),
+  Widget _buildStepDetails(int step) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 25.0, // soften the shadow
+            spreadRadius: 5.0, //extend the shadow
+            offset: Offset(5.0, 5.0),
+          )
+        ],
+      ),
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Form(
+        key: controller.formStates[step],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              value: controller.couponData[CouponFieldsName.maxDiscount],
+              label: 'Giá trị ưu đãi tối đa',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.maxDiscount, value),
+              counterText: 'VNĐ',
+              inputType: TextInputType.number,
+            ),
+            SizedBox(height: 20),
+            CustomTextField(
+              value: controller.couponData[CouponFieldsName.minSpend],
+              label: 'Giá trị đơn hàng tối thiểu',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.minSpend, value),
+              inputType: TextInputType.number,
+              counterText: 'VNĐ',
+            ),
+            SizedBox(height: 20),
+            SelectProduct(
+              label: 'Sản phẩm áp dụng (Tùy chọn)',
+              items: controller.products,
+              onSubmitted: (value) => controller.chooseProducts(
+                  CouponFieldsName.productInclude, value),
+              selectedProducts: controller.productIncludes,
+            ),
+            SizedBox(height: 20),
+            SelectProduct(
+              label: 'Sản phẩm không áp dụng (Tùy chọn)',
+              items: controller.products,
+              onSubmitted: (value) => controller.chooseProducts(
+                  CouponFieldsName.productExclude, value),
+              selectedProducts: controller.productExcludes,
+            ),
+          ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 25.0, // soften the shadow
-                spreadRadius: 5.0, //extend the shadow
-                offset: Offset(
-                  5.0, // Move to right 10  horizontally
-                  5.0, // Move to bottom 10 Vertically
-                ),
-              )
-            ],
-          ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) =>
-                      controller.inputValue(CouponFieldsName.limit, value),
-                  decoration: InputDecoration(
-                    labelText: 'Giới hạn lượt sử dụng:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 47,
-                child: Container(
-                  height: 45,
-                  child: DateTimeField(
-                    decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.calendar_today),
-                      labelText: 'Thời gian bắt đầu khuyến mãi:',
-                      filled: true,
-                      fillColor: Color(0xffF9F7F7),
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black12),
-                      ),
-                    ),
-                    format: DateFormat('dd-MM-yyyy hh:mm'),
-                    //onChanged: (value) => ,
-                    onShowPicker: (context, currentValue) async {
-                      final date = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100));
-                      if (date != null) {
-                        final time = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.fromDateTime(
-                            currentValue ?? DateTime.now(),
-                          ),
-                          builder: (context, child) => MediaQuery(
-                            data: MediaQuery.of(context)
-                                .copyWith(alwaysUse24HourFormat: true),
-                            child: child!,
-                          ),
-                        );
-                        return DateTimeField.combine(date, time);
-                      } else {
-                        return currentValue;
-                      }
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 45,
-                child: DateTimeField(
-                  decoration: InputDecoration(
-                    labelText: 'Thời gian hết hạn khuyến mãi:',
-                    suffixIcon: Icon(Icons.calendar_today),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                  ),
-                  format: DateFormat('dd-MM-yyyy hh:mm'),
-                  onShowPicker: (context, currentValue) async {
-                    final date = await showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1900),
-                        initialDate: currentValue ?? DateTime.now(),
-                        lastDate: DateTime(2100));
-                    if (date != null) {
-                      final time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.fromDateTime(
-                          currentValue ?? DateTime.now(),
-                        ),
-                        builder: (context, child) => MediaQuery(
-                          data: MediaQuery.of(context)
-                              .copyWith(alwaysUse24HourFormat: true),
-                          child: child!,
-                        ),
-                      );
-                      return DateTimeField.combine(date, time);
-                    } else {
-                      return currentValue;
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
-  Widget _buildStepDetails() {
-    return Column(
-      children: [
-        Container(
-          width: 240,
-          height: 140,
-          margin: const EdgeInsets.only(top: 10),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Image.asset('assets/images/upload_image_icon.png'),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.black12),
-          ),
+  Widget _buildStepFinal(int step) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 25.0, // soften the shadow
+            spreadRadius: 5.0, //extend the shadow
+            offset: Offset(
+              5.0, // Move to right 10  horizontally
+              5.0, // Move to bottom 10 Vertically
+            ),
+          )
+        ],
+      ),
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: Form(
+        key: controller.formStates[step],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              value: controller.couponData[CouponFieldsName.limit],
+              label: 'Giới hạn sử dụng',
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.limit, value),
+              counterText: 'Lần sử dụng',
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            DateTimePicker(
+              label: 'Ngày bắt đầu',
+              onSubmitted: (value) => controller.inputValue(
+                  CouponFieldsName.publishDate, value?.toIso8601String()),
+              validator: (value) =>
+                  value == null ? 'Vui lòng chọn ngày bắt đầu!' : null,
+              value: controller.couponData[CouponFieldsName.publishDate],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            DateTimePicker(
+              label: 'Ngày hết hạn',
+              onSubmitted: (value) => controller.inputValue(
+                  CouponFieldsName.expireDate, value?.toIso8601String()),
+              value: controller.couponData[CouponFieldsName.expireDate],
+              validator: (value) {
+                if (value == null) {
+                  return 'Vui lòng chọn ngày hết hạn!';
+                }
+                String? previousDate =
+                    controller.couponData[CouponFieldsName.publishDate];
+                if (previousDate == null) {
+                  return 'Vui lòng chọn ngày bắt đầu!';
+                }
+                DateTime previous = DateTime.parse(previousDate);
+                if (value.isBefore(previous)) {
+                  return 'Ngày kết thúc phải lớn hơn ngày bắt đầu';
+                }
+              },
+            ),
+          ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 25.0, // soften the shadow
-                spreadRadius: 5.0, //extend the shadow
-                offset: Offset(
-                  5.0, // Move to right 10  horizontally
-                  5.0, // Move to bottom 10 Vertically
-                ),
-              )
-            ],
-          ),
-          margin: const EdgeInsets.all(15),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) => controller.inputValue(
-                      CouponFieldsName.maxDiscount, value),
-                  decoration: InputDecoration(
-                    labelText: 'Giá trị ưu đãi tối đa:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                height: 45,
-                child: TextFormField(
-                  onFieldSubmitted: (value) =>
-                      controller.inputValue(CouponFieldsName.minSpend, value),
-                  decoration: InputDecoration(
-                    labelText: 'Giá trị đơn hàng tối thiểu:',
-                    border: OutlineInputBorder(),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black12),
-                    ),
-                    filled: true,
-                    fillColor: Color(0xffF9F7F7),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              CustomSelect<Product>(
-                label: 'Chọn sản phẩm áp dụng:',
-                items: controller.products,
-                itemBuilder: (item, selected, changeSelected) => ListTile(
-                  leading: Image.network(item.imageUrl!),
-                  title: Text(Formatter.shorten(item.name)),
-                  subtitle: Text(Formatter.shorten(item.description)),
-                  trailing: Checkbox(
-                    value: selected,
-                    onChanged: (value) => changeSelected(value!),
-                  ),
-                ),
-                selectedItemBuilder: (item, remove) => Chip(
-                  avatar: Image.network(item.imageUrl!),
-                  label: Text(item.name!),
-                  deleteIcon: Icon(Icons.close),
-                  onDeleted: () => remove(),
-                ),
-                onSubmitted: (items) => print(items?.length),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CustomSelect<Product>(
-                label: 'Chọn sản phẩm không áp dụng:',
-                items: controller.products,
-                itemBuilder: (item, selected, changeSelected) => ListTile(
-                  leading: Image.network(item.imageUrl!),
-                  title: Text(Formatter.shorten(item.name)),
-                  subtitle: Text(Formatter.shorten(item.description)),
-                  trailing: Checkbox(
-                    value: selected,
-                    onChanged: (value) => changeSelected(value!),
-                  ),
-                ),
-                selectedItemBuilder: (item, remove) => Chip(
-                  avatar: Image.network(item.imageUrl!),
-                  label: Text(item.name!),
-                  deleteIcon: Icon(Icons.close),
-                  onDeleted: () => remove(),
-                ),
-                onSubmitted: (items) => print(items?.length),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -468,10 +326,13 @@ class CreateCouponPage extends GetView<CreateCouponController> {
             child: InkWell(
               splashColor: Colors.blueAccent, // Splash color
               onTap: () {
-                if (step == 1)
+                print(step);
+                if (step == 0)
                   Get.back();
-                else
+                else {
+                  controller.formStates[step].currentState?.save();
                   controller.backToPrevious();
+                }
               },
               child: Icon(
                 Icons.chevron_left,
@@ -487,23 +348,23 @@ class CreateCouponPage extends GetView<CreateCouponController> {
   Widget _buildActions() {
     return Obx(() {
       int step = controller.currentStep.value;
-      if (step == 1 || step == 2) {
-        return Container(
-          margin: const EdgeInsets.only(right: 10),
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: OutlinedButton(
-            onPressed: () {
-              controller.moveToNext();
-            },
-            child: Text('TIẾP TỤC'),
-          ),
-        );
+      switch (step) {
+        case 0:
+        case 1:
+          return Container(
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: OutlinedButton(
+              onPressed: () => controller.moveToNext(),
+              child: Text('TIẾP TỤC'),
+            ),
+          );
       }
       return Container(
         margin: const EdgeInsets.only(right: 10),
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () => controller.submitForm(),
           child: Text('HOÀN TẤT'),
         ),
       );

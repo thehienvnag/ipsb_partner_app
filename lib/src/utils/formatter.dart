@@ -7,7 +7,8 @@ class Formatter {
   }
 
   static String fromPrice(double price) {
-    final formatter = new NumberFormat("###,###,###.##");
+    final formatter = new NumberFormat("###,###,###");
+
     return formatter.format(price);
   }
 

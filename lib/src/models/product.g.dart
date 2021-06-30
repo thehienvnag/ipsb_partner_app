@@ -13,10 +13,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
     description: json['description'] as String?,
     price: (json['price'] as num?)?.toDouble(),
     imageUrl: json['imageUrl'] as String?,
-  );
+  )..isSelected = json['isSelected'] as bool?;
 }
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
+      'isSelected': instance.isSelected,
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,

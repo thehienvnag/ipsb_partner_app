@@ -95,7 +95,7 @@ class ApiHelper extends GetConnect with IApiHelper {
     MultipartFile file,
   ) {
     var form = FormData(data);
-    form.files.add(MapEntry('file', file));
+    form.files.add(MapEntry('imageUrl', file));
     return post(endpoint, form);
   }
 
@@ -107,7 +107,7 @@ class ApiHelper extends GetConnect with IApiHelper {
   ) {
     var form = FormData(data);
     files.forEach((file) {
-      form.files.add(MapEntry('files', file));
+      form.files.add(MapEntry('imageUrl', file));
     });
     return post(endpoint, form);
   }

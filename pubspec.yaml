@@ -64,6 +64,18 @@ dependencies:
   # Modal bottom sheet
   modal_bottom_sheet: ^2.0.0
 
+  # Validator of string
+  string_validator: ^0.3.0
+
+  # Step indicator
+  cupertino_stepper: ^0.2.0
+
+  # Glow avatar
+  avatar_glow: ^2.0.1
+
+  # toast
+  bot_toast: ^4.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

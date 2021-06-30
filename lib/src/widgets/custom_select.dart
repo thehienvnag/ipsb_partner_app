@@ -15,6 +15,8 @@ class CustomSelect<T> extends StatefulWidget {
   /// Background color
   final Color color;
 
+  final bool required;
+
   /// Item in dropdown builder
   final Widget Function(T item, bool selected, Function(bool) changeSelected)
       itemBuilder;
@@ -25,14 +27,18 @@ class CustomSelect<T> extends StatefulWidget {
   /// on submitted item
   final Function(List<T>? items) onSubmitted;
 
+  final List<T>? selectedItems;
+
   const CustomSelect({
     Key? key,
     required this.label,
     required this.items,
-    required this.itemBuilder,
+    this.color = const Color(0xffF9F7F7),
+    required this.required,
     required this.selectedItemBuilder,
     required this.onSubmitted,
-    this.color = const Color(0xffF9F7F7),
+    this.selectedItems,
+    required this.itemBuilder,
   }) : super(key: key);
 
   @override
@@ -41,12 +47,25 @@ class CustomSelect<T> extends StatefulWidget {
 
 class _CustomSelectState<T> extends State<CustomSelect<T>> {
   /// Selected items
-  List<T> selectedItems = [];
+  List<T>? selectedItems;
+
+  final FocusNode _focusNodeText = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.selectedItems != null) {
+      selectedItems = [];
+      setState(() {
+        selectedItems!.addAll(widget.selectedItems!);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(9),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: widget.color,
         border: Border.all(color: Colors.black12),
@@ -54,49 +73,56 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.label,
-                  style: TextStyle(fontSize: 16, color: Colors.black54)),
-              ClipOval(
-                child: Material(
-                  // button color
-                  color: Colors.transparent,
-                  child: InkWell(
-                    splashColor: Colors.grey.withOpacity(0.4), // splash color
-                    onTap: () => showDialog(), // button pressed
-                    child: Icon(
-                      Icons.chevron_right_outlined,
-                      size: 34,
-                    ),
-                  ),
+          Container(
+            height: 60,
+            child: TextFormField(
+              focusNode: _focusNodeText,
+              onTap: () => showDialog(),
+              showCursor: false,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: widget.label,
+                suffixIcon: Icon(
+                  Icons.chevron_right_outlined,
+                  size: 34,
                 ),
+                border: InputBorder.none,
               ),
-            ],
+              validator: widget.required
+                  ? (value) => validator(widget.label.toLowerCase())
+                  : null,
+            ),
           ),
           Container(
-            height: determineHeight(selectedItems.length),
+            height: determineHeight(selectedItems?.length ?? 0),
             width: 300,
             child: GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
               mainAxisSpacing: 10,
-              childAspectRatio: determineRatio(selectedItems.length),
+              childAspectRatio: determineRatio(selectedItems?.length ?? 0),
               physics: ScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              children: selectedItems
-                  .map((e) => Container(
-                      width: 300,
-                      child: widget.selectedItemBuilder(e, () => remove(e))))
-                  .toList(),
+              children: selectedItems == null
+                  ? []
+                  : selectedItems!
+                      .map((e) => Container(
+                          width: 300,
+                          child:
+                              widget.selectedItemBuilder(e, () => remove(e))))
+                      .toList(),
             ),
           ),
         ],
       ),
     );
+  }
+
+  String? validator(String fieldName) {
+    if (selectedItems == null) return 'Vui lòng chọn $fieldName';
+    return null;
   }
 
   double determineHeight(int items) {
@@ -113,7 +139,7 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
 
   void remove(e) {
     setState(() {
-      selectedItems.remove(e);
+      selectedItems?.remove(e);
     });
   }
 
@@ -125,15 +151,14 @@ class _CustomSelectState<T> extends State<CustomSelect<T>> {
       builder: (context) => DialogWidget<T>(
         items: widget.items,
         itemBuilder: widget.itemBuilder,
-        selectedItems: selectedItems,
+        selectedItems: selectedItems ?? [],
       ),
     );
     widget.onSubmitted(result);
-    if (result != null) {
-      setState(() {
-        selectedItems = result;
-      });
-    }
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      selectedItems = result;
+    });
   }
 }
 
