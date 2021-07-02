@@ -7,7 +7,7 @@ mixin ICouponService {
   Future<Paging<Coupon>> getCoupons();
   Future<Paging<Coupon>> getCouponsByStoreId(int storeId);
   Future<bool> removeCoupon(int couponId);
-  Future<Coupon> addCoupon(Map<String, dynamic> coupon, List<String> filePath);
+  Future<Coupon?> addCoupon(Map<String, dynamic> coupon, List<String> filePath);
 }
 
 class CouponService extends BaseService<Coupon> implements ICouponService {
@@ -41,7 +41,8 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   }
 
   @override
-  Future<Coupon> addCoupon(Map<String, dynamic> coupon, List<String> filePath) {
+  Future<Coupon?> addCoupon(
+      Map<String, dynamic> coupon, List<String> filePath) {
     return postWithFilesBase(coupon, filePath);
   }
 }
