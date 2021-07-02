@@ -2,11 +2,9 @@ import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 
 class HomeController extends GetxController {
   ICouponService _service = Get.find();
-  SharedStates _sharedStates = Get.find();
 
   final listCoupon = <Coupon>[].obs;
 
