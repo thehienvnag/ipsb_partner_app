@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/paging.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 
 class ManageCouponController extends GetxController {
@@ -21,6 +22,11 @@ class ManageCouponController extends GetxController {
   Future<void> removeCoupon(int couponId) async {
     await couponService.removeCoupon(couponId);
     Get.back();
+    getCouponsByStoreId();
+  }
+
+  Future<void> createCoupon() async {
+    await Get.toNamed(Routes.createCoupon);
     getCouponsByStoreId();
   }
 }

@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: Strings.appName,
-      builder: BotToastInit(), //1. call BotToastInit
+      builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.createCoupon,
+      initialRoute: Routes.home,
       getPages: AppPages.routes,
     );
   }

@@ -76,6 +76,9 @@ dependencies:
   # toast
   bot_toast: ^4.0.1
 
+  # Bottom bar
+  salomon_bottom_bar: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

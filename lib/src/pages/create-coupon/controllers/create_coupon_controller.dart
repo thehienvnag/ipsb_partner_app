@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:indoor_positioning_visitor/src/models/product.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 
 class DropdownItem {
   final String? value;
@@ -37,10 +38,34 @@ class CouponFieldsName {
 }
 
 class CreateCouponController extends GetxController {
+  ICouponService _couponService = Get.find();
+  IProductService _productService = Get.find();
+  ImagePicker _imagePicker = Get.find();
   final formStates = List.generate(3, (index) => GlobalKey<FormState>());
 
   /// Current step
   final currentStep = 0.obs;
+
+  /// Selected
+  final selectedItem = Rx<DropdownItem?>(null);
+
+  /// Products
+  final products = listProduct.obs;
+
+  final filePath = ''.obs;
+
+  /// dropdown items
+  final dropdownItems = dropdownFinal.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getProducts();
+  }
+
+  Future<void> getProducts() async {
+    products.value = await _productService.getProductsByStoreId(18);
+  }
 
   /// Move to next step
   void moveToNext() {
@@ -99,16 +124,11 @@ class CreateCouponController extends GetxController {
     print(couponData);
   }
 
-  /// Selected
-  final selectedItem = Rx<DropdownItem?>(null);
   void inputDropdown(String key, DropdownItem? value) {
     if (value == null) return;
     selectedItem.value = value;
     return inputValue(key, value.value);
   }
-
-  /// Products
-  final products = listProduct.obs;
 
   void chooseProducts(String key, List<Product>? value) async {
     if (value == null) return;
@@ -117,11 +137,6 @@ class CreateCouponController extends GetxController {
     String products = value.map((e) => e.id.toString()).toList().join(',');
     return inputValue(key, products);
   }
-
-  /// dropdown items
-  final dropdownItems = dropdownFinal.obs;
-
-  ImagePicker _imagePicker = Get.find();
 
   Future<void> getImage() async {
     final picked = await _imagePicker.getImage(source: ImageSource.gallery);
@@ -136,8 +151,6 @@ class CreateCouponController extends GetxController {
     }
   }
 
-  ICouponService _couponService = Get.find();
-  final filePath = ''.obs;
   Future<void> submitForm() async {
     validate();
     print(couponData);
@@ -157,6 +170,7 @@ class CreateCouponController extends GetxController {
     BotToast.showSimpleNotification(title: "Đang tạo mới!");
     await _couponService.addCoupon(postValue, [filePath.value]);
     BotToast.showSimpleNotification(title: "Đã tạo thành công!");
+    Get.back();
   }
 }
 

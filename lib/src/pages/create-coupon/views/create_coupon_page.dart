@@ -143,27 +143,21 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                   CouponFieldsName.code, Utils.genRandStr(10)),
               child: Text('TẠO NGẪU NHIÊN'),
             ),
-            SizedBox(
-              height: 15,
+            SizedBox(height: 15),
+            SelectProduct(
+              label: 'Sản phẩm áp dụng (Tùy chọn)',
+              items: controller.products,
+              onSubmitted: (value) => controller.chooseProducts(
+                  CouponFieldsName.productInclude, value),
+              selectedProducts: controller.productIncludes,
             ),
-            DiscountTypeDropdown(
-              label: 'Loại khuyến mãi',
-              fieldName: CouponFieldsName.discountType,
-              items: controller.dropdownItems,
-              onChanged: (value, fieldName) =>
-                  controller.inputDropdown(fieldName, value),
-              selectedItem: controller.selectedItem.value,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            CustomTextField(
-              value: couponData[CouponFieldsName.amount],
-              label: 'Giá trị khuyến mãi',
-              validator: TextFieldValidator.require,
-              onSubmitted: (value) =>
-                  controller.inputValue(CouponFieldsName.amount, value),
-              counterText: 'VNĐ',
+            SizedBox(height: 20),
+            SelectProduct(
+              label: 'Sản phẩm không áp dụng (Tùy chọn)',
+              items: controller.products,
+              onSubmitted: (value) => controller.chooseProducts(
+                  CouponFieldsName.productExclude, value),
+              selectedProducts: controller.productExcludes,
             ),
             SizedBox(
               height: 20,
@@ -182,6 +176,7 @@ class CreateCouponPage extends GetView<CreateCouponController> {
   }
 
   Widget _buildStepDetails(int step) {
+    final couponData = controller.couponData;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -201,6 +196,25 @@ class CreateCouponPage extends GetView<CreateCouponController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            DiscountTypeDropdown(
+              label: 'Loại khuyến mãi',
+              fieldName: CouponFieldsName.discountType,
+              items: controller.dropdownItems,
+              onChanged: (value, fieldName) =>
+                  controller.inputDropdown(fieldName, value),
+              selectedItem: controller.selectedItem.value,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            CustomTextField(
+              value: couponData[CouponFieldsName.amount],
+              label: 'Giá trị khuyến mãi',
+              validator: TextFieldValidator.require,
+              onSubmitted: (value) =>
+                  controller.inputValue(CouponFieldsName.amount, value),
+              counterText: 'VNĐ',
+            ),
             CustomTextField(
               value: controller.couponData[CouponFieldsName.maxDiscount],
               label: 'Giá trị ưu đãi tối đa',
@@ -219,22 +233,6 @@ class CreateCouponPage extends GetView<CreateCouponController> {
                   controller.inputValue(CouponFieldsName.minSpend, value),
               inputType: TextInputType.number,
               counterText: 'VNĐ',
-            ),
-            SizedBox(height: 20),
-            SelectProduct(
-              label: 'Sản phẩm áp dụng (Tùy chọn)',
-              items: controller.products,
-              onSubmitted: (value) => controller.chooseProducts(
-                  CouponFieldsName.productInclude, value),
-              selectedProducts: controller.productIncludes,
-            ),
-            SizedBox(height: 20),
-            SelectProduct(
-              label: 'Sản phẩm không áp dụng (Tùy chọn)',
-              items: controller.products,
-              onSubmitted: (value) => controller.chooseProducts(
-                  CouponFieldsName.productExclude, value),
-              selectedProducts: controller.productExcludes,
             ),
           ],
         ),

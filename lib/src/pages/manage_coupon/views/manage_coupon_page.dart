@@ -5,6 +5,8 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/views/slidable_widget.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 
 class ManageCouponPage extends GetView<ManageCouponController> {
   @override
@@ -21,7 +23,7 @@ class ManageCouponPage extends GetView<ManageCouponController> {
                 color: Colors.black,
                 size: 35,
               ),
-              onPressed: () {},
+              onPressed: () => controller.createCoupon(),
             ),
           ),
         ],
@@ -36,13 +38,14 @@ class ManageCouponPage extends GetView<ManageCouponController> {
         final coupons = controller.listCoupon;
         return _buildCoupons(coupons);
       }),
+      bottomNavigationBar: CustomBottombar(),
     );
   }
 }
 
 Widget _buildCoupons(List<Coupon> coupons) {
   return Container(
-    margin: const EdgeInsets.only(top: 15, left: 12, right: 12),
+    margin: const EdgeInsets.only(top: 15),
     decoration: BoxDecoration(
       color: Colors.white,
       boxShadow: [
@@ -68,9 +71,15 @@ Widget _buildCoupons(List<Coupon> coupons) {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(
-                  coupon.imageUrl ?? '',
+                Container(
                   height: 80,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(coupon.imageUrl ?? ''),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20),

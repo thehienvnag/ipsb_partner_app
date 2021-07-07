@@ -30,7 +30,6 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
     return getPagingBase(
       {
         'storeId': storeId.toString(),
-        'status': 'Active',
       },
     );
   }
