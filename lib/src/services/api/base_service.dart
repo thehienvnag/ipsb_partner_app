@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/data/file_upload_utils.dart';
@@ -20,6 +21,16 @@ abstract class BaseService<T> {
     Paging<T> paging = Paging.fromJson(res.body);
     paging.convertToList(fromJson);
     return paging;
+  }
+
+  /// Get instance from API by ID
+  Future<T?> getByIdBase(int id) async {
+    Response response = await _apiHelper.getById(endpoint(), id);
+
+    if (response.status.isOk) {
+      return fromJson(response.body);
+    }
+    // response.status.isNotFound
   }
 
   /// Get list instances from API with [query]
@@ -62,9 +73,15 @@ abstract class BaseService<T> {
   }
 
   /// Put an instance with [id] and [body]
-  Future<T> putBase(dynamic id, Map<String, dynamic> body) async {
+  Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
     Response res = await _apiHelper.putOne(endpoint(), id, body);
-    return fromJson(res.body);
+    if (res.statusCode == HttpStatus.noContent) {
+      return true;
+    }
+    print("Header: "+res.headers.toString());
+    print("Request: " + res.request!.url.path);
+    print("Status Code: "+res.statusCode.toString());
+    return false;
   }
 
   /// Put an instance with [body] and a file path [filePath]

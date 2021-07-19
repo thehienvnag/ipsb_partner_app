@@ -52,6 +52,12 @@ dependencies:
   # QR Code Generator
   qr_flutter: ^4.0.0
 
+  #QR Code Scanner
+  qr_code_scanner: ^0.5.1
+
+  #Make a beautiful popup
+  flutter_beautiful_popup: ^1.4.0
+
   # Slidable
   flutter_slidable: ^0.6.0
 
