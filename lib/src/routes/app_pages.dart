@@ -3,6 +3,8 @@ import 'package:indoor_positioning_visitor/src/pages/create-coupon/bindings/crea
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/create_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/bindings/manage_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/views/manage_coupon_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/manage_feedback/bindings/manage_feedback_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/manage_feedback/views/manage_feedback_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/bindings/profile_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/views/profile_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/profile_detail_binding.dart';
@@ -44,6 +46,11 @@ class AppPages {
       name: Routes.setting,
       page: () => SettingPage(),
       binding: SettingBinding(),
+    ),
+    GetPage(
+      name: Routes.feedbacks,
+      page: () => ManageFeedbackPage(),
+      binding: ManageFeedbackBinding(),
     ),
   ];
 }

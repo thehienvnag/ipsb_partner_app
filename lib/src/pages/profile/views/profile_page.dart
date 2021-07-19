@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/controllers/profile_controller.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
+import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   @override
@@ -23,7 +24,7 @@ class ProfilePage extends GetView<ProfileController> {
                   children: <Widget>[
                     CircleAvatar(
                       radius: 10.0 * 5,
-                        //backgroundImage: NetworkImage(userFo.profile.gallery.images[0].imageUrl)
+                        backgroundImage: NetworkImage('https://image.thanhnien.vn/2048/uploaded/hoangnam/2016_05_04/anh1_sqpb.jpg')
                     ),
                     GestureDetector(
                       onTap: () {
@@ -54,7 +55,7 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
               ),
               SizedBox(height: 20),
-              Text("userFo.profile.displayName",
+              Text("Đồng Hữu Long",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -201,7 +202,7 @@ class ProfilePage extends GetView<ProfileController> {
           ),
         ],
       ),
-     // bottomNavigationBar: WidgetUtils.appBottomNavigationBar(4),
+      bottomNavigationBar: CustomBottombar(),
     );
   }
 }

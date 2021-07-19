@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
 import 'package:indoor_positioning_visitor/src/services/api/account_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
@@ -43,5 +44,7 @@ class AppInit {
     Get.lazyPut<IProductService>(() => ProductService(), fenix: true);
     // Calling api at account enpoint
     Get.lazyPut<IAccountService>(() => AccountService(), fenix: true);
+    // Calling api at couponInUse service
+    Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
   }
 }

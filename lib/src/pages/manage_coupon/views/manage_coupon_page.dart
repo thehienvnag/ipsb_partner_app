@@ -5,13 +5,12 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/views/slidable_widget.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:loading_animations/loading_animations.dart';
 
 class ManageCouponPage extends GetView<ManageCouponController> {
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -36,7 +35,17 @@ class ManageCouponPage extends GetView<ManageCouponController> {
       ),
       body: Obx(() {
         final coupons = controller.listCoupon;
-        return _buildCoupons(coupons);
+        if(coupons.isEmpty){
+          return LoadingFlipping.circle(
+            borderColor: Colors.cyan,
+            borderSize: 3.0,
+            size: 30.0,
+            backgroundColor: Colors.cyanAccent,
+            duration: Duration(milliseconds: 500),
+          );
+        }else {
+          return _buildCoupons(coupons);
+        }
       }),
       bottomNavigationBar: CustomBottombar(),
     );

@@ -23,4 +23,7 @@ class Endpoints {
 
   /// Account enpoint version /api/v1
   static const accounts = '$apiVer1/accounts';
+
+  /// CouponInUse enpoint version /api/v1
+  static const couponsInUse = '$apiVer1/coupon-in-uses';
 }
