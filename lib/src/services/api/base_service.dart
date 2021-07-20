@@ -85,19 +85,50 @@ abstract class BaseService<T> {
     return false;
   }
 
+  // /// Put an instance with [body] and a file path [filePath]
+  // Future<T?> putWithOneFileBase(
+  //   Map<String, dynamic> body,
+  //   String filePath,
+  // ) async {
+  //   Response res = await _apiHelper.putOneWithOneFile(
+  //     endpoint(),
+  //     body,
+  //     FileUploadUtils.convertToMultipart(filePath),
+  //   );
+  //   if (res.statusCode == HttpStatus.noContent) {
+  //     return fromJson(res.body);
+  //   }
+  // }
+
   /// Put an instance with [body] and a file path [filePath]
-  Future<T?> putWithOneFileBase(
-    Map<String, dynamic> body,
-    String filePath,
-  ) async {
-    Response res = await _apiHelper.putOneWithOneFile(
-      endpoint(),
-      body,
-      FileUploadUtils.convertToMultipart(filePath),
-    );
-    if (res.statusCode == HttpStatus.noContent) {
-      return fromJson(res.body);
+  Future<bool> putWithOneFileBase(
+      Map<String, dynamic> body,
+      String filePath, int id,  [String fileName = "imageUrl"]
+      ) async {
+    if(filePath.isNotEmpty) {
+      Response res = await _apiHelper.putOneWithOneFile(
+          endpoint() + "/" + id.toString(),
+          body,
+          FileUploadUtils.convertToMultipart(filePath),
+          fileName
+      );
+      if (res.statusCode == HttpStatus.noContent) {
+        return true;
+      }
+    }else{
+      Response res = await _apiHelper.putOneWithOneFile(
+          endpoint() + "/" + id.toString(),
+          body,
+          null,
+          fileName
+      );
+      if (res.statusCode == HttpStatus.noContent) {
+        return true;
+      }
     }
+
+
+    return false;
   }
 
   /// Put an instance with [body]
