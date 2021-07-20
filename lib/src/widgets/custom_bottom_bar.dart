@@ -41,14 +41,13 @@ final items = [
   BottomItem(
     text: 'QR Code',
     icon: Icon(Icons.qr_code),
-    route: Routes.createCoupon,
+    route: Routes.checkQRCode,
   ),
   BottomItem(
     text: 'Feedbacks',
     icon: Icon(Icons.rate_review_outlined),
     route: Routes.feedbacks,
   ),
-
   BottomItem(
     text: 'Coupons',
     icon: Icon(Icons.local_activity),

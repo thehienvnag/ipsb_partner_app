@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/widgets/animated_button_bar.dart';
 
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -16,7 +17,6 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
   bool isSuccess = true;
   int? storeId;
   int? couponId;
-
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,9 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
           size: width * 0.1,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          controller.backToHome();
+        },
       ),
       top: height * 0.065,
       left: width * 0.025,
@@ -196,8 +198,7 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black)),
-          Text(
-              'Nhập mã giảm giá từ các mã bạn đã lưu hoặc quét mã QR',
+          Text('Nhập mã giảm giá từ các mã bạn đã lưu hoặc quét mã QR',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, color: Colors.black)),
         ],
@@ -254,7 +255,7 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
           coupon = await controller.checkCode(storeId!, couponId!, code);
           print(coupon);
           if (coupon != null) {
-          // if (code.contains('GIAM30')) {
+            // if (code.contains('GIAM30')) {
             title = "MÃ HỢP LỆ";
             content = 'Tên: ' +
                 coupon!.name! +
@@ -274,7 +275,7 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
           } else {
             title = "LỖI";
             content =
-            "Không thể áp dụng mã giảm giá. Mã giảm giá không hợp lệ hoặc không còn thời hạn sử dụng.";
+                "Không thể áp dụng mã giảm giá. Mã giảm giá không hợp lệ hoặc không còn thời hạn sử dụng.";
             isSuccess = false;
           }
           _buildPopUp(context, title, content, isSuccess);
@@ -300,7 +301,7 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
               coupon = await controller.checkCode(storeId!, couponId!, code);
               print(coupon);
               if (coupon != null) {
-              // if (code.contains('GIAM30')) {
+                // if (code.contains('GIAM30')) {
                 title = "MÃ HỢP LỆ";
                 content = 'Tên: ' +
                     coupon!.name! +
@@ -320,7 +321,7 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
               } else {
                 title = "LỖI";
                 content =
-                "Không thể áp dụng mã giảm giá. Mã giảm giá không hợp lệ hoặc không còn thời hạn sử dụng.";
+                    "Không thể áp dụng mã giảm giá. Mã giảm giá không hợp lệ hoặc không còn thời hạn sử dụng.";
                 isSuccess = false;
               }
               _buildPopUp(context, title, content, isSuccess);
@@ -371,33 +372,35 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
       title: titleContainer,
       content: codeContainer,
       actions: [
-        !isSuccess ?
-        popup.button(
-            label: 'Đóng',
-            onPressed: () {
-              Navigator.of(context).pop();
-            }) :
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            OutlinedButton(
+        !isSuccess
+            ? popup.button(
+                label: 'Đóng',
                 onPressed: () {
                   Navigator.of(context).pop();
-                },
-                child: Text(
-                  'Đóng',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue),
-                )),
-            SizedBox(width: 10,),
-            OutlinedButton(
-              onPressed: () {},
-              child: Text('Xem chi tiết'),
-            )
-          ],)
-
+                })
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Đóng',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      )),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Text('Xem chi tiết'),
+                  )
+                ],
+              )
       ],
       // bool barrierDismissible = false,
       // Widget close,

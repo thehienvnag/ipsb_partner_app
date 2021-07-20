@@ -4,8 +4,10 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
+import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
+import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/utils/utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
@@ -36,7 +38,7 @@ class CheckQRCodeController extends GetxController {
     controller.scannedDataStream.listen((scanData) async {
       if (isScanned) {
         isScanned = false;
-        String tmp  = scanData.code;
+        String tmp = scanData.code;
         List<String> arr = tmp.split(',');
         storeId = int.parse(arr[0]);
         couponId = int.parse(arr[1]);
@@ -50,14 +52,15 @@ class CheckQRCodeController extends GetxController {
             if (couponInUse?.status == "Used") {
               title = "LỖI";
               codeDisplayed =
-              "Không thể áp dụng mã giảm giá. Mã giảm giá đã được sử dụng.";
+                  "Không thể áp dụng mã giảm giá. Mã giảm giá đã được sử dụng.";
               isSuccess = false;
             } else if (couponInUse?.status == "Deleted") {
               codeDisplayed =
-              "Không thể áp dụng mã giảm giá. Mã giảm giá đã hết hạn sử dụng.";
+                  "Không thể áp dụng mã giảm giá. Mã giảm giá đã hết hạn sử dụng.";
               isSuccess = false;
             } else {
-              updateCoupon = await putCouponInUse(couponInUseId!, couponId!, 9, "Used");
+              updateCoupon =
+                  await putCouponInUse(couponInUseId!, couponId!, 9, "Used");
               if (updateCoupon) {
                 title = "MÃ HỢP LỆ";
                 codeDisplayed = 'Tên: ' +
@@ -70,8 +73,7 @@ class CheckQRCodeController extends GetxController {
                     coupon!.description! +
                     '\n' +
                     'Ngày áp dụng: ' +
-                    Utils.date(coupon!.publishDate!)
-                    +
+                    Utils.date(coupon!.publishDate!) +
                     '\n' +
                     'Ngày hết hạn: ' +
                     Utils.date(coupon!.expireDate!);
@@ -79,7 +81,7 @@ class CheckQRCodeController extends GetxController {
               } else {
                 title = "LỖI";
                 codeDisplayed =
-                "Không thể áp dụng mã giảm giá. Đã xảy ra lỗi trong quá trình áp dụng.";
+                    "Không thể áp dụng mã giảm giá. Đã xảy ra lỗi trong quá trình áp dụng.";
                 isSuccess = false;
               }
             }
@@ -153,35 +155,37 @@ class CheckQRCodeController extends GetxController {
       title: titleContainer,
       content: codeContainer,
       actions: [
-        !isSuccess ?
-        popup.button(
-            label: 'Đóng',
-            onPressed: () {
-              Navigator.of(context).pop();
-              isScanned = true;
-            }) :
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    isScanned = true;
-                  },
-                  child: Text(
-                    'Đóng',
-                    style: TextStyle(color: Colors.white),
+        !isSuccess
+            ? popup.button(
+                label: 'Đóng',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  isScanned = true;
+                })
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        isScanned = true;
+                      },
+                      child: Text(
+                        'Đóng',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      )),
+                  SizedBox(
+                    width: 10,
                   ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue),
-                  )),
-              SizedBox(width: 10,),
-              OutlinedButton(
-                onPressed: () {},
-                child: Text('Xem chi tiết'),
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: Text('Xem chi tiết'),
+                  )
+                ],
               )
-            ],)
-
       ],
       // bool barrierDismissible = false,
       // Widget close,
@@ -193,7 +197,8 @@ class CheckQRCodeController extends GetxController {
   }
 
   Future<Coupon?> checkCode(int storeId, int couponId, String code) async {
-    List<Coupon> couponList = await couponService.checkCode(storeId, couponId, code);
+    List<Coupon> couponList =
+        await couponService.checkCode(storeId, couponId, code);
     if (couponList.isNotEmpty) {
       return couponList.first;
     }
@@ -203,7 +208,15 @@ class CheckQRCodeController extends GetxController {
     return await couponInUseService.getCouponInUse(couponInUseId);
   }
 
-  Future<bool> putCouponInUse(int couponInUseId, int couponId, int visitorId, String status) async {
-    return await couponInUseService.putCoupon(couponInUseId, couponId, visitorId, status);
+  Future<bool> putCouponInUse(
+      int couponInUseId, int couponId, int visitorId, String status) async {
+    return await couponInUseService.putCoupon(
+        couponInUseId, couponId, visitorId, status);
+  }
+
+  SharedStates states = Get.find();
+  void backToHome() {
+    states.bottomBarSelectedIndex.value = 0;
+    Get.offNamed(Routes.home);
   }
 }
