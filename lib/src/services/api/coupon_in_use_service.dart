@@ -36,12 +36,14 @@ class CouponInUseService extends BaseService<CouponInUse>
   Future<bool> putCoupon(
       int couponInUseId, int couponId, int visitorId, String status) {
     DateTime applyDate = DateTime.now();
-    return putBase(couponInUseId, {
+    return putWithOneFileBase( {
       'id': couponInUseId,
       'couponId': couponId,
       'visitorId': visitorId,
       'applyDate': applyDate.toString(),
       'status': status,
-    });
+    },
+    "", couponInUseId
+    );
   }
 }
