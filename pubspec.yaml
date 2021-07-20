@@ -79,6 +79,15 @@ dependencies:
   # Bottom bar
   salomon_bottom_bar: ^3.1.0
 
+  # Rating bar
+  flutter_rating_bar: ^4.0.0
+
+  # Time ago
+  timeago: ^3.1.0
+
+  #Loading animation
+  loading_animations: ^2.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

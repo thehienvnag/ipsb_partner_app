@@ -44,9 +44,20 @@ final items = [
     route: Routes.createCoupon,
   ),
   BottomItem(
-    text: 'Manages coupons',
+    text: 'Feedbacks',
+    icon: Icon(Icons.rate_review_outlined),
+    route: Routes.feedbacks,
+  ),
+
+  BottomItem(
+    text: 'Coupons',
     icon: Icon(Icons.local_activity),
     route: Routes.manageCoupon,
+  ),
+  BottomItem(
+    text: 'Profile',
+    icon: Icon(Icons.person),
+    route: Routes.profile,
   ),
 ];
 

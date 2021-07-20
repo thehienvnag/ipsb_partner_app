@@ -1,3 +1,4 @@
+import 'package:indoor_positioning_visitor/src/models/account.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -8,9 +9,11 @@ part 'coupon_in_use.g.dart';
 class CouponInUse {
   final int? id;
   final int? couponId, visitorId;
-  final DateTime? redeemDate, applyDate;
-  final String? status;
+  final DateTime? redeemDate, applyDate, feedBackDate;
+  final String? status, feedbackContent, feedbackImage;
+  final double? rateScore;
   final Coupon? coupon;
+  final Account? visitor;
 
   CouponInUse({
     this.applyDate,
@@ -19,7 +22,12 @@ class CouponInUse {
     this.visitorId,
     this.redeemDate,
     this.status,
+    this.feedbackContent,
+    this.feedbackImage,
+    this.feedBackDate,
+    this.rateScore,
     this.coupon,
+    this.visitor
   });
 
   factory CouponInUse.fromJson(Map<String, dynamic> json) =>
