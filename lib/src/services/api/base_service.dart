@@ -77,11 +77,12 @@ abstract class BaseService<T> {
   }
 
   /// Put an instance with [id] and [body]
-  Future<T?> putBase(dynamic id, Map<String, dynamic> body) async {
+  Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
     Response res = await _apiHelper.putOne(endpoint(), id, body);
     if (res.statusCode == HttpStatus.noContent) {
-      return fromJson(res.body);
+      return true;
     }
+    return false;
   }
 
   /// Put an instance with [body] and a file path [filePath]

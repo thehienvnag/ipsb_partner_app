@@ -6,4 +6,5 @@ class Routes {
   static const String profileDetail = "/profileDetail";
   static const String setting = "/setting";
   static const String feedbacks = "/feedback";
+  static const String checkQRCode = "/checkQRCode";
 }

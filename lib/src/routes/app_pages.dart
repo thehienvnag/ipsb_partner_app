@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/pages/check_qr_code/bindings/check_qr_code_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/check_qr_code/views/check_qr_code_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/bindings/create_coupon_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/create_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/bindings/manage_coupon_binding.dart';
@@ -31,6 +33,11 @@ class AppPages {
       name: Routes.manageCoupon,
       page: () => ManageCouponPage(),
       binding: ManageCouponBinding(),
+    ),
+    GetPage(
+      name: Routes.checkQRCode,
+      page: () => CheckQRCodePage(),
+      binding: CheckQRCodeBinding(),
     ),
     GetPage(
       name: Routes.profile,

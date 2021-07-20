@@ -5,9 +5,15 @@ import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
 
 mixin ICouponService {
   Future<Paging<Coupon>> getCoupons();
+
   Future<Paging<Coupon>> getCouponsByStoreId(int storeId);
+
+  Future<Coupon?> getCouponById(int id);
+
   Future<bool> removeCoupon(int couponId);
   Future<Coupon?> addCoupon(Map<String, dynamic> coupon, List<String> filePath);
+
+  Future<List<Coupon>> checkCode(int storeId, int couponId, String code);
 }
 
 class CouponService extends BaseService<Coupon> implements ICouponService {
@@ -35,6 +41,11 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   }
 
   @override
+  Future<Coupon?> getCouponById(int id) {
+    return getByIdBase(id);
+  }
+
+  @override
   Future<bool> removeCoupon(int couponId) {
     return deleteBase(couponId);
   }
@@ -43,5 +54,15 @@ class CouponService extends BaseService<Coupon> implements ICouponService {
   Future<Coupon?> addCoupon(
       Map<String, dynamic> coupon, List<String> filePath) {
     return postWithFilesBase(coupon, filePath);
+  }
+
+  Future<List<Coupon>> checkCode(int storeId, int couponId, String code) {
+    return getAllBase(
+      {
+        'id': couponId.toString(),
+        'storeId': storeId.toString(),
+        'code': code,
+      },
+    );
   }
 }
