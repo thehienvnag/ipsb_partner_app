@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -169,7 +170,9 @@ class CreateCouponController extends GetxController {
     postValue.putIfAbsent('storeId', () => 18);
     BotToast.showSimpleNotification(title: "Đang tạo mới!");
     await _couponService.addCoupon(postValue, [filePath.value]);
-    BotToast.showSimpleNotification(title: "Đã tạo thành công!");
+    Timer(Duration(seconds: 1),
+        () => BotToast.showSimpleNotification(title: "Đã tạo thành công!!!"));
+
     Get.back();
   }
 }
