@@ -12,8 +12,11 @@ class Endpoints {
   /// Edge enpoint version /api/v1
   static const edges = '$apiVer1/edges';
 
-  /// Edge enpoint version /api/v1
+  /// Location enpoint version /api/v1
   static const locations = '$apiVer1/locations';
+
+  /// Locator Tag enpoint version /api/v1
+  static const locatorTag = '$apiVer1/locator-tags';
 
   /// Edge enpoint version /api/v1
   static const coupons = '$apiVer1/coupons';

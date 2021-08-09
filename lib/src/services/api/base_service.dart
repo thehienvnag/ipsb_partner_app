@@ -42,6 +42,7 @@ abstract class BaseService<T> {
   /// Post an instance with [body]
   Future<T?> postBase(Map<String, dynamic> body) async {
     Response res = await _apiHelper.postOne(endpoint(), body);
+    print("HTTP STATUS CODE: " + res.statusCode.toString() + "========================================");
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
