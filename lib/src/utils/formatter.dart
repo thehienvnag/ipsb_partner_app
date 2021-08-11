@@ -7,8 +7,8 @@ class Formatter {
     return DateFormat('dd-MM-yyyy').format(date);
   }
   static String dateCaculator(String date){
-    int differenceInDays = new DateTime.now().difference(DateTime.parse(date)).inDays;
-    final fifteenAgo = new DateTime.now().subtract(new Duration(days: differenceInDays));
+    int differenceInDays = new DateTime.now().difference(DateTime.parse(date)).inHours;
+    final fifteenAgo = new DateTime.now().subtract(new Duration(hours: differenceInDays));
     return timeago.format(fifteenAgo, locale: 'en');
   }
 

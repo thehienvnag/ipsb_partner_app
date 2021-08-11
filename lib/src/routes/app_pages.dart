@@ -7,6 +7,8 @@ import 'package:indoor_positioning_visitor/src/pages/manage_coupon/bindings/mana
 import 'package:indoor_positioning_visitor/src/pages/manage_coupon/views/manage_coupon_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_feedback/bindings/manage_feedback_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/manage_feedback/views/manage_feedback_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/manage_locator_tag/bindings/manage_locator_tag_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/manage_locator_tag/views/manage_locator_tag_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/bindings/profile_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile/views/profile_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/profile_detail_binding.dart';
@@ -58,6 +60,11 @@ class AppPages {
       name: Routes.feedbacks,
       page: () => ManageFeedbackPage(),
       binding: ManageFeedbackBinding(),
+    ),
+    GetPage(
+      name: Routes.locatorTag,
+      page: () => ManageLocatorTagPage(),
+      binding: ManageLocatorTagBinding(),
     ),
   ];
 }

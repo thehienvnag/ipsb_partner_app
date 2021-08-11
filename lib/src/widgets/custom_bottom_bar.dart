@@ -58,6 +58,11 @@ final items = [
     icon: Icon(Icons.person),
     route: Routes.profile,
   ),
+    BottomItem(
+    text: 'Locator Tag',
+    icon: Icon(Icons.view_in_ar),
+    route: Routes.locatorTag,
+  ),
 ];
 
 class CustomBottombar extends GetView<CustomBottombarController> {

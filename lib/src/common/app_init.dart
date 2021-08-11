@@ -5,6 +5,7 @@ import 'package:indoor_positioning_visitor/src/services/api/account_service.dart
 import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
+import 'package:indoor_positioning_visitor/src/services/api/locator_tag_service.dart';
 import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
 import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
 import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
@@ -46,5 +47,7 @@ class AppInit {
     Get.lazyPut<IAccountService>(() => AccountService(), fenix: true);
     // Calling api at couponInUse service
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
+    // Calling api at locatorTag service
+    Get.lazyPut<ILocatorTagService>(() => LocatorTagService(), fenix: true);
   }
 }

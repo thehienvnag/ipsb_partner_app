@@ -7,4 +7,5 @@ class Routes {
   static const String setting = "/setting";
   static const String feedbacks = "/feedback";
   static const String checkQRCode = "/checkQRCode";
+  static const String locatorTag = "/locatorTag";
 }

@@ -55,6 +55,10 @@ dependencies:
   #QR Code Scanner
   qr_code_scanner: ^0.5.1
 
+  #Beacon scanner
+  flutter_blue: ^0.8.0
+
+
   #Make a beautiful popup
   flutter_beautiful_popup: ^1.4.0
 
