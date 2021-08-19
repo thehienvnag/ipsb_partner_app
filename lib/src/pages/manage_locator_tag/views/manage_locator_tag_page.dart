@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +190,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
   }
 
   Widget _buildScanResult(BuildContext context, ScanResult result) {
-    if (result.device.name != 'Radioland iBeacon') {
+    if (!['Radioland iBeacon', 'Radioland-R2beacon']
+        .contains(result.device.name)) {
       return Container();
     } else {
       // return Obx(() {
