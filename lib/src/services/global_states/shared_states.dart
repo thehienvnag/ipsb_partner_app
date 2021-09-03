@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:indoor_positioning_visitor/src/models/account.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon.dart';
 import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
 
@@ -17,4 +18,7 @@ class SharedStates extends GetxService {
 
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
+
+  // User login in app
+  Account? account;
 }

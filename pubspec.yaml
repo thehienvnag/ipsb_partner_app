@@ -98,6 +98,9 @@ dependencies:
   #Loading animation
   loading_animations: ^2.2.0
 
+  # Loading image
+  flutter_svg: ^0.22.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -120,6 +123,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

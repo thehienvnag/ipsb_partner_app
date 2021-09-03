@@ -15,6 +15,8 @@ import 'package:indoor_positioning_visitor/src/pages/profile_detail/bindings/pro
 import 'package:indoor_positioning_visitor/src/pages/profile_detail/views/profile_detail_page.dart';
 import 'package:indoor_positioning_visitor/src/pages/setting/bindings/setting_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/setting/views/setting_page.dart';
+import 'package:indoor_positioning_visitor/src/pages/sigin/bindings/login_binding.dart';
+import 'package:indoor_positioning_visitor/src/pages/sigin/views/login_page.dart';
 import 'package:indoor_positioning_visitor/src/routes/routes.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/bindings/home_binding.dart';
 import 'package:indoor_positioning_visitor/src/pages/home/views/home_page.dart';
@@ -65,6 +67,11 @@ class AppPages {
       name: Routes.locatorTag,
       page: () => ManageLocatorTagPage(),
       binding: ManageLocatorTagBinding(),
+    ),
+    GetPage(
+      name: Routes.login,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
     ),
   ];
 }
