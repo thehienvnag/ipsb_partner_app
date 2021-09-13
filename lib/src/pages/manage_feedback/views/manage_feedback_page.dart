@@ -103,7 +103,9 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack) {
                     children: [
                       SizedBox(height: 18),
                       Text(
-                        Formatter.dateCaculator(feedback.feedBackDate.toString()),
+                        Formatter.dateCaculator(
+                            feedback.feedbackDate,
+                        ),
                         style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                       ),
                     ],

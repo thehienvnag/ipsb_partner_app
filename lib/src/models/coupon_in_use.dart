@@ -9,7 +9,7 @@ part 'coupon_in_use.g.dart';
 class CouponInUse {
   final int? id;
   final int? couponId, visitorId;
-  final DateTime? redeemDate, applyDate, feedBackDate;
+  final DateTime? redeemDate, applyDate, feedbackDate;
   final String? status, feedbackContent, feedbackImage;
   final double? rateScore;
   final Coupon? coupon;
@@ -24,7 +24,7 @@ class CouponInUse {
     this.status,
     this.feedbackContent,
     this.feedbackImage,
-    this.feedBackDate,
+    this.feedbackDate,
     this.rateScore,
     this.coupon,
     this.visitor

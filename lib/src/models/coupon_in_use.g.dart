@@ -20,9 +20,9 @@ CouponInUse _$CouponInUseFromJson(Map<String, dynamic> json) {
     status: json['status'] as String?,
     feedbackContent: json['feedbackContent'] as String?,
     feedbackImage: json['feedbackImage'] as String?,
-    feedBackDate: json['feedBackDate'] == null
+    feedbackDate: json['feedbackDate'] == null
         ? null
-        : DateTime.parse(json['feedBackDate'] as String),
+        : DateTime.parse(json['feedbackDate'] as String),
     rateScore: (json['rateScore'] as num?)?.toDouble(),
     coupon: json['coupon'] == null
         ? null
@@ -40,7 +40,7 @@ Map<String, dynamic> _$CouponInUseToJson(CouponInUse instance) =>
       'visitorId': instance.visitorId,
       'redeemDate': instance.redeemDate?.toIso8601String(),
       'applyDate': instance.applyDate?.toIso8601String(),
-      'feedBackDate': instance.feedBackDate?.toIso8601String(),
+      'feedBackDate': instance.feedbackDate?.toIso8601String(),
       'status': instance.status,
       'feedbackContent': instance.feedbackContent,
       'feedbackImage': instance.feedbackImage,
