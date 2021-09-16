@@ -66,5 +66,10 @@ class AppPages {
       page: () => ManageLocatorTagPage(),
       binding: ManageLocatorTagBinding(),
     ),
+    GetPage(
+      name: Routes.login,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
+    ),
   ];
 }

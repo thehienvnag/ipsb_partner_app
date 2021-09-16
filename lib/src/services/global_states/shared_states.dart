@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_partner_app/src/models/account.dart';
 
 class SharedStates extends GetxService {
   /// selected bottom bar index
@@ -17,4 +18,7 @@ class SharedStates extends GetxService {
 
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
+
+  // User login in app
+  Account? account;
 }
