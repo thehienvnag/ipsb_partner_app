@@ -7,10 +7,9 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:ipsb_partner_app/src/pages/manage_locator_tag/views/manage_locator_tag_detail_page.dart';
 
 class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -44,36 +43,38 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              // StreamBuilder<List<BluetoothDevice>>(
-              //   stream: Stream.periodic(Duration(seconds: 2))
-              //       .asyncMap((_) => FlutterBlue.instance.connectedDevices),
-              //   initialData: [],
-              //   builder: (c, snapshot) => Column(
-              //     children: snapshot.data!
-              //         .map((d) => ListTile(
-              //       title: Text(d.name),
-              //       subtitle: Text(d.id.toString()),
-              //       trailing: StreamBuilder<BluetoothDeviceState>(
-              //         stream: d.state,
-              //         initialData: BluetoothDeviceState.disconnected,
-              //         builder: (c, snapshot) {
-              //           if (snapshot.data ==
-              //               BluetoothDeviceState.connected) {
-              //             return RaisedButton(
-              //               child: Text('OPEN'),
-              //               onPressed: () => Navigator.of(context).push(
-              //                   MaterialPageRoute(
-              //                       builder: (context) =>
-              //                           DeviceScreen(device: d))),
-              //             );
-              //           }
-              //           return Text(snapshot.data.toString());
-              //         },
-              //       ),
-              //     ))
-              //         .toList(),
-              //   ),
-              // ),
+              StreamBuilder<List<BluetoothDevice>>(
+                stream: Stream.periodic(Duration(seconds: 2))
+                    .asyncMap((_) => FlutterBlue.instance.connectedDevices),
+                initialData: [],
+                builder: (c, snapshot) => Column(
+                  children: snapshot.data!
+                      .map((d) => ListTile(
+                            title: Text(d.name),
+                            subtitle: Text(d.id.toString()),
+                            trailing: StreamBuilder<BluetoothDeviceState>(
+                              stream: d.state,
+                              initialData: BluetoothDeviceState.disconnected,
+                              builder: (c, snapshot) {
+                                if (snapshot.data ==
+                                    BluetoothDeviceState.connected) {
+                                  return RaisedButton(
+                                    child: Text('OPEN'),
+                                    onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ManageLocatorTagDetailPage(
+                                                  device: d,
+                                                ))),
+                                  );
+                                }
+                                return Text(snapshot.data.toString());
+                              },
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBlue.instance.scanResults,
                 initialData: [],
@@ -81,12 +82,13 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                   children: snapshot.data!
                       .map(
                         (r) => _buildScanResult(
-                          context, r,
-                          //     onTap: () => Navigator.of(context)
-                          //     .push(MaterialPageRoute(builder: (context) {
-                          //   r.device.connect();
-                          //   return DeviceScreen(device: r.device);
-                          // })),
+                          context,
+                          r,
+                          () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            r.device.connect();
+                            return ManageLocatorTagDetailPage(device: r.device);
+                          })),
                         ),
                       )
                       .toList(),
@@ -187,7 +189,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     );
   }
 
-  Widget _buildScanResult(BuildContext context, ScanResult result) {
+  Widget _buildScanResult(
+      BuildContext context, ScanResult result, VoidCallback? onTap) {
     if (!['Radioland iBeacon', 'Radioland-R2beacon']
         .contains(result.device.name)) {
       return Container();
@@ -196,25 +199,30 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
       return ExpansionTile(
         title: _buildTitle(context, result),
         leading: Text(result.rssi.toString()),
-        trailing: AvatarGlow(
-          glowColor: Colors.red,
-          endRadius: 20.0,
-          duration: Duration(milliseconds: 2000),
-          repeat: true,
-          showTwoGlows: true,
-          repeatPauseDuration: Duration(milliseconds: 100),
-          child: Material(
-            elevation: 8.0,
-            shape: CircleBorder(),
-            child: CircleAvatar(
-              backgroundColor: Colors.grey[100],
-              child: Image.network(
-                'https://cdn.iconscout.com/icon/premium/png-512-thumb/beacon-1427391-1206235.png',
-                height: 60,
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AvatarGlow(
+              glowColor: Colors.red,
+              endRadius: 20.0,
+              duration: Duration(milliseconds: 2000),
+              repeat: true,
+              showTwoGlows: true,
+              repeatPauseDuration: Duration(milliseconds: 100),
+              child: Material(
+                elevation: 8.0,
+                shape: CircleBorder(),
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey[100],
+                  child: Image.network(
+                    'https://cdn.iconscout.com/icon/premium/png-512-thumb/beacon-1427391-1206235.png',
+                    height: 60,
+                  ),
+                  radius: 40.0,
+                ),
               ),
-              radius: 40.0,
             ),
-          ),
+          ],
         ),
         children: <Widget>[
           _buildAdvRow(context, 'Complete Local Name',
@@ -222,6 +230,12 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
           _buildAdvRow(context, 'Mac Address', '${result.device.id}'),
           _buildAdvRow(context, 'Tx Power Level',
               '${result.advertisementData.txPowerLevel ?? 'N/A'}'),
+          RaisedButton(
+            child: Text('CONNECT'),
+            color: Colors.black,
+            textColor: Colors.white,
+            onPressed: (result.advertisementData.connectable) ? onTap : null,
+          ),
 
           // Align(
           //   alignment: Alignment.center,

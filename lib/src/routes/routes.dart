@@ -9,4 +9,5 @@ class Routes {
   static const String checkQRCode = "/checkQRCode";
   static const String locatorTag = "/locatorTag";
   static const String login = "/login";
+  static const String locatorTagDetail = "/locatorTagDetail";
 }

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/sigin/controllers/login_controller.dart';
+import 'package:ipsb_partner_app/src/pages/sigin/controllers/login_controller.dart';
 
 class LoginBinding extends Bindings {
   @override

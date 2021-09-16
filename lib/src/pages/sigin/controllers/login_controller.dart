@@ -1,13 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/account.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-
+import 'package:ipsb_partner_app/src/models/account.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class LoginController extends GetxController {
-
   // Share states across app
   final SharedStates sharedStates = Get.find();
   Account? account;
@@ -25,17 +23,21 @@ class LoginController extends GetxController {
     loginPassword.value = password;
   }
 
-  void submitForm(){
-    BotToast.showText(text: "In Process !", textStyle: TextStyle(fontSize: 16),
+  void submitForm() {
+    BotToast.showText(
+        text: "In Process !",
+        textStyle: TextStyle(fontSize: 16),
         duration: const Duration(seconds: 7));
 
     // code login here
-    if(account!.email!.isNotEmpty){
+    if (account!.email!.isNotEmpty) {
       BotToast.showText(text: "Login successfully");
       sharedStates.account = account;
       Get.toNamed(Routes.home);
-    }else{
-      BotToast.showText(text: "Email or password not correct !", textStyle: TextStyle(fontSize: 16),
+    } else {
+      BotToast.showText(
+          text: "Email or password not correct !",
+          textStyle: TextStyle(fontSize: 16),
           duration: const Duration(seconds: 7));
       Get.toNamed(Routes.login);
     }
