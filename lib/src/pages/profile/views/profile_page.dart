@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/profile/controllers/profile_controller.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_partner_app/src/pages/profile/controllers/profile_controller.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   @override
@@ -23,9 +23,9 @@ class ProfilePage extends GetView<ProfileController> {
                 child: Stack(
                   children: <Widget>[
                     CircleAvatar(
-                      radius: 10.0 * 5,
-                        backgroundImage: NetworkImage('https://image.thanhnien.vn/2048/uploaded/hoangnam/2016_05_04/anh1_sqpb.jpg')
-                    ),
+                        radius: 10.0 * 5,
+                        backgroundImage: NetworkImage(
+                            'https://image.thanhnien.vn/2048/uploaded/hoangnam/2016_05_04/anh1_sqpb.jpg')),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.profileDetail);
@@ -59,8 +59,7 @@ class ProfilePage extends GetView<ProfileController> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
-                  )
-              ),
+                  )),
             ],
           ),
           SizedBox(height: 20),
@@ -70,24 +69,36 @@ class ProfilePage extends GetView<ProfileController> {
             },
             child: Container(
               height: 55,
-              margin: EdgeInsets.symmetric(horizontal: 30,).copyWith(bottom: 20,),
-              padding: EdgeInsets.symmetric(horizontal: 20,),
+              margin: EdgeInsets.symmetric(
+                horizontal: 30,
+              ).copyWith(
+                bottom: 20,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.withOpacity(0.1),
               ),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.account_circle, size: 25, color: Color(0xff28BEBA),),
+                  Icon(
+                    Icons.account_circle,
+                    size: 25,
+                    color: Color(0xff28BEBA),
+                  ),
                   SizedBox(width: 15),
                   Text('Tài khoản của tôi',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
-                      )
-                  ),
+                      )),
                   Spacer(),
-                  Icon(Icons.arrow_forward, size: 25,),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                  ),
                 ],
               ),
             ),
@@ -96,7 +107,9 @@ class ProfilePage extends GetView<ProfileController> {
             child: Container(
               height: 55,
               margin: EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: 20),
-              padding: EdgeInsets.symmetric(horizontal: 20,),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.withOpacity(0.1),
@@ -109,10 +122,12 @@ class ProfilePage extends GetView<ProfileController> {
                       style: TextStyle(
                         fontSize: 10.0 * 1.7,
                         fontWeight: FontWeight.w500,
-                      )
-                  ),
+                      )),
                   Spacer(),
-                  Icon(Icons.arrow_forward, size: 25,),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                  ),
                 ],
               ),
             ),
@@ -120,8 +135,14 @@ class ProfilePage extends GetView<ProfileController> {
           GestureDetector(
             child: Container(
               height: 55,
-              margin: EdgeInsets.symmetric(horizontal: 30,).copyWith(bottom: 20,),
-              padding: EdgeInsets.symmetric(horizontal: 20,),
+              margin: EdgeInsets.symmetric(
+                horizontal: 30,
+              ).copyWith(
+                bottom: 20,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.withOpacity(0.1),
@@ -134,10 +155,12 @@ class ProfilePage extends GetView<ProfileController> {
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
-                      )
-                  ),
+                      )),
                   Spacer(),
-                  Icon(Icons.arrow_forward, size: 25,),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                  ),
                 ],
               ),
             ),
@@ -148,7 +171,8 @@ class ProfilePage extends GetView<ProfileController> {
             },
             child: Container(
               height: 55,
-              margin: EdgeInsets.symmetric(horizontal: 30,
+              margin: EdgeInsets.symmetric(
+                horizontal: 30,
               ).copyWith(bottom: 20),
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -165,7 +189,10 @@ class ProfilePage extends GetView<ProfileController> {
                         fontWeight: FontWeight.w500,
                       )),
                   Spacer(),
-                  Icon(Icons.arrow_forward, size: 25,),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                  ),
                 ],
               ),
             ),
@@ -179,8 +206,14 @@ class ProfilePage extends GetView<ProfileController> {
             },
             child: Container(
               height: 55,
-              margin: EdgeInsets.symmetric(horizontal: 30,).copyWith(bottom: 20,),
-              padding: EdgeInsets.symmetric(horizontal: 20,),
+              margin: EdgeInsets.symmetric(
+                horizontal: 30,
+              ).copyWith(
+                bottom: 20,
+              ),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey.withOpacity(0.1),
@@ -195,7 +228,10 @@ class ProfilePage extends GetView<ProfileController> {
                         fontWeight: FontWeight.w500,
                       )),
                   Spacer(),
-                  Icon(Icons.arrow_forward, size: 25,),
+                  Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                  ),
                 ],
               ),
             ),

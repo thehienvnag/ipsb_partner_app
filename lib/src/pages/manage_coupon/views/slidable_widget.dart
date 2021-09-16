@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
-import 'package:indoor_positioning_visitor/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
+import 'package:ipsb_partner_app/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
 
 class SlidableWidget<T> extends GetView<ManageCouponController> {
   final Widget child;

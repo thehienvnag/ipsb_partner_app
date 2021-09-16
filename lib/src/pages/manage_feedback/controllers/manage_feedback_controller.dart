@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-
+import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class ManageFeedbackController extends GetxController {
   ICouponInUseService _service = Get.find();

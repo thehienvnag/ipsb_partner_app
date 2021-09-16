@@ -1,12 +1,12 @@
 import 'package:cupertino_stepper/cupertino_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/create-coupon/controllers/create_coupon_controller.dart';
-import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/discount_type_dropdown.dart';
-import 'package:indoor_positioning_visitor/src/pages/create-coupon/views/select_product.dart';
-import 'package:indoor_positioning_visitor/src/utils/utils.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_text_field.dart';
-import 'package:indoor_positioning_visitor/src/widgets/date_time_picker.dart';
+import 'package:ipsb_partner_app/src/pages/create-coupon/controllers/create_coupon_controller.dart';
+import 'package:ipsb_partner_app/src/pages/create-coupon/views/discount_type_dropdown.dart';
+import 'package:ipsb_partner_app/src/pages/create-coupon/views/select_product.dart';
+import 'package:ipsb_partner_app/src/utils/utils.dart';
+import 'package:ipsb_partner_app/src/widgets/custom_text_field.dart';
+import 'package:ipsb_partner_app/src/widgets/date_time_picker.dart';
 
 class CreateCouponPage extends GetView<CreateCouponController> {
   @override

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:indoor_positioning_visitor/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
+import 'package:ipsb_partner_app/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
@@ -134,7 +132,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
               'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
               style: Theme.of(context)
                   .primaryTextTheme
-                  .subhead
+                  .subtitle1
                   ?.copyWith(color: Colors.white),
             ),
           ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:indoor_positioning_visitor/src/models/product.dart';
-import 'package:indoor_positioning_visitor/src/utils/formatter.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_select.dart';
+import 'package:ipsb_partner_app/src/models/product.dart';
+import 'package:ipsb_partner_app/src/utils/formatter.dart';
+import 'package:ipsb_partner_app/src/widgets/custom_select.dart';
 
 class SelectProduct extends StatelessWidget {
   final String label;

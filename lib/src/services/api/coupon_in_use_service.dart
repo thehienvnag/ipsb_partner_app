@@ -1,7 +1,7 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:ipsb_partner_app/src/common/endpoints.dart';
+import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_partner_app/src/models/paging.dart';
+import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 
 mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByStoreId(int storeId);
@@ -36,14 +36,12 @@ class CouponInUseService extends BaseService<CouponInUse>
   Future<bool> putCoupon(
       int couponInUseId, int couponId, int visitorId, String status) {
     DateTime applyDate = DateTime.now();
-    return putWithOneFileBase( {
+    return putWithOneFileBase({
       'id': couponInUseId,
       'couponId': couponId,
       'visitorId': visitorId,
       'applyDate': applyDate.toString(),
       'status': status,
-    },
-    "", couponInUseId
-    );
+    }, "", couponInUseId);
   }
 }

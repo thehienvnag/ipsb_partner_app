@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
-import 'package:indoor_positioning_visitor/src/services/api/account_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/location_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/locator_tag_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_partner_app/src/data/api_helper.dart';
+import 'package:ipsb_partner_app/src/services/api/account_service.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_partner_app/src/services/api/location_service.dart';
+import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
+import 'package:ipsb_partner_app/src/services/api/product_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 
 class AppInit {
   static void init() {

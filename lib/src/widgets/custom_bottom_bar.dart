@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class CustomBottombarController extends GetxController {
   final SharedStates states = Get.find();
@@ -58,7 +58,7 @@ final items = [
     icon: Icon(Icons.person),
     route: Routes.profile,
   ),
-    BottomItem(
+  BottomItem(
     text: 'Locator Tag',
     icon: Icon(Icons.view_in_ar),
     route: Routes.locatorTag,

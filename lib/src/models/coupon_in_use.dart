@@ -1,5 +1,5 @@
-import 'package:indoor_positioning_visitor/src/models/account.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
+import 'package:ipsb_partner_app/src/models/account.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -15,20 +15,19 @@ class CouponInUse {
   final Coupon? coupon;
   final Account? visitor;
 
-  CouponInUse({
-    this.applyDate,
-    this.couponId,
-    this.id,
-    this.visitorId,
-    this.redeemDate,
-    this.status,
-    this.feedbackContent,
-    this.feedbackImage,
-    this.feedBackDate,
-    this.rateScore,
-    this.coupon,
-    this.visitor
-  });
+  CouponInUse(
+      {this.applyDate,
+      this.couponId,
+      this.id,
+      this.visitorId,
+      this.redeemDate,
+      this.status,
+      this.feedbackContent,
+      this.feedbackImage,
+      this.feedBackDate,
+      this.rateScore,
+      this.coupon,
+      this.visitor});
 
   factory CouponInUse.fromJson(Map<String, dynamic> json) =>
       _$CouponInUseFromJson(json);

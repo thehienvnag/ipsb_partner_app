@@ -1,4 +1,4 @@
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:ipsb_partner_app/src/models/location.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'edge.g.dart';

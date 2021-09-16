@@ -1,7 +1,7 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/product.dart';
+import 'package:ipsb_partner_app/src/common/endpoints.dart';
+import 'package:ipsb_partner_app/src/models/product.dart';
 
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 
 mixin IProductService {
   Future<List<Product>> getProductsByStoreId(int storeId);

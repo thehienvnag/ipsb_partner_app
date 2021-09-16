@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon_in_use.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_in_use_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/global_states/shared_states.dart';
-import 'package:indoor_positioning_visitor/src/utils/utils.dart';
+import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/utils/utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
 
 class CheckQRCodeController extends GetxController {
   // Barcode? result;

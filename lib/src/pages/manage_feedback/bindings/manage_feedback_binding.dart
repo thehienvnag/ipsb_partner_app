@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/manage_feedback/controllers/manage_feedback_controller.dart';
+import 'package:ipsb_partner_app/src/pages/manage_feedback/controllers/manage_feedback_controller.dart';
 
 class ManageFeedbackBinding extends Bindings {
   @override

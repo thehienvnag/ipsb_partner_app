@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:ipsb_partner_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
   bool showPassword = false;
@@ -26,7 +26,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
           children: [
             Text(
               'Cập nhật thông tin',
-                style: TextStyle(color: Colors.black87),
+              style: TextStyle(color: Colors.black87),
             ),
           ],
         ),
@@ -108,7 +108,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     child: Text(
                       "Lưu thông tin",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white,fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),
@@ -122,6 +122,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
       ),
     );
   }
+
   Widget buildTextField(
       String labelText, String placeholder, bool isPasswordTextField) {
     return Container(
@@ -133,16 +134,16 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
           decoration: InputDecoration(
               suffixIcon: isPasswordTextField
                   ? IconButton(
-                onPressed: () {
-                  // setState(() {
-                  //   showPassword = !showPassword;
-                  // });
-                },
-                icon: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.grey,
-                ),
-              )
+                      onPressed: () {
+                        // setState(() {
+                        //   showPassword = !showPassword;
+                        // });
+                      },
+                      icon: Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.grey,
+                      ),
+                    )
                   : null,
               contentPadding: EdgeInsets.only(bottom: 3),
               labelText: labelText,

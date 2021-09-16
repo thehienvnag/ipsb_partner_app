@@ -1,6 +1,6 @@
-import 'package:indoor_positioning_visitor/src/common/endpoints.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
-import 'package:indoor_positioning_visitor/src/services/api/base_service.dart';
+import 'package:ipsb_partner_app/src/common/endpoints.dart';
+import 'package:ipsb_partner_app/src/models/location.dart';
+import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 
 mixin ILocationService {}
 

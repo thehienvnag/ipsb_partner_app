@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:indoor_positioning_visitor/src/widgets/rounded_button.dart';
+import 'package:ipsb_partner_app/src/widgets/rounded_button.dart';
 
 class CustomSelect<T> extends StatefulWidget {
   /// Label of select

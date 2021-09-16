@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/location.dart';
+import 'package:ipsb_partner_app/src/models/location.dart';
 
 class Constants {
   /// Location type is lift

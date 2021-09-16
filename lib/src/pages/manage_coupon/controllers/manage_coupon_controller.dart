@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
-import 'package:indoor_positioning_visitor/src/routes/routes.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
+import 'package:ipsb_partner_app/src/models/paging.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
 
 class ManageCouponController extends GetxController {
   final listCoupon = <Coupon>[].obs;

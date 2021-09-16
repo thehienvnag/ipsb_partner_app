@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:indoor_positioning_visitor/src/models/coupon.dart';
-import 'package:indoor_positioning_visitor/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
-import 'package:indoor_positioning_visitor/src/pages/manage_coupon/views/slidable_widget.dart';
-import 'package:indoor_positioning_visitor/src/widgets/custom_bottom_bar.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
+import 'package:ipsb_partner_app/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
+import 'package:ipsb_partner_app/src/pages/manage_coupon/views/slidable_widget.dart';
+import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:loading_animations/loading_animations.dart';
 
 class ManageCouponPage extends GetView<ManageCouponController> {
@@ -35,7 +35,7 @@ class ManageCouponPage extends GetView<ManageCouponController> {
       ),
       body: Obx(() {
         final coupons = controller.listCoupon;
-        if(coupons.isEmpty){
+        if (coupons.isEmpty) {
           return LoadingFlipping.circle(
             borderColor: Colors.cyan,
             borderSize: 3.0,
@@ -43,7 +43,7 @@ class ManageCouponPage extends GetView<ManageCouponController> {
             backgroundColor: Colors.cyanAccent,
             duration: Duration(milliseconds: 500),
           );
-        }else {
+        } else {
           return _buildCoupons(coupons);
         }
       }),

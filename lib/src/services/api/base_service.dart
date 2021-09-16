@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
-import 'package:indoor_positioning_visitor/src/data/api_helper.dart';
-import 'package:indoor_positioning_visitor/src/data/file_upload_utils.dart';
-import 'package:indoor_positioning_visitor/src/models/paging.dart';
+import 'package:ipsb_partner_app/src/data/api_helper.dart';
+import 'package:ipsb_partner_app/src/data/file_upload_utils.dart';
+import 'package:ipsb_partner_app/src/models/paging.dart';
 
 abstract class BaseService<T> {
   IApiHelper _apiHelper = Get.find();
@@ -42,7 +42,9 @@ abstract class BaseService<T> {
   /// Post an instance with [body]
   Future<T?> postBase(Map<String, dynamic> body) async {
     Response res = await _apiHelper.postOne(endpoint(), body);
-    print("HTTP STATUS CODE: " + res.statusCode.toString() + "========================================");
+    print("HTTP STATUS CODE: " +
+        res.statusCode.toString() +
+        "========================================");
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
@@ -103,31 +105,24 @@ abstract class BaseService<T> {
 
   /// Put an instance with [body] and a file path [filePath]
   Future<bool> putWithOneFileBase(
-      Map<String, dynamic> body,
-      String filePath, int id,  [String fileName = "imageUrl"]
-      ) async {
-    if(filePath.isNotEmpty) {
+      Map<String, dynamic> body, String filePath, int id,
+      [String fileName = "imageUrl"]) async {
+    if (filePath.isNotEmpty) {
       Response res = await _apiHelper.putOneWithOneFile(
           endpoint() + "/" + id.toString(),
           body,
           FileUploadUtils.convertToMultipart(filePath),
-          fileName
-      );
+          fileName);
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }
-    }else{
+    } else {
       Response res = await _apiHelper.putOneWithOneFile(
-          endpoint() + "/" + id.toString(),
-          body,
-          null,
-          fileName
-      );
+          endpoint() + "/" + id.toString(), body, null, fileName);
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }
     }
-
 
     return false;
   }

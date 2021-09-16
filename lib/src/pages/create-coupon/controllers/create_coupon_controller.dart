@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:indoor_positioning_visitor/src/models/product.dart';
-import 'package:indoor_positioning_visitor/src/services/api/coupon_service.dart';
-import 'package:indoor_positioning_visitor/src/services/api/product_service.dart';
+import 'package:ipsb_partner_app/src/models/product.dart';
+import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_partner_app/src/services/api/product_service.dart';
 
 class DropdownItem {
   final String? value;
