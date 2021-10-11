@@ -94,11 +94,14 @@ dependencies:
   # Time ago
   timeago: ^3.1.0
 
-  #Loading animation
+  # Loading animation
   loading_animations: ^2.2.0
 
   # Loading image
   flutter_svg: ^0.22.0
+
+  # Push Notification
+  firebase_messaging: ^10.0.8
 
 dev_dependencies:
   flutter_test:

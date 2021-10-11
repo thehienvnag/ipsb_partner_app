@@ -23,6 +23,10 @@ class LoginController extends GetxController {
     loginPassword.value = password;
   }
 
+  void checkLogin() {
+
+  }
+
   void submitForm() {
     BotToast.showText(
         text: "In Process !",
@@ -30,16 +34,16 @@ class LoginController extends GetxController {
         duration: const Duration(seconds: 7));
 
     // code login here
-    if (account!.email!.isNotEmpty) {
+    // if (account!.email!.isNotEmpty) {
       BotToast.showText(text: "Login successfully");
       sharedStates.account = account;
       Get.toNamed(Routes.home);
-    } else {
-      BotToast.showText(
-          text: "Email or password not correct !",
-          textStyle: TextStyle(fontSize: 16),
-          duration: const Duration(seconds: 7));
-      Get.toNamed(Routes.login);
-    }
+    // } else {
+    //   BotToast.showText(
+    //       text: "Email or password not correct !",
+    //       textStyle: TextStyle(fontSize: 16),
+    //       duration: const Duration(seconds: 7));
+    //   Get.toNamed(Routes.login);
+    // }
   }
 }

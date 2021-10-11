@@ -1,6 +1,6 @@
 {
-    "name": "indoor_positioning_visitor",
-    "short_name": "indoor_positioning_visitor",
+    "name": "indoor_positioning_store_owner",
+    "short_name": "indoor_positioning_store_owner",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
