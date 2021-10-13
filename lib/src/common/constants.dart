@@ -20,6 +20,9 @@ class Constants {
     'pageSize': '20'
   };
 
+  static const String discountTypeFixed = "Fixed";
+  static const String discountTypePercentage = "Percentage";
+
   /// Initial value for emptyMap
   static const Map<String, dynamic> emptyMap = {};
 

@@ -48,6 +48,9 @@ abstract class BaseService<T> {
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
+    if (res.statusCode == HttpStatus.ok) {
+      return fromJson(res.body);
+    }
   }
 
   /// Post an instance with [body]

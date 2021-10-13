@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/pages/check_qr_code/bindings/check_qr_code_binding.dart';
 import 'package:ipsb_partner_app/src/pages/check_qr_code/views/check_qr_code_page.dart';
+import 'package:ipsb_partner_app/src/pages/coupon_detail/bindings/coupon_detail_binding.dart';
+import 'package:ipsb_partner_app/src/pages/coupon_detail/views/coupon_detail_page.dart';
 import 'package:ipsb_partner_app/src/pages/create-coupon/bindings/create_coupon_binding.dart';
 import 'package:ipsb_partner_app/src/pages/create-coupon/views/create_coupon_page.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/bindings/manage_coupon_binding.dart';
@@ -78,6 +80,11 @@ class AppPages {
       name: Routes.locatorTagDetail,
       page: () => ManageLocatorTagDetailPage(),
       binding: ManageLocatorTagBinding(),
+    ),
+    GetPage(
+      name: Routes.couponDetails,
+      page: () => CouponDetailPage(),
+      binding: CouponDetailBinding(),
     ),
   ];
 }

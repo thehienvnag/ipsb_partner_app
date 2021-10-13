@@ -28,6 +28,9 @@ Coupon _$CouponFromJson(Map<String, dynamic> json) {
     minSpend: (json['minSpend'] as num?)?.toDouble(),
     limit: json['limit'] as int?,
     storeId: (json['storeId'] as num?)?.toDouble(),
+    store: json['store'] == null
+        ? null
+        : Store.fromJson(json['store'] as Map<String, dynamic>),
   );
 }
 

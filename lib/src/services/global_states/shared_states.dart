@@ -21,4 +21,6 @@ class SharedStates extends GetxService {
 
   // User login in app
   Account? account;
+
+  final couponDetail = Coupon().obs;
 }

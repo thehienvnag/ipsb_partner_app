@@ -20,6 +20,7 @@ CouponInUse _$CouponInUseFromJson(Map<String, dynamic> json) {
     status: json['status'] as String?,
     feedbackContent: json['feedbackContent'] as String?,
     feedbackImage: json['feedbackImage'] as String?,
+    feedbackReply: json['feedbackReply'] as String?,
     feedbackDate: json['feedbackDate'] == null
         ? null
         : DateTime.parse(json['feedbackDate'] as String),
@@ -30,6 +31,7 @@ CouponInUse _$CouponInUseFromJson(Map<String, dynamic> json) {
     visitor: json['visitor'] == null
         ? null
         : Account.fromJson(json['visitor'] as Map<String, dynamic>),
+    hideInfo: true
   );
 }
 
@@ -44,6 +46,7 @@ Map<String, dynamic> _$CouponInUseToJson(CouponInUse instance) =>
       'status': instance.status,
       'feedbackContent': instance.feedbackContent,
       'feedbackImage': instance.feedbackImage,
+      'feedbackReply': instance.feedbackReply,
       'rateScore': instance.rateScore,
       'coupon': instance.coupon,
       'visitor': instance.visitor,
