@@ -35,11 +35,12 @@ class LoginController extends GetxController {
     BotToast.showLoading();
     account = await _authService.getAccountByEmail(loginEmail.value, loginPassword.value);
     // code login here
-    print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
+
     if (!account.isNull) {
       BotToast.showText(text: "Login successfully", textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),);
       sharedStates.account = account;
       Get.toNamed(Routes.home);
+      print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
     } else {
       BotToast.showText(
           text: "Email or password not correct !",

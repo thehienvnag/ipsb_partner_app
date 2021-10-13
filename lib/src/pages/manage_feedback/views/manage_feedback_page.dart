@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -120,11 +121,22 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
               ),
               Container(
                 width: screenSize.width * 0.9,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(feedback.feedbackContent.toString(), style: TextStyle(fontSize: 16)),
+                child: Row(
+                  children: [
+                    Container(
+                      width: screenSize.width * 0.7,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(feedback.feedbackContent.toString(), style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                    GestureDetector(
+                        child: Text('View More',style: TextStyle(color: Colors.blue),)
+                    ),
+                  ],
                 ),
               ),
+              (feedback.hideInfo == true) ? SizedBox():
               Row(
                 children: [
                   Padding(
@@ -138,27 +150,31 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                             : Image.network('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png')
                     ),
                   ),
-                  Container(
-                      width: screenSize.width * 0.4,
-                      alignment: Alignment.centerLeft,
-                      child: Image.network('https://icon-library.com/images/smile-icon-png/smile-icon-png-16.jpg')
-                  ),
+                  // Container(
+                  //     width: screenSize.width * 0.4,
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Image.network('https://icon-library.com/images/smile-icon-png/smile-icon-png-16.jpg')
+                  // ),
                 ],
               ),
-              (feedback.feedbackReply == null)
-                  ? buildReplyForm(controller,feedback.id!.toInt())
-              : Row(
+              (feedback.hideInfo == true) ? SizedBox():
+              (feedback.feedbackReply == null) ?
+              buildReplyForm(controller,feedback.id!.toInt()) :
+              Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: (controller.store.isNull)
-                          ? NetworkImage('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'):
-                            NetworkImage(controller.store!.imageUrl.toString()),
-                    ),
+                    // CircleAvatar(
+                    //   radius: 20,
+                    //   backgroundColor: Colors.transparent,
+                    //   backgroundImage: (controller.store.isNull)
+                    //       ? NetworkImage('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'):
+                    //         NetworkImage(controller.store!.imageUrl.toString()),
+                    // ),
                     Container(
-                      width: screenSize.width * 0.8,
+                        margin: EdgeInsets.only(left: 7),
+                        child: Icon(FontAwesomeIcons.share,size: 25,color: Colors.black45,)),
+                    Container(
+                      width: screenSize.width * 0.82,
                       margin: EdgeInsets.only(top: 15),
                       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                       decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),

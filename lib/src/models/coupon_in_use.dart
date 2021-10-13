@@ -14,6 +14,7 @@ class CouponInUse {
   final double? rateScore;
   final Coupon? coupon;
   final Account? visitor;
+  final bool? hideInfo;
 
   CouponInUse({
     this.applyDate,
@@ -28,7 +29,8 @@ class CouponInUse {
     this.feedbackDate,
     this.rateScore,
     this.coupon,
-    this.visitor
+    this.visitor,
+    this.hideInfo
   });
 
   factory CouponInUse.fromJson(Map<String, dynamic> json) =>

@@ -31,6 +31,7 @@ CouponInUse _$CouponInUseFromJson(Map<String, dynamic> json) {
     visitor: json['visitor'] == null
         ? null
         : Account.fromJson(json['visitor'] as Map<String, dynamic>),
+    hideInfo: true
   );
 }
 
