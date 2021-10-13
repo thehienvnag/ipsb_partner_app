@@ -109,8 +109,6 @@ dependencies:
   # Flutter Local Notification
   flutter_local_notifications: ^9.0.0
 
-
-
   comment_tree: ^0.3.0
 
   photo_view: ^0.13.0

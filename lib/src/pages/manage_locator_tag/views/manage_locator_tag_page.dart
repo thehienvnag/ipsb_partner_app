@@ -5,8 +5,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:indoor_positioning_visitor/src/common/constants.dart';
-import 'package:indoor_positioning_visitor/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
+import 'package:ipsb_partner_app/src/common/constants.dart';
+import 'package:ipsb_partner_app/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/views/manage_locator_tag_detail_page.dart';
 
@@ -196,7 +196,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         .contains(result.device.name)) {
       return Container();
     } else {
-      controller.addBeacons(result.device.id.toString(), Constants.inactive, null, null);
+      controller.addBeacons(
+          result.device.id.toString(), Constants.inactive, null, null);
       // return Obx(() {
       return ExpansionTile(
         title: _buildTitle(context, result),
