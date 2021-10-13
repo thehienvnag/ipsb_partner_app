@@ -41,4 +41,10 @@ class Constants {
   static Rx<T> get<T>() {
     return (Get.arguments['defaultState'] as T).obs;
   }
+
+  /// Constant for inactive status
+  static String inactive = "Inactive";
+
+  /// Constant for active status
+  static String active = "Active";
 }

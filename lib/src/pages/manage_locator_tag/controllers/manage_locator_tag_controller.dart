@@ -9,7 +9,6 @@ import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class ManageLocatorTagController extends GetxController {
-  final action = "INSERT".obs;
 
   final flutterBlueInstance = FlutterBlue.instance.obs;
   final scanResult = FlutterBlue.instance.scanResults.obs;
@@ -23,12 +22,9 @@ class ManageLocatorTagController extends GetxController {
   }
 
   void addBeacons(
-      String macAddress, String status, int floorPlanId, int locationId) async {
+      String macAddress, String status, int? floorPlanId, int? locationId) async {
     await locatorTagService.postLocatorTag(
-                macAddress, status, floorPlanId, locationId) !=
-            null
-        ? action.value = "INSERTED"
-        : action.value = "FAILED";
+        macAddress, status, floorPlanId!, locationId!);
   }
 
   SharedStates states = Get.find();
