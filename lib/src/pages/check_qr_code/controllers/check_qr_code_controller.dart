@@ -59,8 +59,7 @@ class CheckQRCodeController extends GetxController {
                   "Không thể áp dụng mã giảm giá. Mã giảm giá đã hết hạn sử dụng.";
               isSuccess = false;
             } else {
-              updateCoupon =
-                  await putCouponInUse(couponInUseId!, couponId!, 9, "Used");
+              updateCoupon = await putCouponInUse(couponInUseId!, couponId!, 9, "Used");
               if (updateCoupon) {
                 title = "MÃ HỢP LỆ";
                 codeDisplayed = 'Tên: ' +
@@ -208,10 +207,8 @@ class CheckQRCodeController extends GetxController {
     return await couponInUseService.getCouponInUse(couponInUseId);
   }
 
-  Future<bool> putCouponInUse(
-      int couponInUseId, int couponId, int visitorId, String status) async {
-    return await couponInUseService.putCoupon(
-        couponInUseId, couponId, visitorId, status);
+  Future<bool> putCouponInUse(int couponInUseId, int couponId, int visitorId, String status) async {
+    return await couponInUseService.putCoupon(couponInUseId, couponId, visitorId, status);
   }
 
   SharedStates states = Get.find();

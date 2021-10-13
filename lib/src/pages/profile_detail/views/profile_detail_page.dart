@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
+  final SharedStates sharedData = Get.find();
   bool showPassword = false;
-  String? accountId;
+
   @override
   Widget build(BuildContext context) {
+    final Account? userInfo = sharedData.account;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -25,7 +29,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
         title: Column(
           children: [
             Text(
-              'Cập nhật thông tin',
+              'Update Infomation',
               style: TextStyle(color: Colors.black87),
             ),
           ],
@@ -59,7 +63,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage('public/img/images.png'))),
+                              image: NetworkImage(userInfo!.imageUrl.toString())
+                          )),
                     ),
                     Positioned(
                         bottom: 0,
@@ -86,11 +91,9 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               SizedBox(
                 height: 35,
               ),
-              buildTextField("Name", " ", false),
-              buildTextField("Địa chỉ Email", " ", false),
-              buildTextField("Số điện thoại", "0918076861", false),
-              buildTextField("Mật khẩu", "********", true),
-              buildTextField("Địa chỉ (Không bắt buộc)", " ", false),
+              buildTextField("Name", userInfo.name.toString()),
+              buildTextField("Email", userInfo.email.toString()),
+              buildTextField("Phone", userInfo.phone.toString()),
               SizedBox(
                 height: 35,
               ),
@@ -106,7 +109,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     width: 167,
                     height: 19,
                     child: Text(
-                      "Lưu thông tin",
+                      "Save",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
@@ -123,35 +126,20 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
     );
   }
 
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+  Widget buildTextField(String labelText, String placeholder) {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
       child: Padding(
         padding: EdgeInsets.all(10),
-        child: TextField(
-          obscureText: isPasswordTextField ? showPassword : false,
+        child: TextFormField(
+           initialValue: placeholder,
           decoration: InputDecoration(
-              suffixIcon: isPasswordTextField
-                  ? IconButton(
-                      onPressed: () {
-                        // setState(() {
-                        //   showPassword = !showPassword;
-                        // });
-                      },
-                      icon: Icon(
-                        Icons.remove_red_eye,
-                        color: Colors.grey,
-                      ),
-                    )
-                  : null,
               contentPadding: EdgeInsets.only(bottom: 3),
               labelText: labelText,
               labelStyle: TextStyle(
-                fontSize: 18,
+                fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black
               ),
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: placeholder,
               hintStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -10,7 +10,7 @@ class CouponInUse {
   final int? id;
   final int? couponId, visitorId;
   final DateTime? redeemDate, applyDate, feedbackDate;
-  final String? status, feedbackContent, feedbackImage;
+  final String? status, feedbackContent, feedbackImage, feedbackReply;
   final double? rateScore;
   final Coupon? coupon;
   final Account? visitor;
@@ -24,6 +24,7 @@ class CouponInUse {
     this.status,
     this.feedbackContent,
     this.feedbackImage,
+    this.feedbackReply,
     this.feedbackDate,
     this.rateScore,
     this.coupon,

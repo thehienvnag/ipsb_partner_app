@@ -1,14 +1,17 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/api/auth_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class LoginController extends GetxController {
   // Share states across app
   final SharedStates sharedStates = Get.find();
   Account? account;
+  IAuthService _authService = Get.find();
 
   final loginEmail = ''.obs;
   final loginPassword = ''.obs;
@@ -23,23 +26,27 @@ class LoginController extends GetxController {
     loginPassword.value = password;
   }
 
-  void submitForm() {
+  void submitForm() async{
+
     BotToast.showText(
         text: "In Process !",
-        textStyle: TextStyle(fontSize: 16),
+        textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
         duration: const Duration(seconds: 7));
-
+    BotToast.showLoading();
+    account = await _authService.getAccountByEmail(loginEmail.value, loginPassword.value);
     // code login here
-    if (account!.email!.isNotEmpty) {
-      BotToast.showText(text: "Login successfully");
+    print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
+    if (!account.isNull) {
+      BotToast.showText(text: "Login successfully", textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),);
       sharedStates.account = account;
       Get.toNamed(Routes.home);
     } else {
       BotToast.showText(
           text: "Email or password not correct !",
-          textStyle: TextStyle(fontSize: 16),
-          duration: const Duration(seconds: 7));
+          textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+          duration: const Duration(seconds: 5));
       Get.toNamed(Routes.login);
     }
+    BotToast.closeAllLoading();
   }
 }

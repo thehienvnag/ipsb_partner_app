@@ -2,15 +2,14 @@ import 'package:ipsb_partner_app/src/common/endpoints.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 
-mixin IAccountService {
-  Future<Account?> getAccountById(int id);
+mixin IAuthService {
   Future<Account?> getAccountByEmail(String email, String password);
 }
 
-class AccountService extends BaseService<Account> implements IAccountService {
+class AuthService extends BaseService<Account> implements IAuthService {
   @override
   String endpoint() {
-    return Endpoints.accounts;
+    return Endpoints.auth;
   }
 
   @override
@@ -18,10 +17,6 @@ class AccountService extends BaseService<Account> implements IAccountService {
     return Account.fromJson(json);
   }
 
-  @override
-  Future<Account?> getAccountById(int id) {
-    return getByIdBase(id);
-  }
 
   @override
   Future<Account?> getAccountByEmail(String email, String password) {

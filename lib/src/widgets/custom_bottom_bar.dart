@@ -44,24 +44,19 @@ final items = [
     route: Routes.checkQRCode,
   ),
   BottomItem(
-    text: 'Feedbacks',
-    icon: Icon(Icons.rate_review_outlined),
-    route: Routes.feedbacks,
-  ),
-  BottomItem(
     text: 'Coupons',
     icon: Icon(Icons.local_activity),
     route: Routes.manageCoupon,
   ),
   BottomItem(
-    text: 'Profile',
-    icon: Icon(Icons.person),
-    route: Routes.profile,
-  ),
-  BottomItem(
     text: 'Locator Tag',
     icon: Icon(Icons.view_in_ar),
     route: Routes.locatorTag,
+  ),
+  BottomItem(
+    text: 'Profile',
+    icon: Icon(Icons.person),
+    route: Routes.profile,
   ),
 ];
 

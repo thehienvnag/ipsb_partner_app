@@ -6,9 +6,11 @@ import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 mixin ICouponInUseService {
   Future<Paging<CouponInUse>> getCouponInUseByStoreId(int storeId);
   Future<CouponInUse?> getCouponInUse(int couponInUseId);
-
+  Future<Paging<CouponInUse>> getCouponInUseByCouponId(int couponId);
   Future<bool> putCoupon(
       int couponInUseId, int couponId, int visitorId, String status);
+
+  Future<bool> putReplyFeedbackCouponInUse(int couponInUseId, String content);
 }
 
 class CouponInUseService extends BaseService<CouponInUse>
@@ -25,7 +27,12 @@ class CouponInUseService extends BaseService<CouponInUse>
 
   @override
   Future<Paging<CouponInUse>> getCouponInUseByStoreId(int storeId) {
-    return getPagingBase({'storeId': storeId.toString(), 'status': "Used"});
+    return getPagingBase(
+      {
+        'storeId': storeId.toString(),
+        'status': "Used"
+      },
+    );
   }
 
   Future<CouponInUse?> getCouponInUse(int couponInUseId) {
@@ -33,8 +40,7 @@ class CouponInUseService extends BaseService<CouponInUse>
   }
 
   @override
-  Future<bool> putCoupon(
-      int couponInUseId, int couponId, int visitorId, String status) {
+  Future<bool> putCoupon(int couponInUseId, int couponId, int visitorId, String status) {
     DateTime applyDate = DateTime.now();
     return putWithOneFileBase({
       'id': couponInUseId,
@@ -43,5 +49,22 @@ class CouponInUseService extends BaseService<CouponInUse>
       'applyDate': applyDate.toString(),
       'status': status,
     }, "", couponInUseId);
+  }
+
+  @override
+  Future<bool> putReplyFeedbackCouponInUse(int couponInUseId,String content) {
+    return putWithOneFileBase({
+      'feedbackReply': content,
+    }, "", couponInUseId);
+  }
+
+  @override
+  Future<Paging<CouponInUse>> getCouponInUseByCouponId(int couponId) {
+    return getPagingBase(
+      {
+        'couponId': couponId.toString(),
+        'status': "Used"
+      },
+    );
   }
 }

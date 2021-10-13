@@ -10,4 +10,6 @@ class Routes {
   static const String locatorTag = "/locatorTag";
   static const String login = "/login";
   static const String locatorTagDetail = "/locatorTagDetail";
+  static const String storeDetails = "/storeDetails";
+  static const String couponDetails = "/couponDetails";
 }

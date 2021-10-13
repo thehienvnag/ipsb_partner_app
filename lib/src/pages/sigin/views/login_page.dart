@@ -37,7 +37,7 @@ class LoginPage extends GetView<LoginController> {
               children: [
                 Text(
                   "LOGIN",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 SizedBox(height: size.height * 0.03),
                 SvgPicture.asset(

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
-import 'package:ipsb_partner_app/src/pages/manage_coupon/views/slidable_widget.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:loading_animations/loading_animations.dart';
 
@@ -13,38 +12,27 @@ class ManageCouponPage extends GetView<ManageCouponController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Icon(
-                Icons.add_circle_outline_outlined,
-                color: Colors.black,
-                size: 35,
-              ),
-              onPressed: () => controller.createCoupon(),
-            ),
-          ),
-        ],
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          'DANH SÁCH KHUYẾN MÃI',
+          'Coupon list',
           style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Obx(() {
         final coupons = controller.listCoupon;
         if (coupons.isEmpty) {
-          return LoadingFlipping.circle(
-            borderColor: Colors.cyan,
-            borderSize: 3.0,
-            size: 30.0,
-            backgroundColor: Colors.cyanAccent,
-            duration: Duration(milliseconds: 500),
+          return Center(
+            child: LoadingBouncingLine.circle(
+              borderColor: Colors.cyan,
+              borderSize: 3.0,
+              size: 30.0,
+              backgroundColor: Colors.cyanAccent,
+              duration: Duration(milliseconds: 500),
+            ),
           );
         } else {
-          return _buildCoupons(coupons);
+          return _buildCoupons(coupons,context,controller);
         }
       }),
       bottomNavigationBar: CustomBottombar(),
@@ -52,37 +40,26 @@ class ManageCouponPage extends GetView<ManageCouponController> {
   }
 }
 
-Widget _buildCoupons(List<Coupon> coupons) {
+Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponController controller) {
+  final screenSize = MediaQuery.of(context).size;
   return Container(
     margin: const EdgeInsets.only(top: 15),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 25.0, // soften the shadow
-          spreadRadius: 5.0, //extend the shadow
-          offset: Offset(
-            5.0, // Move to right 10  horizontally
-            5.0, // Move to bottom 10 Vertically
-          ),
-        )
-      ],
-    ),
-    child: ListView.separated(
+    child: ListView.builder(
+      physics: ScrollPhysics(),
+      shrinkWrap: true,
       itemCount: coupons.length,
       itemBuilder: (context, index) {
         final coupon = coupons[index];
-        return SlidableWidget(
-          couponId: coupon.id!,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
+        return GestureDetector(
+          onTap: () => controller.gotoFeedbackListDetails(coupon),
+          child: Card(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 80,
-                  width: 100,
+                  margin: EdgeInsets.only(left: 10),
+                  height: screenSize.width * 0.2,
+                  width: screenSize.width * 0.2,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(coupon.imageUrl ?? ''),
@@ -98,22 +75,24 @@ Widget _buildCoupons(List<Coupon> coupons) {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 10, left: 10),
-                        width: 240,
+                        width: screenSize.width * 0.5,
                         child: Text(coupon.name ?? '',
                             style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 5, left: 10),
-                        width: 240,
+                        width: screenSize.width * 0.5,
                         child: Text(
                           coupon.description ?? '',
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.gotoCouponDetails(coupon);
+                        },
                         icon: Icon(Icons.info),
-                        label: Text('Xem chi tiết'),
+                        label: Text('View Detail'),
                       ),
                     ],
                   ),
@@ -123,11 +102,6 @@ Widget _buildCoupons(List<Coupon> coupons) {
           ),
         );
       },
-      separatorBuilder: (context, index) => Divider(
-        indent: 30,
-        endIndent: 30,
-        color: Colors.black,
-      ),
     ),
   );
 }

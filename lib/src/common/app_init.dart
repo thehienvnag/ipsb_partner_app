@@ -2,11 +2,13 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ipsb_partner_app/src/data/api_helper.dart';
 import 'package:ipsb_partner_app/src/services/api/account_service.dart';
+import 'package:ipsb_partner_app/src/services/api/auth_service.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_partner_app/src/services/api/location_service.dart';
 import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_partner_app/src/services/api/product_service.dart';
+import 'package:ipsb_partner_app/src/services/api/store_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 
@@ -49,5 +51,9 @@ class AppInit {
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
     // Calling api at locatorTag service
     Get.lazyPut<ILocatorTagService>(() => LocatorTagService(), fenix: true);
+    // Calling api at auth service
+    Get.lazyPut<IAuthService>(() => AuthService(), fenix: true);
+    // Calling api at store service
+    Get.lazyPut<IStoreService>(() => StoreService(), fenix: true);
   }
 }

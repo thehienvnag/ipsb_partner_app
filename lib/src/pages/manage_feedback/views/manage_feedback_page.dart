@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/pages/manage_feedback/controllers/manage_feedback_controller.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:loading_animations/loading_animations.dart';
@@ -12,33 +13,50 @@ import 'package:loading_animations/loading_animations.dart';
 bool isExpanded = false;
 
 class ManageFeedbackPage extends GetView<ManageFeedbackController> {
+  final SharedStates sharedData = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Get.back(closeOverlays: true);
+          },
+        ),
         title: Text(
-          'Danh sách đánh giá',
+          'Feedbacks of '+ sharedData.couponDetail.value.name.toString(),
           style: TextStyle(color: Colors.black87),
         ),
       ),
       body: Obx(() {
         final listFeedbacks = controller.listCouponInUse;
         if (listFeedbacks.isEmpty) {
-          return LoadingFlipping.circle(
-            borderColor: Colors.cyan,
-            borderSize: 3.0,
-            size: 30.0,
-            backgroundColor: Colors.cyanAccent,
-            duration: Duration(milliseconds: 500),
+          return Column(
+            children: [
+              Center(
+                child: LoadingBouncingLine.circle(
+                  borderColor: Colors.cyan,
+                  borderSize: 3.0,
+                  size: 30.0,
+                  backgroundColor: Colors.cyanAccent,
+                  duration: Duration(milliseconds: 500),
+                ),
+              ),
+              Text('No data', style: TextStyle(fontSize: 16),)
+            ],
           );
         } else {
           return SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                buildFeedbacks(context, listFeedbacks),
+                buildFeedbacks(context, listFeedbacks, controller),
               ],
             ),
           );
@@ -49,105 +67,175 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
   }
 }
 
-Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack) {
+Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,ManageFeedbackController controller) {
   final screenSize = MediaQuery.of(context).size;
-  return Container(
-    child: ListView.builder(
-      shrinkWrap: true,
-      itemCount: listFeedBack.length,
-      itemBuilder: (context, index) {
-        final feedback = listFeedBack[index];
-        return Card(
-          margin: EdgeInsets.only(top: 10, left: 6, right: 6),
-          child: ExpansionTile(
-            initiallyExpanded: isExpanded,
-            childrenPadding: EdgeInsets.all(16).copyWith(top: 0),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                            feedback.visitor!.imageUrl.toString())),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          feedback.visitor!.name.toString(),
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        RatingBar.builder(
-                          initialRating: feedback.rateScore!.toDouble(),
-                          itemSize: 18,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (value) => true,
-                          updateOnDrag: true,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    SizedBox(height: 18),
-                    Text(
-                      Formatter.dateCaculator(
-                        feedback.feedbackDate,
-                      ),
-                      style:
-                          TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+  return ListView.builder(
+    physics: ScrollPhysics(),
+     shrinkWrap: true,
+    itemCount: listFeedBack.length,
+    itemBuilder: (context, index) {
+      final feedback = listFeedBack[index];
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                      width: screenSize.width * 0.3,
-                      height: 100,
-                      child: feedback.feedbackImage != null
-                          ? Card(
-                              child: Image.network(
-                                  feedback.feedbackImage.toString()))
-                          : Image.network(
-                              'https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png')),
-                  Container(
-                    width: screenSize.width * 0.58,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(feedback.coupon!.name.toString(),
-                            style: TextStyle(fontSize: 19)),
-                        Text(
-                          feedback.feedbackContent.toString(),
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      CircleAvatar( radius: 25, backgroundImage: NetworkImage(feedback.visitor!.imageUrl.toString())),
+                      SizedBox(width: 10,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(feedback.visitor!.name.toString(),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                          RatingBar.builder(
+                            initialRating: feedback.rateScore!.toDouble(),
+                            itemSize: 22,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                            onRatingUpdate: (value) => true,
+                            updateOnDrag: true,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(height: 2),
+                      Text(
+                        Formatter.dateCaculator(feedback.feedbackDate),
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              Container(
+                width: screenSize.width * 0.9,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(feedback.feedbackContent.toString(), style: TextStyle(fontSize: 16)),
+                ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        width:  screenSize.width * 0.4,
+                        height: screenSize.height * 0.2,
+                        alignment: Alignment.centerLeft,
+                        child: feedback.feedbackImage != null
+                            ? Card(child: Image.network(feedback.feedbackImage.toString()))
+                            : Image.network('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png')
+                    ),
+                  ),
+                  Container(
+                      width: screenSize.width * 0.4,
+                      alignment: Alignment.centerLeft,
+                      child: Image.network('https://icon-library.com/images/smile-icon-png/smile-icon-png-16.jpg')
+                  ),
+                ],
+              ),
+              (feedback.feedbackReply == null)
+                  ? buildReplyForm(controller,feedback.id!.toInt())
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: (controller.store.isNull)
+                          ? NetworkImage('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'):
+                            NetworkImage(controller.store!.imageUrl.toString()),
+                    ),
+                    Container(
+                      width: screenSize.width * 0.8,
+                      margin: EdgeInsets.only(top: 15),
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                          (controller.store.isNull) ? 'Loading...': controller.store!.name.toString(),
+                            style: Theme.of(context).textTheme.caption?.copyWith(
+                                fontWeight: FontWeight.w600, color: Colors.black,fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            (controller.store.isNull) ? 'Loading...': feedback.feedbackReply.toString(),
+                            style: Theme.of(context).textTheme.caption?.copyWith(
+                                fontWeight: FontWeight.w300, color: Colors.black,fontSize: 13),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              SizedBox(height: 20,)
             ],
           ),
-        );
-      },
-    ),
+        ),
+      );
+    },
   );
 }
+
+Widget buildReplyForm(ManageFeedbackController controller, int couponInUseId){
+  return Row(
+    children: [
+      Expanded (
+        child: Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(
+              color: Colors.grey,
+              width: 0.1,
+            ),
+          ),
+          child: TextField(
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey[100],
+                hintText: 'Type a reply message',
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              onChanged: (value) {
+                controller.changeReplyFeedbackContent(value);
+              }),
+        ),
+      ),
+      GestureDetector(
+        onTap: (){
+          controller.replyFeedback(couponInUseId);
+        },
+        child: Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue,
+          ),
+          child: Icon(Icons.send, color: Colors.white),
+        ),
+      )
+    ],
+  );
+}
+
