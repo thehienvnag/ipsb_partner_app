@@ -8,6 +8,7 @@ import 'package:ipsb_partner_app/src/services/api/location_service.dart';
 import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_partner_app/src/services/api/product_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 
 class AppInit {
@@ -15,6 +16,7 @@ class AppInit {
     initMobileAppServices();
     initAlgorithmServices();
     initApiServices();
+    initializePushNotification();
   }
 
   /// Init mobile app services
@@ -49,5 +51,12 @@ class AppInit {
     Get.lazyPut<ICouponInUseService>(() => CouponInUseService(), fenix: true);
     // Calling api at locatorTag service
     Get.lazyPut<ILocatorTagService>(() => LocatorTagService(), fenix: true);
+  }
+
+  static void initializePushNotification() {
+    FirebaseHelper helper = FirebaseHelper();
+    helper.requestingPermissionForIOS();
+    helper.getToken();
+    helper.initPushNotification();
   }
 }
