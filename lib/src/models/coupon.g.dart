@@ -51,4 +51,5 @@ Map<String, dynamic> _$CouponToJson(Coupon instance) => <String, dynamic>{
       'limit': instance.limit,
       'expireDate': instance.expireDate?.toIso8601String(),
       'publishDate': instance.publishDate?.toIso8601String(),
+      'store': instance.store,
     };

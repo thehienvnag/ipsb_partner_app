@@ -6,6 +6,7 @@ import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/auth_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 
 class LoginController extends GetxController {
   // Share states across app
@@ -41,6 +42,9 @@ class LoginController extends GetxController {
       sharedStates.account = account;
       Get.toNamed(Routes.home);
       print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
+      FirebaseHelper helper = FirebaseHelper();
+      helper.unsubscribeFromTopic("store_id_" + account!.store!.id.toString());
+      helper.subscribeToTopic("store_id_" + account!.store!.id.toString());
     } else {
       BotToast.showText(
           text: "Email or password not correct !",

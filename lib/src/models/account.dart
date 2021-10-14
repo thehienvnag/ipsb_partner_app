@@ -1,3 +1,4 @@
+import 'package:ipsb_partner_app/src/models/store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'account.g.dart';
@@ -11,6 +12,7 @@ class Account {
       phone,
       email,
       status;
+  final Store? store;
 
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 
@@ -21,7 +23,8 @@ class Account {
     this.imageUrl,
     this.phone,
     this.email,
-    this.status
+    this.status,
+    this.store
   });
 
   Map<String, dynamic> toJson() => _$AccountToJson(this);
