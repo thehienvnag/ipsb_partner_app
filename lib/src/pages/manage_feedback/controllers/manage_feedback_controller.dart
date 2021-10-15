@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/models/store.dart';
-import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_partner_app/src/services/api/store_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
@@ -84,7 +83,6 @@ class ManageFeedbackController extends GetxController {
 
   void getReplyFeedback(List<CouponInUse> listFeedback, int couponInUseId) {
     for(int i = 0; i < listFeedback.length; i++){
-      print('hey: ' + listFeedback[i].feedbackReply.toString());
       if(couponInUseId == listFeedback[i].id){
         if(listFeedback[i].feedbackReply != null){
           loadReplyFeedback.value = listFeedback[i].feedbackReply!;
@@ -92,6 +90,16 @@ class ManageFeedbackController extends GetxController {
           loadReplyFeedback.value = "";
         }
       }
+    }
+  }
+
+  final indexViewMore = "".obs;
+
+  void changeHideInfo(int indexFeedback){
+    if(indexViewMore.value.compareTo(indexFeedback.toString()) == 0){
+      indexViewMore.value = "";
+    }else {
+      indexViewMore.value = indexFeedback.toString();
     }
   }
 

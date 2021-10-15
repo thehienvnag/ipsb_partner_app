@@ -41,7 +41,7 @@ class CouponDetailPage extends GetView<CouponDetailController> {
           title: Column(
             children: [
               Text(
-                'Chi tiết mã giảm giá',
+                'Coupon Details',
                 style: TextStyle(color: Colors.black),
               ),
             ],
@@ -71,7 +71,7 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(right: 20),
+                              margin: const EdgeInsets.only(right: 10),
                               child: Card(
                                 child: Container(
                                   width: screenSize.width*0.4,
@@ -108,25 +108,25 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                         child: FlutterBulletList(
                           data: [
                             ListItemModel(
-                                label: "Chương trình: ",
+                                label: "Promotions: ",
                                 data: [ListItemModel(label: "${coupon.name}")]),
-                            ListItemModel(label: "Áp dụng cho: ", data: [
+                            ListItemModel(label: "Apply for: ", data: [
                               ListItemModel(
-                                  label: "Toàn menu (không áp dụng combo)"),
-                              ListItemModel(label: "Giá chưa bao gồm VAT}"),
+                                  label: "Full menu (does not apply combos) "),
+                              ListItemModel(label: "Price does not include VAT"),
                             ]),
                             ListItemModel(
-                              label: "Lưu ý: ",
+                              label: "Note: ",
                               data: [
                                 ListItemModel(
-                                  label: "Chỉ áp dụng tại cửa hàng",
+                                  label: "Valid in store only",
                                 ),
                                 ListItemModel(
                                     label:
-                                    "Khi thanh toán chỉ áp dụng duy nhất 1 mã"),
+                                    "Only 1 code can be applied when paying"),
                                 ListItemModel(
                                     label:
-                                    "Áp dụng cho nhiều sản phẩm trong cùng hóa đơn"),
+                                    "Applies to multiple products in the same invoice"),
                               ],
                             ),
                           ],
@@ -149,7 +149,7 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                           bulletSize: 3,
                           data: [
                             ListItemModel(
-                              label: "Thời gian áp dụng: ",
+                              label: "Time application: ",
                               data: [
                                 ListItemModel(
                                   label:

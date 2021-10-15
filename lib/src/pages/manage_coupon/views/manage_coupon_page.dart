@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
+import 'package:ipsb_partner_app/src/utils/formatter.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:loading_animations/loading_animations.dart';
 
@@ -50,6 +51,7 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
       itemCount: coupons.length,
       itemBuilder: (context, index) {
         final coupon = coupons[index];
+        controller.getNewFeedback(coupon.id!.toInt());
         return GestureDetector(
           onTap: () => controller.gotoFeedbackListDetails(coupon),
           child: Card(
@@ -68,22 +70,23 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                       borderRadius: BorderRadius.circular(8)),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        margin: const EdgeInsets.only(top: 10, left: 10),
-                        width: screenSize.width * 0.5,
+                        margin: const EdgeInsets.only(top: 10, left: 5),
+                        width: screenSize.width * 0.35,
                         child: Text(coupon.name ?? '',
                             style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 5, left: 10),
-                        width: screenSize.width * 0.5,
+                        margin: const EdgeInsets.only(top: 5, left: 5),
+                        width: screenSize.width * 0.35,
                         child: Text(
-                          coupon.description ?? '',
+                          (coupon.description.isNull) ? '' :
+                          Formatter.shorten(coupon.description, 20),
                           style: TextStyle(fontSize: 13),
                         ),
                       ),
@@ -91,12 +94,41 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                         onPressed: () {
                           controller.gotoCouponDetails(coupon);
                         },
-                        icon: Icon(Icons.info),
+                        icon: Icon(Icons.info,size: 20,),
+
                         label: Text('View Detail'),
                       ),
                     ],
                   ),
                 ),
+                Obx((){
+                  String couponIdHasFB = controller.couponIdHasNewFeedback.value;
+                  String couponId = coupon.id.toString();
+                  return
+                  (couponIdHasFB.compareTo(couponId) == 0) ?
+                    Column(
+                      children: [
+                        SizedBox(height: 15,),
+                        TextButton.icon(
+                          onPressed: () {
+                            controller.gotoFeedbackListDetails(coupon);
+                          },
+                          icon: Icon(Icons.add_alert,size: 21,color: Colors.orangeAccent,),
+                          label: Text('New feedbacks'),
+                        ),
+                      ],
+                    ): Column(
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {
+                          controller.gotoFeedbackListDetails(coupon);
+                        },
+                        icon: Icon(Icons.add_chart,size: 18,color: Colors.black,),
+                        label: Text('View feedbacks'),
+                      ),
+                    ],
+                  );
+                }),
               ],
             ),
           ),
