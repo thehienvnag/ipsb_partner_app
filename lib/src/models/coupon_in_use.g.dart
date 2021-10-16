@@ -31,7 +31,7 @@ CouponInUse _$CouponInUseFromJson(Map<String, dynamic> json) {
     visitor: json['visitor'] == null
         ? null
         : Account.fromJson(json['visitor'] as Map<String, dynamic>),
-    hideInfo: true
+    hideInfo: json['hideInfo'] as bool?,
   );
 }
 
@@ -42,7 +42,7 @@ Map<String, dynamic> _$CouponInUseToJson(CouponInUse instance) =>
       'visitorId': instance.visitorId,
       'redeemDate': instance.redeemDate?.toIso8601String(),
       'applyDate': instance.applyDate?.toIso8601String(),
-      'feedBackDate': instance.feedbackDate?.toIso8601String(),
+      'feedbackDate': instance.feedbackDate?.toIso8601String(),
       'status': instance.status,
       'feedbackContent': instance.feedbackContent,
       'feedbackImage': instance.feedbackImage,
@@ -50,4 +50,5 @@ Map<String, dynamic> _$CouponInUseToJson(CouponInUse instance) =>
       'rateScore': instance.rateScore,
       'coupon': instance.coupon,
       'visitor': instance.visitor,
+      'hideInfo': instance.hideInfo,
     };
