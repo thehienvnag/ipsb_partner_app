@@ -72,7 +72,7 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
   final screenSize = MediaQuery.of(context).size;
   return ListView.builder(
     physics: ScrollPhysics(),
-     shrinkWrap: true,
+    shrinkWrap: true,
     itemCount: listFeedBack.length,
     itemBuilder: (context, index) {
       final feedback = listFeedBack[index];
@@ -86,16 +86,16 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                 children: [
                   Row(
                     children: [
-                      CircleAvatar( radius: 25, backgroundImage: NetworkImage(feedback.visitor!.imageUrl.toString())),
-                      SizedBox(width: 10,),
+                      CircleAvatar( radius: 20, backgroundImage: NetworkImage(feedback.visitor!.imageUrl.toString())),
+                      SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(feedback.visitor!.name.toString(),
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),),
+                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),),
                           RatingBar.builder(
                             initialRating: feedback.rateScore!.toDouble(),
-                            itemSize: 22,
+                            itemSize: 20,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -110,11 +110,14 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                   ),
                   Column(
                     children: [
-                      SizedBox(height: 2),
                       Text(
                         Formatter.dateCaculator(feedback.feedbackDate),
                         style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                       ),
+                      SizedBox(height: 5,),
+                      (feedback.feedbackReply == null) ?
+                      Text('New !',style: TextStyle(color: Colors.red,fontSize: 15),)
+                      : Text('Replied',style: TextStyle(color: Colors.grey,fontSize: 13,fontWeight: FontWeight.w700),),
                     ],
                   ),
                 ],
@@ -124,82 +127,79 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                 child: Row(
                   children: [
                     Container(
-                      width: screenSize.width * 0.7,
+                      width: screenSize.width * 0.72,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(feedback.feedbackContent.toString(), style: TextStyle(fontSize: 16)),
                       ),
                     ),
                     GestureDetector(
+                      onTap: (){
+                        controller.changeHideInfo(index);
+                      },
                         child: Text('View More',style: TextStyle(color: Colors.blue),)
                     ),
                   ],
                 ),
               ),
-              (feedback.hideInfo == true) ? SizedBox():
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        width:  screenSize.width * 0.4,
-                        height: screenSize.height * 0.2,
-                        alignment: Alignment.centerLeft,
-                        child: feedback.feedbackImage != null
-                            ? Card(child: Image.network(feedback.feedbackImage.toString()))
-                            : Image.network('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png')
-                    ),
-                  ),
-                  // Container(
-                  //     width: screenSize.width * 0.4,
-                  //     alignment: Alignment.centerLeft,
-                  //     child: Image.network('https://icon-library.com/images/smile-icon-png/smile-icon-png-16.jpg')
-                  // ),
-                ],
-              ),
-              (feedback.hideInfo == true) ? SizedBox():
-              (feedback.feedbackReply == null) ?
-              buildReplyForm(controller,feedback.id!.toInt()) :
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // CircleAvatar(
-                    //   radius: 20,
-                    //   backgroundColor: Colors.transparent,
-                    //   backgroundImage: (controller.store.isNull)
-                    //       ? NetworkImage('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png'):
-                    //         NetworkImage(controller.store!.imageUrl.toString()),
-                    // ),
-                    Container(
-                        margin: EdgeInsets.only(left: 7),
-                        child: Icon(FontAwesomeIcons.share,size: 25,color: Colors.black45,)),
-                    Container(
-                      width: screenSize.width * 0.82,
-                      margin: EdgeInsets.only(top: 15),
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                      decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                          (controller.store.isNull) ? 'Loading...': controller.store!.name.toString(),
-                            style: Theme.of(context).textTheme.caption?.copyWith(
-                                fontWeight: FontWeight.w600, color: Colors.black,fontSize: 16),
+              Obx((){
+                return
+                (controller.indexViewMore.value.compareTo(index.toString()) == 0) ?
+                 Column(
+                   children: [
+                     Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              width:  screenSize.width * 0.4,
+                              height: screenSize.height * 0.2,
+                              alignment: Alignment.centerLeft,
+                              child: feedback.feedbackImage != null
+                                  ? Card(child: Image.network(feedback.feedbackImage.toString()))
+                                  : Image.network('https://pngimg.com/uploads/mouth_smile/mouth_smile_PNG42.png')
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            (controller.store.isNull) ? 'Loading...': feedback.feedbackReply.toString(),
-                            style: Theme.of(context).textTheme.caption?.copyWith(
-                                fontWeight: FontWeight.w300, color: Colors.black,fontSize: 13),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        ),
+                      ],
                 ),
-              SizedBox(height: 20,)
+                     (feedback.feedbackReply == null) ?
+                     buildReplyForm(controller,feedback.id!.toInt()):
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Container(
+                             margin: EdgeInsets.only(left: 7),
+                             child: Icon(FontAwesomeIcons.share,size: 25,color: Colors.black45,)),
+                         Container(
+                           width: screenSize.width * 0.82,
+                           margin: EdgeInsets.only(top: 15),
+                           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                           decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text(
+                                 (controller.store.isNull) ? 'Loading...': controller.store!.name.toString(),
+                                 style: Theme.of(context).textTheme.caption?.copyWith(
+                                     fontWeight: FontWeight.w600, color: Colors.black,fontSize: 16),
+                               ),
+                               SizedBox(
+                                 height: 4,
+                               ),
+                               Text(
+                                 (controller.store.isNull) ? 'Loading...': feedback.feedbackReply.toString(),
+                                 style: Theme.of(context).textTheme.caption?.copyWith(
+                                     fontWeight: FontWeight.w300, color: Colors.black,fontSize: 13),
+                               ),
+                               SizedBox(height: 5)
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                   ],
+                 ) : SizedBox();
+              }),
             ],
           ),
         ),
