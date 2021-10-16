@@ -1,5 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
 
 class FirebaseHelper {
   static FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -49,6 +52,7 @@ class FirebaseHelper {
         ),
         payload: 'referenceName'
       );
+      Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
   }
 
@@ -110,18 +114,67 @@ class FirebaseHelper {
     FirebaseMessaging.onMessage.listen((message) {
       _showNotification(message);
     });
+
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print('A new onMessageOpenedApp event was published!');
+    //   Navigator.pushNamed('/message',
+    //       arguments: MessageArguments(message, true));
+    // });
   }
 
   Future<void> subscribeToTopic(String topic) async {
-    print('FlutterFire Messaging Example: Subscribing to topic "fcm_test".');
+    print('FlutterFire Messaging Example: Subscribing to topic "' + topic + '".');
     await _messaging.subscribeToTopic(topic);
-    print('FlutterFire Messaging Example: Subscribing to topic "fcm_test" successful.');
+    print('FlutterFire Messaging Example: Subscribing to topic "' + topic + '" successful.');
   }
 
   Future<void> unsubscribeFromTopic(String topic) async {
-    print('FlutterFire Messaging Example: Unsubscribing from topic "fcm_test".');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' + topic + '".');
     await _messaging.unsubscribeFromTopic(topic);
-    print('FlutterFire Messaging Example: Unsubscribing from topic "fcm_test" successful.');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' + topic + '" successful.');
   }
 
+  Widget _buildDialog(String? title, String? body, Map<String, dynamic> data) {
+    return AlertDialog(
+      title: Text(title!),
+      content: Text(body!),
+      actions: <Widget>[
+        FlatButton(
+          child: const Text('CLOSE'),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    // RemoteMessage? initialMessage =
+    //     await _messaging.getInitialMessage();
+    //
+    // // If the message also contains a data property with a "type" of "chat",
+    // // navigate to a chat screen
+    // if (initialMessage != null) {
+    //   _handleMessage(initialMessage);
+    // }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.data['notificationType'] == 'feedback_changed') {
+        Get.toNamed(
+          Routes.feedbacks,
+          parameters: {
+            "couponId" : message.data['couponId']
+          }
+        );
+      }
+
+    });
+  }
 }
