@@ -17,15 +17,15 @@ class ManageCouponController extends GetxController {
   ICouponInUseService _service = Get.find();
   IStoreService _storeService = Get.find();
 
-  void gotoFeedbackListDetails(Coupon coupon) {
-    sharedData.couponDetail.value = coupon;
-    Get.toNamed(Routes.feedbacks);
-  }
+  // void gotoFeedbackListDetails(Coupon coupon) {
+  //   sharedData.couponDetail.value = coupon;
+  //   Get.toNamed(Routes.feedbacks);
+  // }
 
 
   final listCoupon = <Coupon>[].obs;
   Future<void> getCouponsByStoreId() async {
-    Paging<Coupon> paging = await couponService.getCouponsByStoreId(8);
+    Paging<Coupon> paging = await couponService.getCouponsByStoreId(sharedData.account!.store!.id!);
     listCoupon.value = paging.content ?? [];
   }
 

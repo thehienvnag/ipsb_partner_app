@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/controllers/manage_coupon_controller.dart';
+import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:loading_animations/loading_animations.dart';
@@ -53,7 +54,13 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
         final coupon = coupons[index];
         controller.getNewFeedback(coupon.id!.toInt());
         return GestureDetector(
-          onTap: () => controller.gotoFeedbackListDetails(coupon),
+          // onTap: () => controller.gotoFeedbackListDetails(coupon),
+          onTap: () => Get.toNamed(
+            Routes.feedbacks,
+            parameters: {
+              "couponId": coupon.id.toString(),
+            },
+          ),
           child: Card(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +118,13 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                         SizedBox(height: 15,),
                         TextButton.icon(
                           onPressed: () {
-                            controller.gotoFeedbackListDetails(coupon);
+                            // controller.gotoFeedbackListDetails(coupon);
+                            Get.toNamed(
+                              Routes.feedbacks,
+                              parameters: {
+                                "couponId": coupon.id.toString(),
+                              },
+                            );
                           },
                           icon: Icon(Icons.add_alert,size: 21,color: Colors.orangeAccent,),
                           label: Text('New feedbacks'),
@@ -121,7 +134,12 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                     children: [
                       TextButton.icon(
                         onPressed: () {
-                          controller.gotoFeedbackListDetails(coupon);
+                          Get.toNamed(
+                            Routes.feedbacks,
+                            parameters: {
+                              "couponId": coupon.id.toString(),
+                            },
+                          );
                         },
                         icon: Icon(Icons.add_chart,size: 18,color: Colors.black,),
                         label: Text('View feedbacks'),
