@@ -20,7 +20,9 @@ class ManageFeedbackController extends GetxController {
 
   /// Set list coupon of visitor feedback before
   Future<void> getCouponInUse() async {
-    final paging = await _service.getCouponInUseByStoreId(8);
+    String? couponId = Get.parameters['couponId'];
+    // final paging = await _service.getCouponInUseByStoreId(sharedData.account!.store!.id!);
+    final paging = await _service.getCouponInUseByCouponId(int.parse(couponId!));
     listCouponInUse.value = paging.content ?? [];
   }
 
@@ -40,26 +42,14 @@ class ManageFeedbackController extends GetxController {
 
   bool updateCoupon = false;
 
-  CouponInUse? couponInUse;
-  Future<CouponInUse?> getCouponInUseById(int couponInUseId) async {
-    return await _service.getCouponInUse(couponInUseId);
-  }
-
   Store? store;
   Future<Store?> getStoreById(int storeId) async {
     return await _storeService.getStoreById(storeId);
   }
 
   Future<void> getStoreInformation() async {
-    store = await getStoreById(8);
+    store = sharedData.account!.store;
   }
-
-  /// Set list coupon of visitor feedback before
-  Future<void> getCouponInUseByCoupon(int couponId) async {
-    final paging = await _service.getCouponInUseByCouponId(couponId);
-    listCouponInUse.value = paging.content ?? [];
-  }
-
 
   void replyFeedback(int couponInUseId) async{
     BotToast.showLoading();
@@ -76,7 +66,7 @@ class ManageFeedbackController extends GetxController {
               fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
     }
-    getCouponInUseByCoupon(sharedData.couponDetail.value.id!.toInt());
+    getCouponInUse();
     BotToast.closeAllLoading();
   }
   final loadReplyFeedback = "".obs;
@@ -107,6 +97,6 @@ class ManageFeedbackController extends GetxController {
   void onInit() {
     super.onInit();
     getStoreInformation();
-    getCouponInUseByCoupon(sharedData.couponDetail.value.id!.toInt());
+    getCouponInUse();
   }
 }
