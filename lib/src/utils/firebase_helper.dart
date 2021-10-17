@@ -35,23 +35,21 @@ class FirebaseHelper {
 
     AndroidNotification? android = message.notification?.android;
     if (data != null) {
-      flutterLocalNotificationInstance().show(0,
-        data.title,
-        data.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'channel id',
-            'channel name',
-            channelDescription: 'channel desc',
-            icon: android?.smallIcon,
-            setAsGroupSummary: true,
-            importance: Importance.max,
-            priority: Priority.high
+      flutterLocalNotificationInstance().show(
+          0,
+          data.title,
+          data.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails('channel id', 'channel name',
+                channelDescription: 'channel desc',
+                icon: android?.smallIcon,
+                setAsGroupSummary: true,
+                importance: Importance.max,
+                priority: Priority.high),
+            iOS: const IOSNotificationDetails(
+                presentAlert: true, presentSound: true),
           ),
-          iOS: const IOSNotificationDetails(presentAlert: true, presentSound: true),
-        ),
-        payload: 'referenceName'
-      );
+          payload: 'referenceName');
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
   }
@@ -68,7 +66,8 @@ class FirebaseHelper {
     );
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
@@ -94,19 +93,19 @@ class FirebaseHelper {
 
   void initPushNotification() {
     var initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     const IOSInitializationSettings iosInitializationSettings =
-      IOSInitializationSettings(
+        IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
 
     final InitializationSettings initializationSettings =
-      InitializationSettings(
-          android: initializationSettingsAndroid,
-          iOS: iosInitializationSettings);
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: iosInitializationSettings);
 
     flutterLocalNotificationInstance().initialize(initializationSettings,
         onSelectNotification: _onSelectNotification);
@@ -123,18 +122,50 @@ class FirebaseHelper {
   }
 
   Future<void> subscribeToTopic(String topic) async {
-    print('FlutterFire Messaging Example: Subscribing to topic "' + topic + '".');
+    print(
+        'FlutterFire Messaging Example: Subscribing to topic "' + topic + '".');
     await _messaging.subscribeToTopic(topic);
-    print('FlutterFire Messaging Example: Subscribing to topic "' + topic + '" successful.');
+    print('FlutterFire Messaging Example: Subscribing to topic "' +
+        topic +
+        '" successful.');
   }
 
   Future<void> unsubscribeFromTopic(String topic) async {
-    print('FlutterFire Messaging Example: Unsubscribing from topic "' + topic + '".');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' +
+        topic +
+        '".');
     await _messaging.unsubscribeFromTopic(topic);
-    print('FlutterFire Messaging Example: Unsubscribing from topic "' + topic + '" successful.');
+    print('FlutterFire Messaging Example: Unsubscribing from topic "' +
+        topic +
+        '" successful.');
   }
 
   Widget _buildDialog(String? title, String? body, Map<String, dynamic> data) {
+    if (data['notificationType'] == 'feedback_changed') {
+      return AlertDialog(
+        title: Text(title!),
+        content: Text(body!),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('CLOSE'),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          FlatButton(
+            child: const Text('GO TO FEEDBACK'),
+            onPressed: () {
+              Get.toNamed(
+                Routes.feedbacks,
+                parameters: {
+                  "couponId": data['couponId'],
+                },
+              );
+            },
+          ),
+        ],
+      );
+    }
     return AlertDialog(
       title: Text(title!),
       content: Text(body!),
@@ -167,14 +198,9 @@ class FirebaseHelper {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.data['notificationType'] == 'feedback_changed') {
-        Get.toNamed(
-          Routes.feedbacks,
-          parameters: {
-            "couponId" : message.data['couponId']
-          }
-        );
+        Get.toNamed(Routes.feedbacks,
+            parameters: {"couponId": message.data['couponId']});
       }
-
     });
   }
 }
