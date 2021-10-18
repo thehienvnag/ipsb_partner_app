@@ -32,7 +32,7 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
           },
         ),
         title: Text(
-          'Feedbacks of '+ sharedData.couponDetail.value.name.toString(),
+          'Feedbacks List',
           style: TextStyle(color: Colors.black87),
         ),
       ),

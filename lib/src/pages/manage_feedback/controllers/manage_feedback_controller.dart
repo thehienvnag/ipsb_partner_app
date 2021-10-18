@@ -21,7 +21,6 @@ class ManageFeedbackController extends GetxController {
   /// Set list coupon of visitor feedback before
   Future<void> getCouponInUse() async {
     String? couponId = Get.parameters['couponId'];
-    // final paging = await _service.getCouponInUseByStoreId(sharedData.account!.store!.id!);
     final paging = await _service.getCouponInUseByCouponId(int.parse(couponId!));
     listCouponInUse.value = paging.content ?? [];
   }
