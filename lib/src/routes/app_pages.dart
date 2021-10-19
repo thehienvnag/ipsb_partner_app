@@ -12,6 +12,8 @@ import 'package:ipsb_partner_app/src/pages/manage_feedback/views/manage_feedback
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/bindings/manage_locator_tag_binding.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/views/manage_locator_tag_detail_page.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/views/manage_locator_tag_page.dart';
+import 'package:ipsb_partner_app/src/pages/notifications/bindings/notifications_binding.dart';
+import 'package:ipsb_partner_app/src/pages/notifications/views/notifications_page.dart';
 import 'package:ipsb_partner_app/src/pages/profile/bindings/profile_binding.dart';
 import 'package:ipsb_partner_app/src/pages/profile/views/profile_page.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/bindings/profile_detail_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: Routes.couponDetails,
       page: () => CouponDetailPage(),
       binding: CouponDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.notifications,
+      page: () => NotificationsPage(),
+      binding: NotificationsBinding(),
     ),
   ];
 }

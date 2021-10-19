@@ -17,7 +17,7 @@ class CustomBottombarController extends GetxController {
 class BottomItem extends SalomonBottomBarItem {
   final String route;
   final String text;
-  final Icon icon;
+  final Widget icon;
   final Color color;
 
   BottomItem({
@@ -31,6 +31,7 @@ class BottomItem extends SalomonBottomBarItem {
           selectedColor: color,
         );
 }
+final SharedStates states = Get.find();
 
 final items = [
   BottomItem(
@@ -52,6 +53,38 @@ final items = [
     text: 'Locator Tag',
     icon: Icon(Icons.view_in_ar),
     route: Routes.locatorTag,
+  ),
+  BottomItem(
+    text: 'Notification',
+    icon: new Stack(
+      children: <Widget>[
+        new Icon(Icons.notifications),
+        // states.unreadNotification.value != 0 ?
+        new Positioned(
+          right: 0,
+          child: new Container(
+            padding: EdgeInsets.all(1),
+            decoration: new BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            constraints: BoxConstraints(
+              minWidth: 12,
+              minHeight: 12,
+            ),
+            child: new Text(
+              states.unreadNotification.value.toString(),
+              style: new TextStyle(
+                color: Colors.white,
+                fontSize: 8,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ), // : SizedBox(),
+      ],
+    ),
+    route: Routes.notifications,
   ),
   BottomItem(
     text: 'Profile',

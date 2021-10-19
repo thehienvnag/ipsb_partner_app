@@ -50,4 +50,10 @@ class Constants {
 
   /// Constant for active status
   static String active = "Active";
+
+  /// Constants for status read
+  static const String read = "Read";
+
+  /// Constants for status unread
+  static const String unread = "Unread";
 }

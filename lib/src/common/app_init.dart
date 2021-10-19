@@ -7,6 +7,7 @@ import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
 import 'package:ipsb_partner_app/src/services/api/location_service.dart';
 import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
+import 'package:ipsb_partner_app/src/services/api/notification_service.dart';
 import 'package:ipsb_partner_app/src/services/api/product_service.dart';
 import 'package:ipsb_partner_app/src/services/api/store_service.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
@@ -57,6 +58,8 @@ class AppInit {
     Get.lazyPut<IAuthService>(() => AuthService(), fenix: true);
     // Calling api at store service
     Get.lazyPut<IStoreService>(() => StoreService(), fenix: true);
+    // Calling api at ShoppingItem service
+    Get.lazyPut<INotificationService>(() => NotificationService(), fenix: true);
   }
 
   static void initializePushNotification() {

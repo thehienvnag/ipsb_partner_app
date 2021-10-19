@@ -48,7 +48,7 @@ class ManageFeedbackController extends GetxController {
   }
 
   Future<void> getStoreInformation() async {
-    store = sharedData.account!.store;
+    store = await getStoreById(sharedData.account!.store!.id!);
   }
 
   void replyFeedback(int couponInUseId) async{

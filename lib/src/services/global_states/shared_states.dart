@@ -7,6 +7,9 @@ class SharedStates extends GetxService {
   /// selected bottom bar index
   final bottomBarSelectedIndex = 0.obs;
 
+  /// Total unread notification
+  final unreadNotification = 0.obs;
+
   /// Coupon in use state
   final couponInUse = CouponInUse().obs;
 
@@ -19,7 +22,7 @@ class SharedStates extends GetxService {
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
 
-  // User login in app
+  /// User login in app
   Account? account;
 
   final couponDetail = Coupon().obs;
