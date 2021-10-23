@@ -4,13 +4,15 @@ import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
+import 'package:ipsb_partner_app/src/utils/utils.dart';
+
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
   final SharedStates sharedData = Get.find();
-  bool showPassword = false;
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     final Account? userInfo = sharedData.account;
     return Scaffold(
       appBar: AppBar(
@@ -46,78 +48,147 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
               Center(
                 child: Stack(
                   children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: Offset(0, 10))
-                          ],
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(userInfo!.imageUrl.toString())
-                          )),
-                    ),
+                    Obx(() {
+                      String filePath = controller.filePath.value;
+                      return Container(
+                        width: 100,
+                        height: 100,
+                        margin: EdgeInsets.only(top: 30),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor),
+                            boxShadow: [
+                              BoxShadow(
+                                  spreadRadius: 2,
+                                  blurRadius: 10,
+                                  color: Colors.black.withOpacity(0.1),
+                                  offset: Offset(0, 10))
+                            ],
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: Utils.resolveFileImg(
+                                  filePath,
+                                  userInfo!.imageUrl.toString(),
+                                ),
+                            ))
+                      );
+                    }),
                     Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                        child: GestureDetector(
+                          onTap: () => controller.getImage(),
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor,),
+                              color: Colors.green,
                             ),
-                            color: Colors.green,
-                          ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                            ),
                           ),
                         )),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 35,
-              ),
-              buildTextField("Name", userInfo.name.toString()),
-              buildTextField("Email", userInfo.email.toString()),
-              buildTextField("Phone", userInfo.phone.toString()),
-              SizedBox(
-                height: 35,
+              Container(
+                height: 48,
+                margin: EdgeInsets.only(top: 60, right: 20, left: 20),
+                child: TextFormField(
+                  initialValue: userInfo!.name.toString(),
+                  onChanged: (value) {
+                    controller.changeName(value);
+                  },
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.grey.withOpacity(0.6))),
+                      hintText: 'Enter your name',
+                      hintStyle: TextStyle(color: Colors.black45),
+                      prefixIcon: Icon(
+                        Icons.person_pin_rounded,
+                        color: Colors.grey,
+                      )),
+                  //controller: phoneController,
+                ),
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 63,
-                    vertical: 13,
-                  ),
-                  child: SizedBox(
-                    width: 167,
-                    height: 19,
-                    child: Text(
-                      "Save",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                height: 48,
+                margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+                child: TextFormField(
+                  initialValue: userInfo.email.toString(),
+                  enabled: false,
+                  onChanged: (value) {
+                    controller.changeName(value);
+                  },
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.grey.withOpacity(0.6))),
+                      hintText: 'Enter your email',
+                      hintStyle: TextStyle(color: Colors.black45),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.grey,
+                      )),
+                ),
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(4)),
+              ),
+              Container(
+                height: 48,
+                margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+                child: TextFormField(
+                  initialValue: userInfo.phone.toString(),
+                  onChanged: (value) {
+                    controller.changePhone(value);
+                  },
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.grey.withOpacity(0.6))),
+                      hintText: 'Enter your phone',
+                      hintStyle: TextStyle(color: Colors.black45),
+                      prefixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.grey,
+                      )),
+                ),
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(4)),
+              ),
+              // buildTextField("Name", userInfo!.name.toString()),
+              // buildTextField("Email", userInfo.email.toString()),
+              // buildTextField("Phone", userInfo.phone.toString()),
+              GestureDetector(
+                onTap: (){
+                  controller.updateProfile(userInfo.id!);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 50,
+                  margin: EdgeInsets.only(top: 35, right: 20, left: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 63,
+                      vertical: 13,
+                    ),
+                    child: SizedBox(
+                      width: 167,
+                      height: 19,
+                      child: Text(
+                        "Save",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   ),
+                  decoration: BoxDecoration(
+                      color: Color(0xff2AD4D3),
+                      borderRadius: BorderRadius.circular(4)),
                 ),
-                decoration: BoxDecoration(
-                    color: Color(0xff2AD4D3),
-                    borderRadius: BorderRadius.circular(4)),
               ),
             ],
           ),
@@ -129,10 +200,17 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
   Widget buildTextField(String labelText, String placeholder) {
     return Container(
       margin: EdgeInsets.only(left: 20, right: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        // color: Colors.red,
+      ),
       child: Padding(
         padding: EdgeInsets.all(10),
         child: TextFormField(
            initialValue: placeholder,
+          onChanged: (value){
+            // controller.changeName(value);
+          },
           decoration: InputDecoration(
               contentPadding: EdgeInsets.only(bottom: 3),
               labelText: labelText,

@@ -9,6 +9,7 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      // backgroundColor: Colors.green.shade100,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -19,24 +20,31 @@ class HomePage extends GetView<HomeController> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
-            SizedBox(height: 80,),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 5,
-                horizontal: 10,
-              ),
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                mainAxisSpacing: 45,
-                crossAxisSpacing: 25,
-                children: List.generate(choices.length, (index) {
-                  return Center(
-                    child: _buildTabs(choices[index], index, controller),
-                  );
-                }),
+            Image.network("https://i.pinimg.com/564x/76/1c/19/761c198fc1e3512737b9a19381da49d9.jpg",
+              fit: BoxFit.cover,
+              width: screenSize.width,
+              height: screenSize.height*0.8,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 100),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 10,
+                ),
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 45,
+                  crossAxisSpacing: 25,
+                  children: List.generate(choices.length, (index) {
+                    return Center(
+                      child: _buildTabs(choices[index], index, controller),
+                    );
+                  }),
+                ),
               ),
             ),
           ],
