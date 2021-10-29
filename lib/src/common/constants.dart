@@ -56,4 +56,7 @@ class Constants {
 
   /// Constants for status unread
   static const String unread = "Unread";
+
+  /// Constants for additional segment added in url
+  static const String txPower = "tx-power";
 }

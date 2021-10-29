@@ -5,19 +5,22 @@ part 'locator_tag.g.dart';
 @JsonSerializable()
 class LocatorTag {
   final int? id;
-  final String? macAddress,
+  final String? uuid,
       status;
-  final int? floorPlanId, locationId;
-  final DateTime? updateTime, lastSeen;
+  final int? floorPlanId, locationId, buildingId, locatorTagGroupId;
+  final double? txPower;
+  final DateTime? updateTime;
 
   LocatorTag({
     this.id,
-    this.macAddress,
+    this.uuid,
     this.status,
     this.updateTime,
     this.floorPlanId,
     this.locationId,
-    this.lastSeen,
+    this.buildingId,
+    this.locatorTagGroupId,
+    this.txPower
   });
 
   factory LocatorTag.fromJson(Map<String, dynamic> json) =>

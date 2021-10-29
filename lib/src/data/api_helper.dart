@@ -41,6 +41,14 @@ mixin IApiHelper {
     Map<String, dynamic> data,
   );
 
+  /// Put 1 to API [endpoint] plus [additionalSegment] providing [id] and [data]
+  Future<Response> putOneWithAdditionalSegment(
+      String endpoint,
+      String additionalSegment,
+      dynamic id,
+      Map<String, dynamic> data,
+      );
+
   /// Put 1 to API [endpoint] providing [data] with one file [files]
   Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
       MultipartFile? file, String fileName);
@@ -124,6 +132,16 @@ class ApiHelper extends GetConnect with IApiHelper {
     Map<String, dynamic> data,
   ) {
     return put('$endpoint/$id', data);
+  }
+
+  @override
+  Future<Response> putOneWithAdditionalSegment(
+      String endpoint,
+      String additionalSegment,
+      dynamic id,
+      Map<String, dynamic> data,
+      ) {
+    return put('$endpoint/$additionalSegment/$id', data);
   }
 
   @override
