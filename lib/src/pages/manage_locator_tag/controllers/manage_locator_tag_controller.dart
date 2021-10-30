@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:beacons_plugin/beacons_plugin.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -101,7 +102,7 @@ class ManageLocatorTagController extends GetxController {
               minorArray.add(_getValueFromData("minor", data));
               isInserting.add(false);
               statusInSystemArray.add(false);
-              countDownNumberArray.add(10);
+              countDownNumberArray.add(20);
               // statusInSystemArray.add(beaconArray.singleWhere(
               //         (item) => item!.macAddress == macAddress,
               //         orElse: () => null) !=
@@ -179,15 +180,15 @@ class ManageLocatorTagController extends GetxController {
     }
   }
 
-  void addBeacons(String macAddress, int index) async {
-    int buildingId = 12;
+  void addBeacons(String uuid, int index) async {
+    int buildingId = 38;
     // sharedStates.account.buildingId;
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
     rssiArray.add("item");
     rssiArray.remove("item");
     LocatorTag? locatorTag =
-        await _locatorTagService.postLocatorTag(macAddress, buildingId);
+        await _locatorTagService.postLocatorTag(uuid, buildingId);
 
     if (locatorTag != null) {
       BotToast.showText(
@@ -215,8 +216,7 @@ class ManageLocatorTagController extends GetxController {
       return;
     }
     if (!isRunning.value) {
-      beaconEventsController =
-      new StreamController<String>.broadcast();
+      beaconEventsController = new StreamController<String>.broadcast();
       title.value = "Executing";
       isRunning.value = true;
       // initPlatformState();
@@ -236,13 +236,12 @@ class ManageLocatorTagController extends GetxController {
                   insertBeaconArray.remove("item_" + index.toString()),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  countDownNumberArray[index] = 10,
+                  countDownNumberArray[index] = 20,
                   statusInSystemArray[index] = true,
                   isInserting[index] = false,
                   timer.cancel(),
-
                   _locatorTagService
-                      .updateLocatorTagByUUID(macAddress, rssi)
+                      .updateLocatorTagByUUID(uuid, rssi)
                       .then((value) => {
                             if (!value)
                               {
@@ -289,10 +288,9 @@ class ManageLocatorTagController extends GetxController {
                           macAddressValue =
                               _getValueWithColonFromData("macAddress", data);
 
-                          if (macAddressValue == macAddress) {
+                          if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
                                 double.parse(_getValueFromData("rssi", data)));
-
                           } else {}
                         }
                       },
@@ -303,7 +301,7 @@ class ManageLocatorTagController extends GetxController {
                   // executeMethod.insertRSSI(),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  print("Add beacons " + macAddress + " for 30 seconds"),
+                  print("Add beacons " + uuid + " for 30 seconds"),
                   --countDownNumberArray[index],
                 }
             });
@@ -311,15 +309,14 @@ class ManageLocatorTagController extends GetxController {
 
   SharedStates states = Get.find();
 
-  void updateTxPower(String macAddress, int index) async {
+  void updateTxPower(String uuid, int index) async {
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
     rssiArray.add("item");
     rssiArray.remove("item");
 
     if (!isRunning.value) {
-      beaconEventsController =
-      new StreamController<String>.broadcast();
+      beaconEventsController = new StreamController<String>.broadcast();
       title.value = "Executing";
       isRunning.value = true;
       // initPlatformState();
@@ -339,13 +336,12 @@ class ManageLocatorTagController extends GetxController {
                   insertBeaconArray.remove("item_" + index.toString()),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  countDownNumberArray[index] = 10,
+                  countDownNumberArray[index] = 20,
                   statusInSystemArray[index] = true,
                   isInserting[index] = false,
                   timer.cancel(),
-
                   _locatorTagService
-                      .updateLocatorTagByUUID(macAddress, rssi)
+                      .updateLocatorTagByUUID(uuid, rssi)
                       .then((value) => {
                             if (!value)
                               {
@@ -388,10 +384,10 @@ class ManageLocatorTagController extends GetxController {
                   beaconEventsController.stream.listen(
                       (data) {
                         if (data.isNotEmpty && isRunning.value) {
-                          macAddressValue =
-                              _getValueWithColonFromData("macAddress", data);
-
-                          if (macAddressValue == macAddress) {
+                          // macAddressValue =
+                          //     _getValueWithColonFromData("uuid", data);
+                          macAddressValue = jsonDecode(data)['uuid'];
+                          if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
                                 double.parse(_getValueFromData("rssi", data)));
                             print("AT TIME COUNTDOWN KALMAN FILTER");
@@ -502,7 +498,7 @@ class ManageLocatorTagController extends GetxController {
   }
 
   void loadAllBeacons() async {
-    int buildingId = 12;
+    int buildingId = 38;
     // sharedStates.account.buildingId;
     beaconArray.value =
         await _locatorTagService.getAllLocatorTagByBuildingId(buildingId);
@@ -529,9 +525,8 @@ class ManageLocatorTagController extends GetxController {
     );
   }
 
-  Future<void> checkBeaconExist (
-      BuildContext context) async {
-    int buildingId = 12;
+  Future<void> checkBeaconExist(BuildContext context) async {
+    int buildingId = 38;
     // sharedStates.account.buildingId;
 
     beaconArray.value =
@@ -539,8 +534,8 @@ class ManageLocatorTagController extends GetxController {
 
     if (beaconArray.isNotEmpty) {
       for (int i = 0; i < macAddressArray.length; i++) {
-        statusInSystemArray[i] = beaconArray.singleWhereOrNull(
-                (item) => item!.uuid == macAddressArray[i]) !=
+        statusInSystemArray[i] = beaconArray
+                .singleWhereOrNull((item) => item!.uuid == uuidArray[i]) !=
             null;
         rssiArray.add("item");
         rssiArray.remove("item");
@@ -548,7 +543,5 @@ class ManageLocatorTagController extends GetxController {
     } else {
       return;
     }
-
   }
-
 }

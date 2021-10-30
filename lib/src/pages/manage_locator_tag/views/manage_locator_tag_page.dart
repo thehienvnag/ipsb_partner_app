@@ -50,11 +50,13 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             controller.isInserting.contains(true));
       }),
       body: Obx(() {
-        return Column(
-          children: [
-            _buildLinearProgressIndicator(controller.isRunning.value),
-            _buildBody(context),
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildLinearProgressIndicator(controller.isRunning.value),
+              _buildBody(context),
+            ],
+          ),
         );
       }),
     );
@@ -548,7 +550,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                                     (double.parse(controller
                                             .countDownNumberArray[index]
                                             .toString())) /
-                                        10,
+                                        20,
                                 valueColor: new AlwaysStoppedAnimation<Color>(
                                     Colors.blue)),
                           ),
@@ -675,7 +677,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: ExpansionTile(
             title: _buildTitle(context, controller.nameArray[index],
-                controller.macAddressArray[index], index),
+                controller.uuidArray[index], index),
             trailing: _buildTrailing(
                 context, controller.distanceArray[index], DateTime.now()),
             children: <Widget>[
@@ -706,14 +708,13 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                     "CLICK TO INSERT",
                     "CLICK TO UPDATE TX POWER",
                     () => {
-                      controller.addBeacons(
-                          controller.macAddressArray[index], index),
+                      controller.addBeacons(controller.uuidArray[index], index),
                       // controller.isInserting.remove(index),
                       // controller.isInserting.insert(index, true),
                     },
                     () => {
                       controller.updateTxPower(
-                          controller.macAddressArray[index], index),
+                          controller.uuidArray[index], index),
                     },
                     controller.isInserting[index],
                     controller.statusInSystemArray[index],
