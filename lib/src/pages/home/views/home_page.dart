@@ -3,76 +3,83 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/pages/home/controllers/home_controller.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:comment_tree/comment_tree.dart';
 
 class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      // backgroundColor: Colors.green.shade100,
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Home',
-          style: TextStyle(color: Colors.black38),
+          'Dashboard',
+          style: TextStyle(color: Colors.black),
         ),
         elevation: 4,
         backgroundColor: Colors.white,
       ),
-      body: Center(
-        child: DialogButton(
-            child: Text('Hello'),
-            onPressed: (){
-              _onAlertWithCustomContentPressed(context);
-            }
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Image.network("https://i.pinimg.com/564x/76/1c/19/761c198fc1e3512737b9a19381da49d9.jpg",
+              fit: BoxFit.cover,
+              width: screenSize.width,
+              height: screenSize.height*0.8,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 100),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 10,
+                ),
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 45,
+                  crossAxisSpacing: 25,
+                  children: List.generate(choices.length, (index) {
+                    return Center(
+                      child: _buildTabs(choices[index], index, controller),
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: CustomBottombar(),
     );
   }
+}
 
-  // Alert custom content
-  _onAlertWithCustomContentPressed(context) {
-    Size screenSize = MediaQuery.of(context).size;
-    Alert(
-        context: context,
-        title: "Reply feed back",
-        style: AlertStyle(titleStyle: TextStyle(fontSize: 20)),
-        content: Container(
-          width: screenSize.width *0.8,
-          child: Card(
-            elevation: 0,
-            margin: EdgeInsets.only(top: 25),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-              side: BorderSide(
-                color: Colors.grey,
-                width: 0.4,
-              ),
-            ),
-            child: TextField(
-              textInputAction: TextInputAction.done,
-              maxLines: 5,
-              onChanged: (value) {
-                // controller.saveFeedback(value);
-              },
-              decoration: InputDecoration(
-                contentPadding: new EdgeInsets.fromLTRB(15, 5, 10, 10),
-                labelText: 'Content reply',
-              ),
-            ),
-          ),
+Widget _buildTabs(Choice choice,int index, HomeController controller) {
+  return GestureDetector(
+    onTap: (){
+      controller.onpress(index);
+    },
+    child: Card(
+        elevation: 10,
+        color: choice.color.withOpacity(0.8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        buttons: [
-          DialogButton(
-            onPressed: () => {
-              Navigator.pop(context)
-            },
-            child: Text(
-              "Send",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          )
-        ]).show();
-  }
+        child: Center(
+          child: TextButton.icon(
+              onPressed: (){
+                controller.onpress(index);
+                },
+              icon: Icon(
+                choice.icon,
+                size: 40,
+                color: Colors.white,
+              ),
+              label: Text(
+                choice.title,
+                style: TextStyle(color: Colors.white),
+              )),
+        )),
+  );
 }

@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
@@ -20,5 +22,15 @@ class Utils {
   static String date(DateTime? date, [String formatter = 'dd-MM-yyyy']) {
     if (date == null) return 'Date not set';
     return DateFormat(formatter).format(date);
+  }
+
+  static ImageProvider<Object> resolveFileImg(String? url, String? altUrl) {
+    if ((url == null || url.isEmpty) && (altUrl == null || altUrl.isEmpty)) {
+      throw Exception("Required file image or alternative image");
+    }
+    if (url != null && url.isNotEmpty) {
+      return FileImage(File(url));
+    }
+    return NetworkImage(altUrl!);
   }
 }
