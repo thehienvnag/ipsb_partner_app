@@ -35,4 +35,7 @@ class Endpoints {
 
   /// Store enpoint version /api/v1
   static const stores = '$apiVer1/stores';
+
+  /// Notification endpoint version /api/v1
+  static const notifications = '$apiVer1/notifications';
 }

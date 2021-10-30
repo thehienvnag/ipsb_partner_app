@@ -9,26 +9,28 @@ part of 'locator_tag.dart';
 LocatorTag _$LocatorTagFromJson(Map<String, dynamic> json) {
   return LocatorTag(
     id: json['id'] as int?,
-    macAddress: json['macAddress'] as String?,
+    uuid: json['uuid'] as String?,
     status: json['status'] as String?,
     updateTime: json['updateTime'] == null
         ? null
         : DateTime.parse(json['updateTime'] as String),
     floorPlanId: json['floorPlanId'] as int?,
     locationId: json['locationId'] as int?,
-    lastSeen: json['lastSeen'] == null
-        ? null
-        : DateTime.parse(json['lastSeen'] as String),
+    buildingId: json['buildingId'] as int?,
+    locatorTagGroupId: json['locatorTagGroupId'] as int?,
+    txPower: (json['txPower'] as num?)?.toDouble(),
   );
 }
 
 Map<String, dynamic> _$LocatorTagToJson(LocatorTag instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'macAddress': instance.macAddress,
+      'uuid': instance.uuid,
       'status': instance.status,
       'floorPlanId': instance.floorPlanId,
       'locationId': instance.locationId,
+      'buildingId': instance.buildingId,
+      'locatorTagGroupId': instance.locatorTagGroupId,
+      'txPower': instance.txPower,
       'updateTime': instance.updateTime?.toIso8601String(),
-      'lastSeen': instance.lastSeen?.toIso8601String(),
     };

@@ -39,12 +39,19 @@ abstract class BaseService<T> {
     return paging.content ?? [];
   }
 
+  /// Get list instances from API with [query]
+  Future<int> countBase(Map<String, dynamic> query,
+      [bool cacheAllow = false]) async {
+    // final callback = () => _apiHelper.count(endpoint() + "/count", query);
+    // Response res = await AuthServices.handleUnauthorized(callback);
+    Response res = await _apiHelper.count(endpoint() + "/count", query);
+    return res.body;
+  }
+
   /// Post an instance with [body]
   Future<T?> postBase(Map<String, dynamic> body) async {
     Response res = await _apiHelper.postOne(endpoint(), body);
-    print("HTTP STATUS CODE: " +
-        res.statusCode.toString() +
-        "========================================");
+
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
@@ -85,6 +92,19 @@ abstract class BaseService<T> {
   /// Put an instance with [id] and [body]
   Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
     Response res = await _apiHelper.putOne(endpoint(), id, body);
+    if (res.statusCode == HttpStatus.noContent) {
+      return true;
+    }
+    return false;
+  }
+
+  /// Put an instance with [id] and [body]
+  Future<bool> putBaseWithAdditionalSegment(
+      dynamic id, String additionalSegment, Map<String, dynamic> body) async {
+
+    Response res = await _apiHelper.putOneWithAdditionalSegment(
+        endpoint(), additionalSegment, id, body);
+    print(res.body);
     if (res.statusCode == HttpStatus.noContent) {
       return true;
     }

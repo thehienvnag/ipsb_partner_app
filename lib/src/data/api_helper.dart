@@ -2,11 +2,14 @@ import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/common/constants.dart';
 
 mixin IApiHelper {
-  // Get all from an API [endpoint] using [uri] and [query]
+  /// Get all from an API [endpoint] using [uri] and [query]
   Future<Response> getAll<T>(
     String uri, {
     Map<String, dynamic> query = Constants.defaultPagingQuery,
   });
+
+  /// Count element got from an API [endpoint] using [uri] and [query]
+  Future<Response> count<T>(String uri, Map<String, dynamic> query);
 
   /// Get 1 by Id from API [endpoint] using [uri] and [id]
   Future<Response> getById<T>(String endpoint, dynamic id);
@@ -37,6 +40,14 @@ mixin IApiHelper {
     dynamic id,
     Map<String, dynamic> data,
   );
+
+  /// Put 1 to API [endpoint] plus [additionalSegment] providing [id] and [data]
+  Future<Response> putOneWithAdditionalSegment(
+      String endpoint,
+      String additionalSegment,
+      dynamic id,
+      Map<String, dynamic> data,
+      );
 
   /// Put 1 to API [endpoint] providing [data] with one file [files]
   Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
@@ -72,6 +83,11 @@ class ApiHelper extends GetConnect with IApiHelper {
     String uri, {
     Map<String, dynamic>? query = Constants.defaultPagingQuery,
   }) {
+    return get<T>(uri, query: query);
+  }
+
+  @override
+  Future<Response> count<T> (String uri, Map<String, dynamic> query) {
     return get<T>(uri, query: query);
   }
 
@@ -116,6 +132,16 @@ class ApiHelper extends GetConnect with IApiHelper {
     Map<String, dynamic> data,
   ) {
     return put('$endpoint/$id', data);
+  }
+
+  @override
+  Future<Response> putOneWithAdditionalSegment(
+      String endpoint,
+      String additionalSegment,
+      dynamic id,
+      Map<String, dynamic> data,
+      ) {
+    return put('$endpoint/$additionalSegment/$id', data);
   }
 
   @override

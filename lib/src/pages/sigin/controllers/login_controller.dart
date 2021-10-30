@@ -42,9 +42,11 @@ class LoginController extends GetxController {
       sharedStates.account = account;
       Get.toNamed(Routes.home);
       print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
-      FirebaseHelper helper = FirebaseHelper();
-      helper.unsubscribeFromTopic("store_id_" + account!.store!.id.toString());
-      helper.subscribeToTopic("store_id_" + account!.store!.id.toString());
+      if (account!.role == 'Store Owner') {
+        FirebaseHelper helper = FirebaseHelper();
+        await helper.unsubscribeFromTopic("store_id_" + account!.store!.id.toString());
+        await helper.subscribeToTopic("store_id_" + account!.store!.id.toString());
+      }
     } else {
       BotToast.showText(
           text: "Email or password not correct !",
