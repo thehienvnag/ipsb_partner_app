@@ -11,6 +11,7 @@ mixin ICouponInUseService {
       int couponInUseId, int couponId, int visitorId, String status);
 
   Future<bool> putReplyFeedbackCouponInUse(int couponInUseId, String content);
+  Future<int> countCouponInUseByCouponId(Map<String, dynamic> data);
 }
 
 class CouponInUseService extends BaseService<CouponInUse>
@@ -66,5 +67,10 @@ class CouponInUseService extends BaseService<CouponInUse>
         'status': "Used"
       },
     );
+  }
+
+  @override
+  Future<int> countCouponInUseByCouponId(Map<String, dynamic> data) {
+    return countBase(data);
   }
 }
