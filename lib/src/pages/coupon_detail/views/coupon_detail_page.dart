@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bullet_list/flutter_bullet_list.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/pages/coupon_detail/controllers/coupon_detail_controller.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
@@ -52,14 +53,14 @@ class CouponDetailPage extends GetView<CouponDetailController> {
             SizedBox(height: 20),
             TicketBox(
               xAxisMain: false,
-              fromEdgeMain: 470,
+              fromEdgeMain: screenSize.height*0.66,
               fromEdgeSeparator: 134,
               isOvalSeparator: false,
               smallClipRadius: 15,
               clipRadius: 15,
-              numberOfSmallClips: 8,
+              numberOfSmallClips: 12,
               ticketWidth: screenSize.width*0.9,
-              ticketHeight: screenSize.height*0.83,
+              ticketHeight: screenSize.height*0.85,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -126,7 +127,8 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                                     "Only 1 code can be applied when paying"),
                                 ListItemModel(
                                     label:
-                                    "Applies to multiple products in the same invoice"),
+                                    "Applies to multiple products in the same bill"),
+
                               ],
                             ),
                           ],
@@ -134,11 +136,23 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                           TextStyle(color: Colors.black54, fontSize: 16), bulletColor: Colors.grey, bulletSize: 3,
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(width: 8,),
+                          GestureDetector(
+                              onTap: (){
+                                showCustomDialog(context,coupon);
+                              },
+                              child: Text('View More', style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700),)),
+                          SizedBox(width: 40,),
+                        ],
+                      ),
                     ],
                   ),
                   Container(
                     height: screenSize.height*0.2,
-                    padding: const EdgeInsets.only(bottom: 15),
+                    padding: const EdgeInsets.only(top: 25),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -171,3 +185,65 @@ class CouponDetailPage extends GetView<CouponDetailController> {
     });
   }
 }
+
+void showCustomDialog(BuildContext context,Coupon coupon) => showDialog(
+  context: context,
+  barrierDismissible: false,
+  builder: (BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 12),
+            Text('${coupon.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+            SizedBox(height: 20),
+            Container(
+              color: Color(0xfffafafa),
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Amount limit: ")),
+                  Text("${coupon.limit ?? "1000"}")
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
+                  Text("${Formatter.price(coupon.minSpend ?? 50000).toUpperCase()}")
+                ],
+              ),
+            ),
+            Container(
+              color: Color(0xfffafafa),
+              padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
+                  Text("${Formatter.price(coupon.maxDiscount ?? 200000).toUpperCase()}")
+                ],
+              ),
+            ),
+            SizedBox(height: 12),
+            TextButton(
+              child: Text('Close', style: TextStyle(fontSize: 15,)),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      ),
+    );
+  },
+);
