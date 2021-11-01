@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
@@ -59,6 +60,14 @@ class CheckQRCodeController extends GetxController {
           if (countCouponInUse >= coupon!.limit!) {
             title = "ERROR";
             codeDisplayed = "Unable to apply coupon due to the number of people using the code exceeding the limit.";
+            isSuccess = false;
+            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon!);
+            return;
+          }
+          DateTime applyDate = DateTime.now();
+          if (coupon!.publishDate!.compareTo(applyDate) > 0) {
+            title = "ERROR";
+            codeDisplayed = "It's not time to apply yet.";
             isSuccess = false;
             _buildPopUp(context, title, codeDisplayed, isSuccess, coupon!);
             return;
