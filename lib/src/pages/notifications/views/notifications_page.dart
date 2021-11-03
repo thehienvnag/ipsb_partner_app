@@ -23,12 +23,13 @@ class NotificationsPage extends GetView<NotificationsController> {
       ),
       bottomNavigationBar: CustomBottombar(),
       body: Container(
-        child: listNotification(),
+        child: listNotification(context),
       ),
     );
   }
 
-  Widget listNotification() {
+  Widget listNotification(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Obx(() {
       final list = controller.notifications;
       if (controller.loading.value) {
@@ -41,10 +42,9 @@ class NotificationsPage extends GetView<NotificationsController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
-                child: Image.network(
-                    'https://image.flaticon.com/icons/png/512/891/891462.png'),
+                height: screenSize.height*0.258,
+                width: screenSize.width*0.486,
+                child: Image.network('https://image.flaticon.com/icons/png/512/891/891462.png'),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),
@@ -59,7 +59,7 @@ class NotificationsPage extends GetView<NotificationsController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: screenSize.width*0.77778,
                 child: Text(
                   'Come back to check after receiving new notification',
                   textAlign: TextAlign.center,
@@ -109,14 +109,12 @@ class NotificationsPage extends GetView<NotificationsController> {
         children: [
           Container(
             margin: const EdgeInsets.only(left: 5),
-            height: 100,
-            width: 100,
+            height: context.height * 0.13,
+            width: context.width * 0.243,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                  // 'https://raw.githubusercontent.com/thehienvnag/beauty-at-home-mobile/main/public/img/notification.PNG'),
-                  // 'https://ibb.co/DfHrstZ'
                   element.imageUrl != null
                       ? element.imageUrl!
                       : 'https://ibb.co/DfHrstZ',

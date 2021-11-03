@@ -32,8 +32,8 @@ class ProfilePage extends GetView<ProfileController> {
               Column(
                 children: <Widget>[
                   Container(
-                    height: 100,
-                    width: 100,
+                    height: context.height * 0.13,
+                    width: context.width * 0.243,
                     margin: EdgeInsets.only(top: 30),
                     child: Stack(
                       children: <Widget>[
@@ -84,14 +84,8 @@ class ProfilePage extends GetView<ProfileController> {
                 },
                 child: Container(
                   height: 55,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 30,
-                  ).copyWith(
-                    bottom: 20,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 30,).copyWith(bottom: 20,),
+                  padding: EdgeInsets.symmetric(horizontal: 20,),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.grey.withOpacity(0.1),
@@ -121,11 +115,8 @@ class ProfilePage extends GetView<ProfileController> {
               GestureDetector(
                 child: Container(
                   height: 55,
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: 20),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20,),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.grey.withOpacity(0.1),
@@ -181,36 +172,31 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.setting);
-                },
-                child: Container(
-                  height: 55,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 30,
-                  ).copyWith(bottom: 20),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey.withOpacity(0.1),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.settings, size: 25, color: Color(0xff28BEBA)),
-                      SizedBox(width: 15),
-                      Text('Setting',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          )),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 25,
-                      ),
-                    ],
-                  ),
+              Container(
+                height: 55,
+                margin: EdgeInsets.symmetric(
+                  horizontal: 30,
+                ).copyWith(bottom: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey.withOpacity(0.1),
+                ),
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.settings, size: 25, color: Color(0xff28BEBA)),
+                    SizedBox(width: 15),
+                    Text('Setting',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                        )),
+                    Spacer(),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 25,
+                    ),
+                  ],
                 ),
               ),
               GestureDetector(

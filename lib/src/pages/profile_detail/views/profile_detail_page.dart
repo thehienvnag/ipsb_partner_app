@@ -51,8 +51,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     Obx(() {
                       String filePath = controller.filePath.value;
                       return Container(
-                        width: 100,
-                        height: 100,
+                          height: context.height * 0.13,
+                          width: context.width * 0.243,
                         margin: EdgeInsets.only(top: 30),
                         decoration: BoxDecoration(
                             border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor),
@@ -168,7 +168,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  height: 50,
+                  height:context.height* 0.0645,
                   margin: EdgeInsets.only(top: 35, right: 20, left: 20),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -176,8 +176,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       vertical: 13,
                     ),
                     child: SizedBox(
-                      width: 167,
-                      height: 19,
+                      width: context.width* 0.406,
+                      height: context.height* 0.0245,
                       child: Text(
                         "Save",
                         textAlign: TextAlign.center,
