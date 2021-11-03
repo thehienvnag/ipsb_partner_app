@@ -22,7 +22,7 @@ class ManageFeedbackController extends GetxController {
   Future<void> getCouponInUse() async {
     String? couponId = Get.parameters['couponId'];
     final paging = await _service.getCouponInUseByCouponId(int.parse(couponId!));
-    listCouponInUse.value = paging.content ?? [];
+    listCouponInUse.value = (paging.content ?? []).where((element) => element.rateScore != null).toList();
   }
 
   final couponInUseId = 0.obs;
