@@ -18,6 +18,7 @@ class HomePage extends GetView<HomeController> {
         ),
         elevation: 4,
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Stack(

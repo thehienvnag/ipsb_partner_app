@@ -40,7 +40,7 @@ class LoginController extends GetxController {
     if (!account.isNull) {
       BotToast.showText(text: "Login successfully", textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),);
       sharedStates.account = account;
-      Get.toNamed(Routes.home);
+      Get.offAndToNamed(Routes.home);
       print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
       if (account!.role == 'Store Owner') {
         FirebaseHelper helper = FirebaseHelper();

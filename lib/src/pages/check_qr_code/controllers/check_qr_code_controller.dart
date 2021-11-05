@@ -4,6 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
@@ -18,7 +19,7 @@ class CheckQRCodeController extends GetxController {
   // Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  final currentStep = 1.obs;
+  final SharedStates sharedStates = Get.find();
 
   String title = "";
   Coupon? coupon;
@@ -36,7 +37,8 @@ class CheckQRCodeController extends GetxController {
   ICouponInUseService couponInUseService = Get.find();
 
   Future<int> _countCouponInUseByCouponId(int couponId) async {
-    return await couponInUseService.countCouponInUseByCouponId({"couponId": couponId.toString(), "status": "Used"});
+    return await couponInUseService.countCouponInUseByCouponId(
+        {"couponId": couponId.toString(), "status": "Used"});
   }
 
   /// Create QR view to scan and execute
@@ -47,21 +49,47 @@ class CheckQRCodeController extends GetxController {
         isScanned = false;
         String tmp = scanData.code;
         List<String> arr = tmp.split(',');
+        if (arr.length != 4) {
+          title = "ERROR";
+          codeDisplayed = "Invalid QR code";
+          isSuccess = false;
+          _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
+          return;
+        }
         storeId = int.parse(arr[0]);
+        if (storeId != sharedStates.account!.store!.id) {
+          title = "ERROR";
+          codeDisplayed =
+              "Your coupon does not belong to this store";
+          isSuccess = false;
+          _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
+          return;
+        }
         couponId = int.parse(arr[1]);
         couponInUseId = int.parse(arr[2]);
         codeDisplayed = arr[3];
         coupon = await checkCode(storeId!, couponId!, codeDisplayed);
 
         if (coupon != null) {
+
+          if (coupon!.status == Constants.inactive) {
+            title = "ERROR";
+            codeDisplayed =
+            "Your coupon is no longer available";
+            isSuccess = false;
+            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
+            return;
+          }
+          
           couponInUse = await getCouponInUse(couponInUseId!);
 
           countCouponInUse = await _countCouponInUseByCouponId(couponId!);
           if (countCouponInUse >= coupon!.limit!) {
             title = "ERROR";
-            codeDisplayed = "Unable to apply coupon due to the number of people using the code exceeding the limit.";
+            codeDisplayed =
+                "Unable to apply coupon due to the number of people using the code exceeding the limit.";
             isSuccess = false;
-            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon!);
+            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
             return;
           }
           DateTime applyDate = DateTime.now();
@@ -69,19 +97,20 @@ class CheckQRCodeController extends GetxController {
             title = "ERROR";
             codeDisplayed = "It's not time to apply yet.";
             isSuccess = false;
-            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon!);
+            _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
             return;
           }
           if (couponInUse != null) {
             if (couponInUse?.status == "Used") {
               title = "ERROR";
-              codeDisplayed = "Coupon cannot be applied because it has already been used.";
+              codeDisplayed =
+                  "Coupon cannot be applied because it has already been used.";
               isSuccess = false;
             } else if (couponInUse?.status == "Deleted") {
               codeDisplayed = "Coupon cannot be applied due to out of date.";
               isSuccess = false;
             } else {
-              updateCoupon = await putCouponInUse(couponInUseId!, couponId!, 9, "Used");
+              updateCoupon = await putCouponInUse(couponInUseId!, "Used");
               if (updateCoupon) {
                 title = "VALID COUPON";
                 codeDisplayed = 'Name: ' +
@@ -101,7 +130,8 @@ class CheckQRCodeController extends GetxController {
                 isSuccess = true;
               } else {
                 title = "ERROR";
-                codeDisplayed = "Coupon cannot be used due to error while applying process.";
+                codeDisplayed =
+                    "Coupon cannot be used due to error while applying process.";
                 isSuccess = false;
               }
             }
@@ -111,23 +141,9 @@ class CheckQRCodeController extends GetxController {
           codeDisplayed = "Invalid coupon.";
           isSuccess = false;
         }
-        _buildPopUp(context, title, codeDisplayed, isSuccess, coupon!);
+        _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
       }
     });
-  }
-
-  /// Move to next step
-  void moveToNext() {
-    if (currentStep.value == 1) {
-      currentStep.value++;
-    }
-  }
-
-  /// Back to previous step
-  void backToPrevious() {
-    if (currentStep.value == 2) {
-      currentStep.value--;
-    }
   }
 
   @override
@@ -136,7 +152,8 @@ class CheckQRCodeController extends GetxController {
     super.dispose();
   }
 
-  Future<void> _buildPopUp(BuildContext context, String title, String code, bool isSuccess, Coupon coupon) {
+  Future<void> _buildPopUp(BuildContext context, String title, String code,
+      bool isSuccess, Coupon? coupon) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final popup = BeautifulPopup(
@@ -194,7 +211,9 @@ class CheckQRCodeController extends GetxController {
                     width: 10,
                   ),
                   OutlinedButton(
-                    onPressed: () {showCouponDetailDialog(context, coupon);},
+                    onPressed: () {
+                      showCouponDetailDialog(context, coupon!);
+                    },
                     child: Text('View Detail'),
                   )
                 ],
@@ -210,7 +229,8 @@ class CheckQRCodeController extends GetxController {
   }
 
   Future<Coupon?> checkCode(int storeId, int couponId, String code) async {
-    List<Coupon> couponList = await couponService.checkCode(storeId, couponId, code);
+    List<Coupon> couponList =
+        await couponService.checkCode(storeId, couponId, code);
     if (couponList.isNotEmpty) {
       return couponList.first;
     }
@@ -220,125 +240,144 @@ class CheckQRCodeController extends GetxController {
     return await couponInUseService.getCouponInUse(couponInUseId);
   }
 
-  Future<bool> putCouponInUse(int couponInUseId, int couponId, int visitorId, String status) async {
-    return await couponInUseService.putCoupon(couponInUseId, couponId, visitorId, status);
+  Future<bool> putCouponInUse(int couponInUseId, String status) async {
+    return await couponInUseService.putCoupon(couponInUseId, status);
   }
 
   SharedStates states = Get.find();
+
   void backToHome() {
     states.bottomBarSelectedIndex.value = 0;
     Get.offNamed(Routes.home);
   }
 
   void showCustomDialog(BuildContext context) => showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      final screenSize = MediaQuery.of(context).size;
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 12),
-              Container(
-                alignment: Alignment.center,
-                width: screenSize.width * 0.7,
-                color: Color(0xfffafafa),
-                child: Text(
-                  'ERROR WHILE SAVING COUPON',
-                  style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          final screenSize = MediaQuery.of(context).size;
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 12),
+                  Container(
+                    alignment: Alignment.center,
+                    width: screenSize.width * 0.7,
+                    color: Color(0xfffafafa),
+                    child: Text(
+                      'ERROR WHILE SAVING COUPON',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
+                    child: Text(
+                      "Unable to save coupon due to the number of people using the code exceeding the limit ",
+                      style: TextStyle(fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  TextButton(
+                    child: Text('Close',
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                    onPressed: () => Get.back(),
+                  )
+                ],
               ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-                child: Text(
-                  "Unable to save coupon due to the number of people using the code exceeding the limit ",
-                  style: TextStyle(fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(height: 12),
-              TextButton(
-                child: Text('Close',
-                    style: TextStyle(
-                      fontSize: 15,
-                    )),
-                onPressed: () => Get.back(),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
-    },
-  );
 
-  void showCouponDetailDialog(BuildContext context,Coupon coupon) => showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      final screenSize = MediaQuery.of(context).size;
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 12),
-              Text('${coupon.name}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-              SizedBox(height: 20),
-              Container(
-                color: Color(0xfffafafa),
-                padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(width: screenSize.width*0.4,child: Text("Limit: ")),
-                    Text("${coupon.limit ?? "N/A"}")
-                  ],
-                ),
+  void showCouponDetailDialog(BuildContext context, Coupon coupon) =>
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          final screenSize = MediaQuery.of(context).size;
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 12),
+                  Text(
+                    '${coupon.name}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    color: Color(0xfffafafa),
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Limit: ")),
+                        Text("${coupon.limit ?? "N/A"}")
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Minimum spend: ")),
+                        Text(
+                            "${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Color(0xfffafafa),
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Maximum discount: ")),
+                        Text(
+                            "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  TextButton(
+                    child: Text('Close',
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                ],
               ),
-              Container(
-                padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(width: screenSize.width*0.4,child: Text("Minimum spend: ")),
-                    Text("${Formatter.price(coupon.minSpend ?? 0).toUpperCase()}")
-                  ],
-                ),
-              ),
-              Container(
-                color: Color(0xfffafafa),
-                padding: EdgeInsets.only(left: screenSize.width*0.08,bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(width: screenSize.width*0.4,child: Text("Maximum discount: ")),
-                    Text("${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
-                  ],
-                ),
-              ),
-              SizedBox(height: 12),
-              TextButton(
-                child: Text('Close', style: TextStyle(fontSize: 15,)),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
-    },
-  );
 }
