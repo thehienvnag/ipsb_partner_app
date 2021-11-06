@@ -8,6 +8,7 @@ import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class CustomBottombarController extends GetxController {
   final SharedStates states = Get.find();
+
   Future<void> changeSelected(int index) async {
     Get.offAndToNamed(items[index].route);
     states.bottomBarSelectedIndex.value = index;
@@ -31,6 +32,7 @@ class BottomItem extends SalomonBottomBarItem {
           selectedColor: color,
         );
 }
+
 final SharedStates states = Get.find();
 
 final items = [
@@ -60,28 +62,34 @@ final items = [
       children: <Widget>[
         new Icon(Icons.notifications),
         // states.unreadNotification.value != 0 ?
-        new Positioned(
-          right: 0,
-          child: new Container(
-            padding: EdgeInsets.all(1),
-            decoration: new BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            constraints: BoxConstraints(
-              minWidth: 12,
-              minHeight: 12,
-            ),
-            child: new Text(
-              states.unreadNotification.value.toString(),
-              style: new TextStyle(
-                color: Colors.white,
-                fontSize: 8,
+        Obx(() {
+          if (states.unreadNotification.value != 0) {
+            return Positioned(
+              right: 0,
+              child: new Container(
+                padding: EdgeInsets.all(1),
+                decoration: new BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 12,
+                  minHeight: 12,
+                ),
+                child: Text(
+                  states.unreadNotification.value.toString(),
+                  style: new TextStyle(
+                    color: Colors.white,
+                    fontSize: 8,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ), // : SizedBox(),
+            );
+          } else {
+            return SizedBox();
+          }
+        }),
       ],
     ),
     route: Routes.notifications,
