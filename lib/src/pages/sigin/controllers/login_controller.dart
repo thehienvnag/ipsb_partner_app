@@ -44,7 +44,6 @@ class LoginController extends GetxController {
       print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
       if (account!.role == 'Store Owner') {
         FirebaseHelper helper = FirebaseHelper();
-        await helper.unsubscribeFromTopic("store_id_" + account!.store!.id.toString());
         await helper.subscribeToTopic("store_id_" + account!.store!.id.toString());
       }
     } else {
