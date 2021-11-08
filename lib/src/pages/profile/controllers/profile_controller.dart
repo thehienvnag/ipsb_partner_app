@@ -8,10 +8,13 @@ import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 class ProfileController extends GetxController {
   final SharedStates sharedData = Get.find();
   Future<void> logOut() async {
-    /// Place this on top before set account to null
-    /// * Unsubscribe from topic before logout *
-    FirebaseHelper helper = new FirebaseHelper();
-    await helper.unsubscribeFromTopic("account_id_" + sharedData.account!.id.toString());
+
+    if (sharedData.account!.role == 'Store Owner') {
+      /// Place this on top before set account to null
+      /// * Unsubscribe from topic before logout *
+      FirebaseHelper helper = new FirebaseHelper();
+      await helper.unsubscribeFromTopic("account_id_" + sharedData.account!.id.toString());
+    }
 
     BotToast.showText(text: "Logout Success");
     Get.offAndToNamed(Routes.login);

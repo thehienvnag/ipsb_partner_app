@@ -85,11 +85,15 @@ class FirebaseHelper {
     );
   }
 
-  getToken() async {
-    String? token = await _messaging.getToken();
-    _fcmToken = token!;
-    print("Token: " + _fcmToken);
-  }
+  // getToken() async {
+  //   try {
+  //     String? token = await _messaging.getToken();
+  //     _fcmToken = token!;
+  //     print("Token: " + _fcmToken);
+  //   } catch (Exception){
+  //     print("Token invalid");
+  //   }
+  // }
 
   Future<dynamic> _onSelectNotification(payload) async {
     // implement logic

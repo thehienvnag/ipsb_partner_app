@@ -51,7 +51,6 @@ class LoginController extends GetxController {
           text: "Email or password not correct !",
           textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
-      Get.toNamed(Routes.login);
     }
     BotToast.closeAllLoading();
   }

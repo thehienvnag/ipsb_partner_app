@@ -40,9 +40,9 @@ class HomePage extends GetView<HomeController> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 45,
                   crossAxisSpacing: 25,
-                  children: List.generate(choices.length, (index) {
+                  children: List.generate(controller.choices.length, (index) {
                     return Center(
-                      child: _buildTabs(choices[index], index, controller),
+                      child: _buildTabs(controller.choices[index], index, controller),
                     );
                   }),
                 ),
