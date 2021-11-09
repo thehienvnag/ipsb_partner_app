@@ -3,8 +3,6 @@ import 'package:ipsb_partner_app/src/pages/check_qr_code/bindings/check_qr_code_
 import 'package:ipsb_partner_app/src/pages/check_qr_code/views/check_qr_code_page.dart';
 import 'package:ipsb_partner_app/src/pages/coupon_detail/bindings/coupon_detail_binding.dart';
 import 'package:ipsb_partner_app/src/pages/coupon_detail/views/coupon_detail_page.dart';
-import 'package:ipsb_partner_app/src/pages/create-coupon/bindings/create_coupon_binding.dart';
-import 'package:ipsb_partner_app/src/pages/create-coupon/views/create_coupon_page.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/bindings/manage_coupon_binding.dart';
 import 'package:ipsb_partner_app/src/pages/manage_coupon/views/manage_coupon_page.dart';
 import 'package:ipsb_partner_app/src/pages/manage_feedback/bindings/manage_feedback_binding.dart';
@@ -17,8 +15,6 @@ import 'package:ipsb_partner_app/src/pages/profile/bindings/profile_binding.dart
 import 'package:ipsb_partner_app/src/pages/profile/views/profile_page.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/bindings/profile_detail_binding.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/views/profile_detail_page.dart';
-import 'package:ipsb_partner_app/src/pages/setting/bindings/setting_binding.dart';
-import 'package:ipsb_partner_app/src/pages/setting/views/setting_page.dart';
 import 'package:ipsb_partner_app/src/pages/sigin/bindings/login_binding.dart';
 import 'package:ipsb_partner_app/src/pages/sigin/views/login_page.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
@@ -31,11 +27,6 @@ class AppPages {
       name: Routes.home,
       page: () => HomePage(),
       binding: HomeBinding(),
-    ),
-    GetPage(
-      name: Routes.createCoupon,
-      page: () => CreateCouponPage(),
-      binding: CreateCouponBinding(),
     ),
     GetPage(
       name: Routes.manageCoupon,
@@ -56,11 +47,6 @@ class AppPages {
       name: Routes.profileDetail,
       page: () => ProfileDetailPage(),
       binding: ProfileDetailBinding(),
-    ),
-    GetPage(
-      name: Routes.setting,
-      page: () => SettingPage(),
-      binding: SettingBinding(),
     ),
     GetPage(
       name: Routes.feedbacks,

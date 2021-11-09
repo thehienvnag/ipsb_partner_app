@@ -9,7 +9,7 @@ import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
 import 'package:ipsb_partner_app/src/models/notification.dart';
 
 class NotificationsPage extends GetView<NotificationsController> {
-  SharedStates states = Get.find();
+  final SharedStates states = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +25,13 @@ class NotificationsPage extends GetView<NotificationsController> {
       ),
       bottomNavigationBar: CustomBottombar(),
       body: Container(
-        child: listNotification(),
+        child: listNotification(context),
       ),
     );
   }
 
-  Widget listNotification() {
+  Widget listNotification(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Obx(() {
       if (states.account == null) {
         return Center(
@@ -41,8 +42,7 @@ class NotificationsPage extends GetView<NotificationsController> {
                 margin: EdgeInsets.only(top: 40, right: 20),
                 height: 200,
                 width: 200,
-                child: Image.asset(
-                    ConstImg.empty),
+                child: Image.asset(ConstImg.empty),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),
@@ -85,8 +85,7 @@ class NotificationsPage extends GetView<NotificationsController> {
                 margin: EdgeInsets.only(top: 40, right: 20),
                 height: 200,
                 width: 200,
-                child: Image.asset(
-                    ConstImg.empty),
+                child: Image.asset(ConstImg.empty),
               ),
               Container(
                 margin: EdgeInsets.only(top: 30),
@@ -101,7 +100,7 @@ class NotificationsPage extends GetView<NotificationsController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: screenSize.width * 0.77778,
                 child: Text(
                   'Come back to check after receiving new notification',
                   textAlign: TextAlign.center,

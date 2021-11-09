@@ -54,7 +54,6 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
         final coupon = coupons[index];
         controller.getNewFeedback(coupon.id!.toInt());
         return GestureDetector(
-          // onTap: () => controller.gotoFeedbackListDetails(coupon),
           onTap: () => Get.toNamed(
             Routes.feedbacks,
             parameters: {
@@ -102,7 +101,6 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                           controller.gotoCouponDetails(coupon);
                         },
                         icon: Icon(Icons.info,size: 20,),
-
                         label: Text('View Detail'),
                       ),
                     ],
@@ -118,7 +116,6 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                         SizedBox(height: 15,),
                         TextButton.icon(
                           onPressed: () {
-                            // controller.gotoFeedbackListDetails(coupon);
                             Get.toNamed(
                               Routes.feedbacks,
                               parameters: {

@@ -50,7 +50,7 @@ class CouponDetailPage extends GetView<CouponDetailController> {
         ),
         body: Center(
           child: Column(children: [
-            SizedBox(height: 20),
+            SizedBox(height: screenSize.height*0.0258),
             TicketBox(
               xAxisMain: false,
               fromEdgeMain: screenSize.height*0.66,
