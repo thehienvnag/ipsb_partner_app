@@ -9,7 +9,6 @@ import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
 import 'package:ipsb_partner_app/src/services/api/notification_service.dart';
 import 'package:ipsb_partner_app/src/services/api/product_service.dart';
 import 'package:ipsb_partner_app/src/services/api/store_service.dart';
-import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';

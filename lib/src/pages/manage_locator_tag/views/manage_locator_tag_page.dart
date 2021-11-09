@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
 
 class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {

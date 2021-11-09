@@ -1,4 +1,3 @@
-import 'package:ipsb_partner_app/src/models/floor_plan.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'building.g.dart';
@@ -13,7 +12,8 @@ class Building {
     this.name,
   });
 
-  factory Building.fromJson(Map<String, dynamic> json) => _$BuildingFromJson(json);
+  factory Building.fromJson(Map<String, dynamic> json) =>
+      _$BuildingFromJson(json);
 
   Map<String, dynamic> toJson() => _$BuildingToJson(this);
 }

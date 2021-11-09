@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:ipsb_partner_app/src/common/constants.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
@@ -14,7 +14,6 @@ import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
 import 'package:ipsb_partner_app/src/utils/utils.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:ipsb_partner_app/src/models/coupon.dart';
 
 class CheckQRCodeController extends GetxController {
   // Barcode? result;
