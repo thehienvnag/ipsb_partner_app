@@ -215,8 +215,8 @@ class ProfilePage extends GetView<ProfileController> {
               ),
               GestureDetector(
                 onTap: () {
-                  // controller.logOut();
-                  Get.toNamed(Routes.login);
+                  controller.logOut();
+                  // Get.toNamed(Routes.login);
                 },
                 child: Container(
                   height: 55,

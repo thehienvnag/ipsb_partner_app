@@ -2,9 +2,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
+import 'package:ipsb_partner_app/src/services/api/notification_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class FirebaseHelper {
+
+  final SharedStates states = Get.find();
+  INotificationService _service = Get.find();
   static FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   static FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
@@ -43,8 +49,14 @@ class FirebaseHelper {
           .then((value) => Future.delayed(const Duration(seconds: 2), () {
                 FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
               }));
+      loadUnreadNotification();
       Get.dialog(_buildDialog(data.title, data.body, message.data));
     }
+  }
+
+  void loadUnreadNotification() async {
+    states.unreadNotification.value =
+    await _service.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
   }
 
   requestingPermissionForIOS() async {
@@ -73,11 +85,15 @@ class FirebaseHelper {
     );
   }
 
-  getToken() async {
-    String? token = await _messaging.getToken();
-    _fcmToken = token!;
-    print("Token: " + _fcmToken);
-  }
+  // getToken() async {
+  //   try {
+  //     String? token = await _messaging.getToken();
+  //     _fcmToken = token!;
+  //     print("Token: " + _fcmToken);
+  //   } catch (Exception){
+  //     print("Token invalid");
+  //   }
+  // }
 
   Future<dynamic> _onSelectNotification(payload) async {
     // implement logic

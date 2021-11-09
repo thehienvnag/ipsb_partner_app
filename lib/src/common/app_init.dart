@@ -65,7 +65,7 @@ class AppInit {
   static void initializePushNotification() {
     FirebaseHelper helper = FirebaseHelper();
     helper.requestingPermissionForIOS();
-    helper.getToken();
+    // helper.getToken();
     helper.initPushNotification();
     helper.setupInteractedMessage();
   }

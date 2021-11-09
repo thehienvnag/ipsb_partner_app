@@ -181,14 +181,13 @@ class ManageLocatorTagController extends GetxController {
   }
 
   void addBeacons(String uuid, int index) async {
-    int buildingId = 38;
-    // sharedStates.account.buildingId;
+    int? buildingId = sharedStates.account!.building!.id;
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
     rssiArray.add("item");
     rssiArray.remove("item");
     LocatorTag? locatorTag =
-        await _locatorTagService.postLocatorTag(uuid, buildingId);
+        await _locatorTagService.postLocatorTag(uuid, buildingId!);
 
     if (locatorTag != null) {
       BotToast.showText(

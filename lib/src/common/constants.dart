@@ -60,3 +60,12 @@ class Constants {
   /// Constants for additional segment added in url
   static const String txPower = "tx-power";
 }
+
+
+class ConstImg {
+
+  static const String newNotification = "assets/images/new.png";
+
+  static const String empty = "assets/images/empty.png";
+
+}

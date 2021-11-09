@@ -18,6 +18,9 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     store: json['store'] == null
         ? null
         : Store.fromJson(json['store'] as Map<String, dynamic>),
+    building: json['building'] == null
+        ? null
+        : Building.fromJson(json['building'] as Map<String, dynamic>),
   );
 }
 
@@ -30,4 +33,5 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'email': instance.email,
       'status': instance.status,
       'store': instance.store,
+      'building': instance.building,
     };
