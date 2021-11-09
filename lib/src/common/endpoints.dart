@@ -12,6 +12,9 @@ class Endpoints {
   /// Edge enpoint version /api/v1
   static const edges = '$apiVer1/edges';
 
+  /// Refresh token endpoint version /api/v1
+  static const refreshToken = '$apiVer1/auth/refresh-token';
+
   /// Location enpoint version /api/v1
   static const locations = '$apiVer1/locations';
 
@@ -26,6 +29,9 @@ class Endpoints {
 
   /// Account enpoint version /api/v1
   static const accounts = '$apiVer1/accounts';
+
+  /// Account enpoint version /api/v1
+  static const login = '$apiVer1/auth/login';
 
   /// CouponInUse enpoint version /api/v1
   static const couponsInUse = '$apiVer1/coupon-in-uses';

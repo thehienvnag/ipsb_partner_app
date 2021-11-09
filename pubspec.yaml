@@ -118,6 +118,9 @@ dependencies:
 
   # FLutter bullet list
   flutter_bullet_list: ^0.0.4
+  
+  # Secure storage for storing credentials
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:

@@ -22,8 +22,5 @@ class SharedStates extends GetxService {
   /// Save the coupon detail
   void saveCoupon(value) => coupon.value = value;
 
-  /// User login in app
-  Account? account;
-
   final couponDetail = Coupon().obs;
 }

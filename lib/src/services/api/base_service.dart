@@ -5,6 +5,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:ipsb_partner_app/src/data/api_helper.dart';
 import 'package:ipsb_partner_app/src/data/file_upload_utils.dart';
 import 'package:ipsb_partner_app/src/models/paging.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 
 abstract class BaseService<T> {
   IApiHelper _apiHelper = Get.find();
@@ -16,46 +17,58 @@ abstract class BaseService<T> {
   String endpoint();
 
   Future<T?> getByIdBase(int id) async {
-    Response response = await _apiHelper.getById(endpoint(), id);
+    final callback = () => _apiHelper.getById(endpoint(), id);
+    Response res = await AuthServices.handleUnauthorized(callback);
+    if (res.isOk) {
+      return fromJson(res.body);
+    }
+  }
 
-    if (response.isOk) {
-      return fromJson(response.body);
+  Future<T?> postPure(String uri, Map<String, String> body) async {
+    Response res = await _apiHelper.postOne(uri, body);
+    if (res.isOk) {
+      return fromJson(res.body);
+    }
+  }
+
+  Future<T?> postNoAuth(String endpoint, Map<String, String> body) async {
+    Response res = await _apiHelper.postOne(endpoint, body);
+    if (res.statusCode == HttpStatus.ok) {
+      return fromJson(res.body);
     }
   }
 
   /// Get paging instance from API with [query]
   Future<Paging<T>> getPagingBase(Map<String, dynamic> query) async {
-    Response res = await _apiHelper.getAll(endpoint(), query: query);
-    Paging<T> paging = Paging.fromJson(res.body);
-    paging.convertToList(fromJson);
-    return paging;
+    final callback = () => _apiHelper.getAll(endpoint(), query: query);
+    Response res = await AuthServices.handleUnauthorized(callback);
+    if (res.isOk) {
+      Paging<T> paging = Paging.fromJson(res.body);
+      paging.convertToList(fromJson);
+      return paging;
+    }
+    return Paging.defaultInstance<T>();
   }
 
   /// Get list instances from API with [query]
   Future<List<T>> getAllBase(Map<String, dynamic> query) async {
-    Response res = await _apiHelper.getAll(endpoint(), query: query);
-    Paging<T> paging = Paging.fromJson(res.body);
-    paging.convertToList(fromJson);
+    final paging = await getPagingBase(query);
     return paging.content ?? [];
   }
 
   /// Get list instances from API with [query]
   Future<int> countBase(Map<String, dynamic> query,
       [bool cacheAllow = false]) async {
-    // final callback = () => _apiHelper.count(endpoint() + "/count", query);
-    // Response res = await AuthServices.handleUnauthorized(callback);
-    Response res = await _apiHelper.count(endpoint() + "/count", query);
+    final callback = () => _apiHelper.count(endpoint() + "/count", query);
+    Response res = await AuthServices.handleUnauthorized(callback);
     return res.body;
   }
 
   /// Post an instance with [body]
   Future<T?> postBase(Map<String, dynamic> body) async {
-    Response res = await _apiHelper.postOne(endpoint(), body);
-
+    final callback = () => _apiHelper.postOne(endpoint(), body);
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.created) {
-      return fromJson(res.body);
-    }
-    if (res.statusCode == HttpStatus.ok) {
       return fromJson(res.body);
     }
   }
@@ -68,7 +81,8 @@ abstract class BaseService<T> {
     List<MultipartFile> files = filePaths
         .map((path) => FileUploadUtils.convertToMultipart(path))
         .toList();
-    Response res = await _apiHelper.postOneWithFiles(endpoint(), body, files);
+    final callback = () => _apiHelper.postOneWithFiles(endpoint(), body, files);
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
@@ -79,11 +93,12 @@ abstract class BaseService<T> {
     Map<String, dynamic> body,
     String filePath,
   ) async {
-    Response res = await _apiHelper.postOneWithFile(
-      endpoint(),
-      body,
-      FileUploadUtils.convertToMultipart(filePath),
-    );
+    final callback = () => _apiHelper.postOneWithFile(
+          endpoint(),
+          body,
+          FileUploadUtils.convertToMultipart(filePath),
+        );
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.created) {
       return fromJson(res.body);
     }
@@ -91,7 +106,8 @@ abstract class BaseService<T> {
 
   /// Put an instance with [id] and [body]
   Future<bool> putBase(dynamic id, Map<String, dynamic> body) async {
-    Response res = await _apiHelper.putOne(endpoint(), id, body);
+    final callback = () => _apiHelper.putOne(endpoint(), id, body);
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.noContent) {
       return true;
     }
@@ -101,10 +117,9 @@ abstract class BaseService<T> {
   /// Put an instance with [id] and [body]
   Future<bool> putBaseWithAdditionalSegment(
       dynamic id, String additionalSegment, Map<String, dynamic> body) async {
-
-    Response res = await _apiHelper.putOneWithAdditionalSegment(
+    final callback = () => _apiHelper.putOneWithAdditionalSegment(
         endpoint(), additionalSegment, id, body);
-    print(res.body);
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.noContent) {
       return true;
     }
@@ -131,17 +146,19 @@ abstract class BaseService<T> {
       Map<String, dynamic> body, String filePath, int id,
       [String fileName = "imageUrl"]) async {
     if (filePath.isNotEmpty) {
-      Response res = await _apiHelper.putOneWithOneFile(
+      final callback = () => _apiHelper.putOneWithOneFile(
           endpoint() + "/" + id.toString(),
           body,
           FileUploadUtils.convertToMultipart(filePath),
           fileName);
+      Response res = await AuthServices.handleUnauthorized(callback);
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }
     } else {
-      Response res = await _apiHelper.putOneWithOneFile(
+      final callback = () => _apiHelper.putOneWithOneFile(
           endpoint() + "/" + id.toString(), body, null, fileName);
+      Response res = await AuthServices.handleUnauthorized(callback);
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }
@@ -158,7 +175,8 @@ abstract class BaseService<T> {
     List<MultipartFile> files = filePaths
         .map((path) => FileUploadUtils.convertToMultipart(path))
         .toList();
-    Response res = await _apiHelper.putOneWithFiles(endpoint(), body, files);
+    final callback = () => _apiHelper.putOneWithFiles(endpoint(), body, files);
+    Response res = await AuthServices.handleUnauthorized(callback);
     if (res.statusCode == HttpStatus.noContent) {
       return fromJson(res.body);
     }
@@ -166,7 +184,8 @@ abstract class BaseService<T> {
 
   /// Delete an instance
   Future<bool> deleteBase(dynamic id) async {
-    Response res = await _apiHelper.deleteOne(endpoint(), id);
+    final callback = () => _apiHelper.deleteOne(endpoint(), id);
+    Response res = await AuthServices.handleUnauthorized(callback);
     return res.statusCode == HttpStatus.noContent;
   }
 }

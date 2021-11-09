@@ -9,6 +9,7 @@ import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
 import 'package:ipsb_partner_app/src/utils/utils.dart';
@@ -57,10 +58,9 @@ class CheckQRCodeController extends GetxController {
           return;
         }
         storeId = int.parse(arr[0]);
-        if (storeId != sharedStates.account!.store!.id) {
+        if (storeId != AuthServices.userLoggedIn.value.store!.id!) {
           title = "ERROR";
-          codeDisplayed =
-              "Your coupon does not belong to this store";
+          codeDisplayed = "Your coupon does not belong to this store";
           isSuccess = false;
           _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
           return;
@@ -71,16 +71,14 @@ class CheckQRCodeController extends GetxController {
         coupon = await checkCode(storeId!, couponId!, codeDisplayed);
 
         if (coupon != null) {
-
           if (coupon!.status == Constants.inactive) {
             title = "ERROR";
-            codeDisplayed =
-            "Your coupon is no longer available";
+            codeDisplayed = "Your coupon is no longer available";
             isSuccess = false;
             _buildPopUp(context, title, codeDisplayed, isSuccess, coupon);
             return;
           }
-          
+
           couponInUse = await getCouponInUse(couponInUseId!);
 
           countCouponInUse = await _countCouponInUseByCouponId(couponId!);

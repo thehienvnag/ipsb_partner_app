@@ -6,6 +6,7 @@ import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/models/store.dart';
 import 'package:ipsb_partner_app/src/services/api/coupon_in_use_service.dart';
 import 'package:ipsb_partner_app/src/services/api/store_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class ManageFeedbackController extends GetxController {
@@ -21,8 +22,11 @@ class ManageFeedbackController extends GetxController {
   /// Set list coupon of visitor feedback before
   Future<void> getCouponInUse() async {
     String? couponId = Get.parameters['couponId'];
-    final paging = await _service.getCouponInUseByCouponId(int.parse(couponId!));
-    listCouponInUse.value = (paging.content ?? []).where((element) => element.rateScore != null).toList();
+    final paging =
+        await _service.getCouponInUseByCouponId(int.parse(couponId!));
+    listCouponInUse.value = (paging.content ?? [])
+        .where((element) => element.rateScore != null)
+        .toList();
   }
 
   final couponInUseId = 0.obs;
@@ -47,18 +51,22 @@ class ManageFeedbackController extends GetxController {
   }
 
   Future<void> getStoreInformation() async {
-    store = await getStoreById(sharedData.account!.store!.id!);
+    final storeId = AuthServices.userLoggedIn.value.store?.id;
+    if (storeId == null) return;
+    store = await getStoreById(storeId);
   }
 
-  void replyFeedback(int couponInUseId) async{
+  void replyFeedback(int couponInUseId) async {
     BotToast.showLoading();
-    updateCoupon = await _service.putReplyFeedbackCouponInUse(couponInUseId,contentReplyFeedback.value);
+    updateCoupon = await _service.putReplyFeedbackCouponInUse(
+        couponInUseId, contentReplyFeedback.value);
     if (updateCoupon) {
       BotToast.showText(
           text: "Reply Success !",
-          textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+          textStyle: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
-    }else{
+    } else {
       BotToast.showText(
           text: "Reply Failed !",
           textStyle: TextStyle(
@@ -68,14 +76,15 @@ class ManageFeedbackController extends GetxController {
     getCouponInUse();
     BotToast.closeAllLoading();
   }
+
   final loadReplyFeedback = "".obs;
 
   void getReplyFeedback(List<CouponInUse> listFeedback, int couponInUseId) {
-    for(int i = 0; i < listFeedback.length; i++){
-      if(couponInUseId == listFeedback[i].id){
-        if(listFeedback[i].feedbackReply != null){
+    for (int i = 0; i < listFeedback.length; i++) {
+      if (couponInUseId == listFeedback[i].id) {
+        if (listFeedback[i].feedbackReply != null) {
           loadReplyFeedback.value = listFeedback[i].feedbackReply!;
-        }else{
+        } else {
           loadReplyFeedback.value = "";
         }
       }
@@ -84,10 +93,10 @@ class ManageFeedbackController extends GetxController {
 
   final indexViewMore = "".obs;
 
-  void changeHideInfo(int indexFeedback){
-    if(indexViewMore.value.compareTo(indexFeedback.toString()) == 0){
+  void changeHideInfo(int indexFeedback) {
+    if (indexViewMore.value.compareTo(indexFeedback.toString()) == 0) {
       indexViewMore.value = "";
-    }else {
+    } else {
       indexViewMore.value = indexFeedback.toString();
     }
   }

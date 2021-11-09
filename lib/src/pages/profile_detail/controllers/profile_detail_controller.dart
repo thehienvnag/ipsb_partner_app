@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/services/api/account_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
-
 
 class ProfileDetailController extends GetxController {
   IAccountService _service = Get.find();
@@ -40,39 +40,37 @@ class ProfileDetailController extends GetxController {
 
   void updateProfile(int accountId) async {
     BotToast.showLoading();
-    userInfo = sharedData.account;
-    if(profilePhone.value.isEmpty){
+    userInfo = AuthServices.userLoggedIn.value;
+    if (profilePhone.value.isEmpty) {
       profilePhone.value = userInfo!.phone!;
     }
-    if(profileName.value.isEmpty){
+    if (profileName.value.isEmpty) {
       profileName.value = userInfo!.name!;
     }
-    print('file hinh: ' +  filePath.value);
+    print('file hinh: ' + filePath.value);
     bool updateS = false;
-    if(filePath.value.isEmpty){
-      updateS = await _service.updateProfileV2(accountId, profileName.value, profilePhone.value);
-    }else {
+    if (filePath.value.isEmpty) {
+      updateS = await _service.updateProfileV2(
+          accountId, profileName.value, profilePhone.value);
+    } else {
       updateS = await _service.updateProfile(
           accountId,
-          {
-            "name": profileName.value,
-            "phone": profilePhone.value
-          },
-          filePath.value
-      );
+          {"name": profileName.value, "phone": profilePhone.value},
+          filePath.value);
     }
     if (updateS) {
       BotToast.showText(
           text: "Update Success !",
-          textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+          textStyle: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
-    }else{
+    } else {
       BotToast.showText(
           text: "Update Failed !",
-          textStyle: TextStyle( fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold),
+          textStyle: TextStyle(
+              fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
     }
     BotToast.closeAllLoading();
   }
-
 }
