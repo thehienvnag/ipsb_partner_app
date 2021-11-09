@@ -34,7 +34,7 @@ class ManageCouponPage extends GetView<ManageCouponController> {
             ),
           );
         } else {
-          return _buildCoupons(coupons,context,controller);
+          return _buildCoupons(coupons, context, controller);
         }
       }),
       bottomNavigationBar: CustomBottombar(),
@@ -42,7 +42,8 @@ class ManageCouponPage extends GetView<ManageCouponController> {
   }
 }
 
-Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponController controller) {
+Widget _buildCoupons(List<Coupon> coupons, BuildContext context,
+    ManageCouponController controller) {
   final screenSize = MediaQuery.of(context).size;
   return Container(
     margin: const EdgeInsets.only(top: 15),
@@ -91,7 +92,6 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                         margin: const EdgeInsets.only(top: 5, left: 5),
                         width: screenSize.width * 0.35,
                         child: Text(
-                          (coupon.description.isNull) ? '' :
                           Formatter.shorten(coupon.description, 20),
                           style: TextStyle(fontSize: 13),
                         ),
@@ -100,49 +100,63 @@ Widget _buildCoupons(List<Coupon> coupons,BuildContext context,ManageCouponContr
                         onPressed: () {
                           controller.gotoCouponDetails(coupon);
                         },
-                        icon: Icon(Icons.info,size: 20,),
+                        icon: Icon(
+                          Icons.info,
+                          size: 20,
+                        ),
                         label: Text('View Detail'),
                       ),
                     ],
                   ),
                 ),
-                Obx((){
-                  String couponIdHasFB = controller.couponIdHasNewFeedback.value;
+                Obx(() {
+                  String couponIdHasFB =
+                      controller.couponIdHasNewFeedback.value;
                   String couponId = coupon.id.toString();
-                  return
-                  (couponIdHasFB.compareTo(couponId) == 0) ?
-                    Column(
-                      children: [
-                        SizedBox(height: 15,),
-                        TextButton.icon(
-                          onPressed: () {
-                            Get.toNamed(
-                              Routes.feedbacks,
-                              parameters: {
-                                "couponId": coupon.id.toString(),
+                  return (couponIdHasFB.compareTo(couponId) == 0)
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            TextButton.icon(
+                              onPressed: () {
+                                Get.toNamed(
+                                  Routes.feedbacks,
+                                  parameters: {
+                                    "couponId": coupon.id.toString(),
+                                  },
+                                );
                               },
-                            );
-                          },
-                          icon: Icon(Icons.add_alert,size: 21,color: Colors.orangeAccent,),
-                          label: Text('New feedbacks'),
-                        ),
-                      ],
-                    ): Column(
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          Get.toNamed(
-                            Routes.feedbacks,
-                            parameters: {
-                              "couponId": coupon.id.toString(),
-                            },
-                          );
-                        },
-                        icon: Icon(Icons.add_chart,size: 18,color: Colors.black,),
-                        label: Text('View feedbacks'),
-                      ),
-                    ],
-                  );
+                              icon: Icon(
+                                Icons.add_alert,
+                                size: 21,
+                                color: Colors.orangeAccent,
+                              ),
+                              label: Text('New feedbacks'),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            TextButton.icon(
+                              onPressed: () {
+                                Get.toNamed(
+                                  Routes.feedbacks,
+                                  parameters: {
+                                    "couponId": coupon.id.toString(),
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.add_chart,
+                                size: 18,
+                                color: Colors.black,
+                              ),
+                              label: Text('View feedbacks'),
+                            ),
+                          ],
+                        );
                 }),
               ],
             ),

@@ -17,7 +17,6 @@ class CustomBottombarController extends GetxController {
 
   // @override
   // void onInit() {
-  //   // TODO: implement onInit
   //   super.onInit();
   //   clearResult();
   //   setListBottomItems();

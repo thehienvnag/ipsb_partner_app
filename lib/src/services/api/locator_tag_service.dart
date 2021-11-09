@@ -20,7 +20,6 @@ class LocatorTagService extends BaseService<LocatorTag>
 
   @override
   fromJson(Map<String, dynamic> json) {
-    // TODO: implement fromJson
     return LocatorTag.fromJson(json);
   }
 

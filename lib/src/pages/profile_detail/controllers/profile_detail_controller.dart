@@ -30,7 +30,7 @@ class ProfileDetailController extends GetxController {
 
   Future<void> getImage() async {
     filePath.value = '';
-    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
+    final picked = await _imagePicker.pickImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }
 

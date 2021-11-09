@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_beautiful_popup/main.dart';
 import 'package:get/get.dart';
-import 'package:ipsb_partner_app/src/models/coupon.dart';
-import 'package:ipsb_partner_app/src/routes/routes.dart';
-import 'package:ipsb_partner_app/src/widgets/animated_button_bar.dart';
-
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:ipsb_partner_app/src/models/coupon.dart';
 import 'package:ipsb_partner_app/src/pages/check_qr_code/controllers/check_qr_code_controller.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -26,7 +22,9 @@ class CheckQRCodePage extends GetView<CheckQRCodeController> {
     return Scaffold(
       body: Stack(
         children: [
-          SizedBox(height: 100,),
+          SizedBox(
+            height: 100,
+          ),
           _buildQrView(context),
           Align(alignment: Alignment.topCenter, child: _buildQRTitle(context)),
           _buildQRIcon(context),
