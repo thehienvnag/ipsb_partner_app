@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:ipsb_partner_app/src/common/constants.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 
 mixin IApiHelper {
   /// Get all from an API [endpoint] using [uri] and [query]
@@ -43,11 +45,11 @@ mixin IApiHelper {
 
   /// Put 1 to API [endpoint] plus [additionalSegment] providing [id] and [data]
   Future<Response> putOneWithAdditionalSegment(
-      String endpoint,
-      String additionalSegment,
-      dynamic id,
-      Map<String, dynamic> data,
-      );
+    String endpoint,
+    String additionalSegment,
+    dynamic id,
+    Map<String, dynamic> data,
+  );
 
   /// Put 1 to API [endpoint] providing [data] with one file [files]
   Future<Response> putOneWithOneFile(String endpoint, Map<String, dynamic> data,
@@ -76,6 +78,12 @@ class ApiHelper extends GetConnect with IApiHelper {
     // Set baseUrl & timeout for API call
     httpClient.baseUrl = Constants.baseUrl;
     httpClient.timeout = Constants.timeout;
+
+    // Request modifier: [Add bearer token]
+    httpClient.addRequestModifier((Request request) async {
+      request.headers["Authorization"] = await AuthServices.getAuthHeader();
+      return request;
+    });
   }
 
   @override
@@ -87,7 +95,7 @@ class ApiHelper extends GetConnect with IApiHelper {
   }
 
   @override
-  Future<Response> count<T> (String uri, Map<String, dynamic> query) {
+  Future<Response> count<T>(String uri, Map<String, dynamic> query) {
     return get<T>(uri, query: query);
   }
 
@@ -136,11 +144,11 @@ class ApiHelper extends GetConnect with IApiHelper {
 
   @override
   Future<Response> putOneWithAdditionalSegment(
-      String endpoint,
-      String additionalSegment,
-      dynamic id,
-      Map<String, dynamic> data,
-      ) {
+    String endpoint,
+    String additionalSegment,
+    dynamic id,
+    Map<String, dynamic> data,
+  ) {
     return put('$endpoint/$additionalSegment/$id', data);
   }
 

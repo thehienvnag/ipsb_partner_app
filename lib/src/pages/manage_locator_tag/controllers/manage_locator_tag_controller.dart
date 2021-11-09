@@ -14,6 +14,7 @@ import 'package:ipsb_partner_app/src/algorithm/ipsb_positioning/filters/kalman_f
 import 'package:ipsb_partner_app/src/models/locator_tag.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/locator_tag_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -181,7 +182,7 @@ class ManageLocatorTagController extends GetxController {
   }
 
   void addBeacons(String uuid, int index) async {
-    int? buildingId = sharedStates.account!.building!.id;
+    int? buildingId = AuthServices.userLoggedIn.value.building!.id;
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
     rssiArray.add("item");
@@ -497,8 +498,8 @@ class ManageLocatorTagController extends GetxController {
   }
 
   void loadAllBeacons() async {
-    int buildingId = 38;
-    // sharedStates.account.buildingId;
+    int? buildingId = AuthServices.userLoggedIn.value.building?.id;
+    if (buildingId == null) return;
     beaconArray.value =
         await _locatorTagService.getAllLocatorTagByBuildingId(buildingId);
   }
@@ -525,8 +526,8 @@ class ManageLocatorTagController extends GetxController {
   }
 
   Future<void> checkBeaconExist(BuildContext context) async {
-    int buildingId = 38;
-    // sharedStates.account.buildingId;
+    int? buildingId = AuthServices.userLoggedIn.value.building?.id;
+    if (buildingId == null) return;
 
     beaconArray.value =
         await _locatorTagService.getAllLocatorTagByBuildingId(buildingId);

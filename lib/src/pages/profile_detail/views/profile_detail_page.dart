@@ -3,17 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/pages/profile_detail/controllers/profile_detail_controller.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/utils.dart';
-
 
 class ProfileDetailPage extends GetView<ProfileDetailController> {
   final SharedStates sharedData = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final Account? userInfo = sharedData.account;
+    // final screenSize = MediaQuery.of(context).size;
+    final Account? userInfo = AuthServices.userLoggedIn.value;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -53,25 +53,27 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       return Container(
                           height: context.height * 0.13,
                           width: context.width * 0.243,
-                        margin: EdgeInsets.only(top: 30),
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor),
-                            boxShadow: [
-                              BoxShadow(
-                                  spreadRadius: 2,
-                                  blurRadius: 10,
-                                  color: Colors.black.withOpacity(0.1),
-                                  offset: Offset(0, 10))
-                            ],
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
+                          margin: EdgeInsets.only(top: 30),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 4,
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.1),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: Utils.resolveFileImg(
                                   filePath,
                                   userInfo!.imageUrl.toString(),
                                 ),
-                            ))
-                      );
+                              )));
                     }),
                     Positioned(
                         bottom: 0,
@@ -83,7 +85,11 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                             width: 40,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(width: 4, color: Theme.of(context).scaffoldBackgroundColor,),
+                              border: Border.all(
+                                width: 4,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                              ),
                               color: Colors.green,
                             ),
                             child: Icon(
@@ -116,7 +122,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                   //controller: phoneController,
                 ),
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
               Container(
                 height: 48,
@@ -128,7 +134,9 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     controller.changeName(value);
                   },
                   decoration: InputDecoration(
-                      border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.grey.withOpacity(0.6))),
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.grey.withOpacity(0.6))),
                       hintText: 'Enter your email',
                       hintStyle: TextStyle(color: Colors.black45),
                       prefixIcon: Icon(
@@ -137,7 +145,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       )),
                 ),
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
               Container(
                 height: 48,
@@ -148,7 +156,9 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     controller.changePhone(value);
                   },
                   decoration: InputDecoration(
-                      border: new OutlineInputBorder(borderSide: new BorderSide(color: Colors.grey.withOpacity(0.6))),
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(
+                              color: Colors.grey.withOpacity(0.6))),
                       hintText: 'Enter your phone',
                       hintStyle: TextStyle(color: Colors.black45),
                       prefixIcon: Icon(
@@ -157,18 +167,18 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       )),
                 ),
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
               // buildTextField("Name", userInfo!.name.toString()),
               // buildTextField("Email", userInfo.email.toString()),
               // buildTextField("Phone", userInfo.phone.toString()),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   controller.updateProfile(userInfo.id!);
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  height:context.height* 0.0645,
+                  height: context.height * 0.0645,
                   margin: EdgeInsets.only(top: 35, right: 20, left: 20),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -176,8 +186,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                       vertical: 13,
                     ),
                     child: SizedBox(
-                      width: context.width* 0.406,
-                      height: context.height* 0.0245,
+                      width: context.width * 0.406,
+                      height: context.height * 0.0245,
                       child: Text(
                         "Save",
                         textAlign: TextAlign.center,
@@ -207,16 +217,17 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
       child: Padding(
         padding: EdgeInsets.all(10),
         child: TextFormField(
-           initialValue: placeholder,
-          onChanged: (value){
+          initialValue: placeholder,
+          onChanged: (value) {
             // controller.changeName(value);
           },
           decoration: InputDecoration(
               contentPadding: EdgeInsets.only(bottom: 3),
               labelText: labelText,
               labelStyle: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black
-              ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               hintStyle: TextStyle(
                 fontSize: 16,

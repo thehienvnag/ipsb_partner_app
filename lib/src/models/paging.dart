@@ -18,6 +18,12 @@ class Paging<T> {
     this.rawContent,
   });
 
+  static Paging<T> defaultInstance<T>() {
+    final paging = Paging<T>();
+    paging.content = null;
+    return paging;
+  }
+
   /// Convert json array to list
   void convertToList(Function fromJson) {
     content = rawContent?.map<T>((x) => fromJson(x)).toList();

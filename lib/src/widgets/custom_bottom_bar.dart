@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:ipsb_partner_app/src/routes/routes.dart';
@@ -45,81 +46,91 @@ class BottomItem extends SalomonBottomBarItem {
 final SharedStates states = Get.find();
 List<BottomItem> getBottomItem() {
   List<BottomItem> result = [];
-  result.add(BottomItem(
-    text: 'Home',
-    icon: Icon(Icons.home),
-    route: Routes.home,
-  ),);
-  if (states.account!.role == 'Store Owner') {
+  result.add(
+    BottomItem(
+      text: 'Home',
+      icon: Icon(Icons.home),
+      route: Routes.home,
+    ),
+  );
+  if (AuthServices.isInRole('Store Owner')) {
     result.add(BottomItem(
       text: 'QR Code',
       icon: Icon(Icons.qr_code),
       route: Routes.checkQRCode,
-    ));}
-  if (states.account!.role == 'Store Owner') {
+    ));
+  }
+  if (AuthServices.isInRole('Store Owner')) {
     result.add(BottomItem(
       text: 'Coupons',
       icon: Icon(Icons.local_activity),
       route: Routes.manageCoupon,
-    ));}
-  if (states.account!.role == 'Building Manager') {
+    ));
+  }
+  if (AuthServices.isInRole('Building Manager')) {
     result.add(BottomItem(
       text: 'Locator Tag',
       icon: Icon(Icons.view_in_ar),
       route: Routes.locatorTag,
-    ));}
-  if (states.account!.role == 'Store Owner') {
-    result.add(BottomItem(
-      text: 'Notification',
-      icon: new Stack(
-        children: <Widget>[
-          new Icon(Icons.notifications),
-          // states.unreadNotification.value != 0 ?
-          Obx(() {
-            if (states.unreadNotification.value != 0) {
-              return Positioned(
-                right: 0,
-                child: new Container(
-                  padding: EdgeInsets.all(1),
-                  decoration: new BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 12,
-                    minHeight: 12,
-                  ),
-                  child: Text(
-                    states.unreadNotification.value.toString(),
-                    style: new TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
+    ));
+  }
+  if (AuthServices.isInRole('Store Owner')) {
+    result.add(
+      BottomItem(
+        text: 'Notification',
+        icon: new Stack(
+          children: <Widget>[
+            new Icon(Icons.notifications),
+            // states.unreadNotification.value != 0 ?
+            Obx(() {
+              if (states.unreadNotification.value != 0) {
+                return Positioned(
+                  right: 0,
+                  child: new Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: new BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                    textAlign: TextAlign.center,
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: Text(
+                      states.unreadNotification.value.toString(),
+                      style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return SizedBox();
-            }
-          }),
-        ],
+                );
+              } else {
+                return SizedBox();
+              }
+            }),
+          ],
+        ),
+        route: Routes.notifications,
       ),
-      route: Routes.notifications,
-    ),);}
+    );
+  }
 
-    result.add(BottomItem(
+  result.add(
+    BottomItem(
       text: 'Profile',
       icon: Icon(Icons.person),
       route: Routes.profile,
-    ),);
+    ),
+  );
   return result;
 }
 
 List<BottomItem> items = [];
 
 void setListBottomItems() {
-   items = getBottomItem();
+  items = getBottomItem();
 }
 
 void clearBottomItemsResult() {

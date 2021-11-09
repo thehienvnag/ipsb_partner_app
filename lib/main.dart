@@ -11,10 +11,10 @@ import 'package:ipsb_partner_app/src/routes/app_pages.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 
-Future _showNotificationWithDefaultSound(
-    String? title, String? message) async {
+Future _showNotificationWithDefaultSound(String? title, String? message) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'channel_id', 'channel_name',
+    'channel_id',
+    'channel_name',
     channelDescription: 'channel_description',
     importance: Importance.max,
     priority: Priority.high,
@@ -23,20 +23,22 @@ Future _showNotificationWithDefaultSound(
   var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics);
-  await FirebaseHelper.flutterLocalNotificationInstance().show(
-    0,
-    '$title',
-    '$message',
-    platformChannelSpecifics,
-    payload: 'Default_Sound',
-  ).then((value) => Future.delayed(const Duration(seconds: 2), (){
-    FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
-  }));
-
+  await FirebaseHelper.flutterLocalNotificationInstance()
+      .show(
+        0,
+        '$title',
+        '$message',
+        platformChannelSpecifics,
+        payload: 'Default_Sound',
+      )
+      .then(
+        (value) => Future.delayed(const Duration(seconds: 2), () {
+          FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
+        }),
+      );
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage? message) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   // await Firebase.initializeApp();
@@ -56,7 +58,6 @@ Future<void> _firebaseMessagingBackgroundHandler(
 
   print("Handling a background message: ${message?.messageId}");
 }
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/pages/notifications/controllers/notifications_controller.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/utils.dart';
 import 'package:ipsb_partner_app/src/widgets/custom_bottom_bar.dart';
@@ -33,7 +34,7 @@ class NotificationsPage extends GetView<NotificationsController> {
   Widget listNotification(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Obx(() {
-      if (states.account == null) {
+      if (!AuthServices.isLoggedIn()) {
         return Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

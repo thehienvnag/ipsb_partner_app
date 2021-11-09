@@ -23,10 +23,14 @@ class HomePage extends GetView<HomeController> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Image.network("https://i.pinimg.com/564x/76/1c/19/761c198fc1e3512737b9a19381da49d9.jpg",
-              fit: BoxFit.cover,
-              width: screenSize.width,
-              height: screenSize.height*0.8,
+            Opacity(
+              opacity: 0.1,
+              child: Image.network(
+                "https://i.pinimg.com/564x/76/1c/19/761c198fc1e3512737b9a19381da49d9.jpg",
+                fit: BoxFit.cover,
+                width: screenSize.width,
+                height: screenSize.height * 0.8,
+              ),
             ),
             Container(
               margin: EdgeInsets.only(top: 100),
@@ -42,7 +46,8 @@ class HomePage extends GetView<HomeController> {
                   crossAxisSpacing: 25,
                   children: List.generate(controller.choices.length, (index) {
                     return Center(
-                      child: _buildTabs(controller.choices[index], index, controller),
+                      child: _buildTabs(
+                          controller.choices[index], index, controller),
                     );
                   }),
                 ),
@@ -56,9 +61,9 @@ class HomePage extends GetView<HomeController> {
   }
 }
 
-Widget _buildTabs(Choice choice,int index, HomeController controller) {
+Widget _buildTabs(Choice choice, int index, HomeController controller) {
   return GestureDetector(
-    onTap: (){
+    onTap: () {
       controller.onpress(index);
     },
     child: Card(
@@ -69,9 +74,9 @@ Widget _buildTabs(Choice choice,int index, HomeController controller) {
         ),
         child: Center(
           child: TextButton.icon(
-              onPressed: (){
+              onPressed: () {
                 controller.onpress(index);
-                },
+              },
               icon: Icon(
                 choice.icon,
                 size: 40,

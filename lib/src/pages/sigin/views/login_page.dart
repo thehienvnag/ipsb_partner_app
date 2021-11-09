@@ -123,28 +123,28 @@ class LoginPage extends GetView<LoginController> {
                     ),
                   ),
                 ),
-                SizedBox(height: size.height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account ? ",
-                      style: TextStyle(
-                        color: Color(0xFF6F35A5),
-                      ),
-                    ),
-                    GestureDetector(
-                      //onTap: press,
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                          color: Color(0xFF6F35A5),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // SizedBox(height: size.height * 0.03),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text(
+                //       "Don't have an account ? ",
+                //       style: TextStyle(
+                //         color: Color(0xFF6F35A5),
+                //       ),
+                //     ),
+                //     GestureDetector(
+                //       //onTap: press,
+                //       child: Text(
+                //         "Sign In",
+                //         style: TextStyle(
+                //           color: Color(0xFF6F35A5),
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

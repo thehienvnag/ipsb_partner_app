@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
 import 'package:ipsb_partner_app/src/services/api/notification_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 
 class FirebaseHelper {
-
   final SharedStates states = Get.find();
   INotificationService _service = Get.find();
   static FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -55,8 +55,10 @@ class FirebaseHelper {
   }
 
   void loadUnreadNotification() async {
-    states.unreadNotification.value =
-    await _service.countNotification({"status": Constants.unread, "accountId" : states.account!.id.toString()});
+    states.unreadNotification.value = await _service.countNotification({
+      "status": Constants.unread,
+      "accountId": AuthServices.userLoggedIn.value.id!.toString()
+    });
   }
 
   requestingPermissionForIOS() async {

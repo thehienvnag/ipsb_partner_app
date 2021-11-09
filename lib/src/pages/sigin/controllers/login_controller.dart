@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ipsb_partner_app/src/models/account.dart';
 import 'package:ipsb_partner_app/src/routes/routes.dart';
-import 'package:ipsb_partner_app/src/services/api/auth_service.dart';
+import 'package:ipsb_partner_app/src/services/api/account_service.dart';
+import 'package:ipsb_partner_app/src/services/global_states/auth_services.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
 import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 
@@ -12,10 +13,17 @@ class LoginController extends GetxController {
   // Share states across app
   final SharedStates sharedStates = Get.find();
   Account? account;
-  IAuthService _authService = Get.find();
+  IAccountService _accountService = Get.find();
 
   final loginEmail = ''.obs;
   final loginPassword = ''.obs;
+
+  // void initAuth() async {
+  //   await AuthServices.initUserFromPrevLogin();
+  //   if (AuthServices.isLoggedIn()) {
+  //     Get.offAndToNamed(Routes.home);
+  //   }
+  // }
 
   /// Set value loginEmail
   void setMail(String email) {
@@ -27,29 +35,38 @@ class LoginController extends GetxController {
     loginPassword.value = password;
   }
 
-  void submitForm() async{
-
+  void submitForm() async {
     BotToast.showText(
-        text: "In Process !",
-        textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-        duration: const Duration(seconds: 7));
+      text: "In Process !",
+      textStyle: TextStyle(
+          fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+      duration: const Duration(seconds: 7),
+    );
     BotToast.showLoading();
-    account = await _authService.getAccountByEmail(loginEmail.value, loginPassword.value);
+    account = await _accountService.getAccountByEmail(
+      loginEmail.value,
+      loginPassword.value,
+    );
     // code login here
 
-    if (!account.isNull) {
-      BotToast.showText(text: "Login successfully", textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),);
-      sharedStates.account = account;
+    if (account != null) {
+      BotToast.showText(
+        text: "Login successfully",
+        textStyle: TextStyle(
+            fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+      );
+      AuthServices.saveAuthInfo(account);
       Get.offAndToNamed(Routes.home);
-      print('info ne: ' + account!.email.toString() +" ---- "+ account!.name.toString());
       if (account!.role == 'Store Owner') {
         FirebaseHelper helper = FirebaseHelper();
-        await helper.subscribeToTopic("store_id_" + account!.store!.id.toString());
+        await helper
+            .subscribeToTopic("store_id_" + account!.store!.id.toString());
       }
     } else {
       BotToast.showText(
           text: "Email or password not correct !",
-          textStyle: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+          textStyle: TextStyle(
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
     }
     BotToast.closeAllLoading();
