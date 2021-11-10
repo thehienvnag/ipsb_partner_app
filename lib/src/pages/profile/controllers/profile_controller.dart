@@ -16,7 +16,7 @@ class ProfileController extends GetxController {
         "account_id_" + AuthServices.userLoggedIn.value.id.toString(),
       );
     }
-
+    AuthServices.logout();
     BotToast.showText(text: "Logout Success");
     Get.offAndToNamed(Routes.login);
   }
