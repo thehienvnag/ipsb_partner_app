@@ -5,8 +5,7 @@ import 'package:ipsb_partner_app/src/services/api/base_service.dart';
 mixin IAccountService {
   Future<Account?> getAccountById(int id);
   Future<Account?> getAccountByEmail(String email, String password);
-  Future<bool> updateProfile(int id, Map<String, String> data, String filePath);
-  Future<bool> updateProfileV2(int accountId, String name, String phone);
+  Future<bool> updateProfile(int accountId, String name, String phone, String filePath);
   Future<Account?> refreshToken(String refreshToken);
   Future<Account?> getById(int id);
 }
@@ -36,14 +35,9 @@ class AccountService extends BaseService<Account> implements IAccountService {
   }
 
   @override
-  Future<bool> updateProfile(
-      int id, Map<String, String> data, String filePath) {
-    return putWithOneFileBase(data, filePath, id);
-  }
-
-  @override
-  Future<bool> updateProfileV2(int accountId, String name, String phone) {
-    return putWithOneFileBase({'name': name, 'phone': phone}, "", accountId);
+  Future<bool> updateProfile(int accountId, String name, String phone, String filePath) {
+    return putWithOneFileBase(
+        {"name": name, "phone": phone, "firstUpdateProfile" : true.toString()}, filePath, accountId);
   }
 
   @override

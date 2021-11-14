@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/pages/manage_feedback/controllers/manage_feedback_controller.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
@@ -39,25 +40,12 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
       body: Obx(() {
         final listFeedbacks = controller.listCouponInUse;
         if (listFeedbacks.isEmpty) {
-          return Column(
-            children: [
-              Center(
-                child: LoadingBouncingLine.circle(
-                  borderColor: Colors.cyan,
-                  borderSize: 3.0,
-                  size: 30.0,
-                  backgroundColor: Colors.cyanAccent,
-                  duration: Duration(milliseconds: 500),
-                ),
-              ),
-              Text('No data', style: TextStyle(fontSize: 16),)
-            ],
-          );
+          return _buildEmpty("Coupon has no feedback!", context);
         } else {
           return SingleChildScrollView(
             child: Column(
               children: [
-                buildFeedbacks(context, listFeedbacks, controller),
+                _buildFeedbacks(context, listFeedbacks, controller),
               ],
             ),
           );
@@ -68,7 +56,7 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
   }
 }
 
-Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,ManageFeedbackController controller) {
+Widget _buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,ManageFeedbackController controller) {
   final screenSize = MediaQuery.of(context).size;
   return ListView.builder(
     physics: ScrollPhysics(),
@@ -163,7 +151,7 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                       ],
                 ),
                      (feedback.feedbackReply == null) ?
-                     buildReplyForm(controller,feedback.id!.toInt()):
+                     _buildReplyForm(controller,feedback.id!.toInt()):
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
@@ -208,7 +196,7 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
   );
 }
 
-Widget buildReplyForm(ManageFeedbackController controller, int couponInUseId){
+Widget _buildReplyForm(ManageFeedbackController controller, int couponInUseId){
   return Row(
     children: [
       Expanded (
@@ -252,6 +240,34 @@ Widget buildReplyForm(ManageFeedbackController controller, int couponInUseId){
         ),
       )
     ],
+  );
+}
+
+Widget _buildEmpty(String description, BuildContext context) {
+  return Container(
+    width: context.width,
+    padding: const EdgeInsets.symmetric(horizontal: 5),
+    margin: const EdgeInsets.only(top: 30),
+    child: Column(
+      children: [
+        Image.asset(
+          ConstImg.empty,
+          height: context.height*0.258,
+          width: context.width*0.486,
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 30),
+          child: Text(
+            description,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 22,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ],
+    ),
   );
 }
 

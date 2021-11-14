@@ -30,7 +30,7 @@ class ProfileDetailController extends GetxController {
 
   Future<void> getImage() async {
     filePath.value = '';
-    final picked = await _imagePicker.pickImage(source: ImageSource.gallery);
+    final picked = await _imagePicker.getImage(source: ImageSource.gallery);
     filePath.value = picked?.path ?? '';
   }
 
@@ -47,17 +47,12 @@ class ProfileDetailController extends GetxController {
     if (profileName.value.isEmpty) {
       profileName.value = userInfo!.name!;
     }
-    print('file hinh: ' + filePath.value);
     bool updateS = false;
     if (filePath.value.isEmpty) {
-      updateS = await _service.updateProfileV2(
-          accountId, profileName.value, profilePhone.value);
-    } else {
-      updateS = await _service.updateProfile(
-          accountId,
-          {"name": profileName.value, "phone": profilePhone.value},
-          filePath.value);
+      filePath.value = "";
     }
+    updateS =
+    await _service.updateProfile(accountId, profileName.value, profilePhone.value, filePath.value);
     if (updateS) {
       BotToast.showText(
           text: "Update Success !",
@@ -68,7 +63,7 @@ class ProfileDetailController extends GetxController {
       BotToast.showText(
           text: "Update Failed !",
           textStyle: TextStyle(
-              fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
           duration: const Duration(seconds: 5));
     }
     BotToast.closeAllLoading();

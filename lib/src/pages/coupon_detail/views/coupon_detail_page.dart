@@ -94,7 +94,7 @@ class CouponDetailPage extends GetView<CouponDetailController> {
                                 Text(
                                   Formatter.shorten(coupon.store?.name).toUpperCase(),
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 15,
                                     color: Colors.black54,
                                   ),
                                 ),

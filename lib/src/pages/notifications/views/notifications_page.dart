@@ -84,8 +84,8 @@ class NotificationsPage extends GetView<NotificationsController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: context.height*0.258,
+                width: context.width*0.486,
                 child: Image.asset(ConstImg.empty),
               ),
               Container(
