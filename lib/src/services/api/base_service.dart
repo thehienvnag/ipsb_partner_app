@@ -146,19 +146,23 @@ abstract class BaseService<T> {
       Map<String, dynamic> body, String filePath, int id,
       [String fileName = "imageUrl"]) async {
     if (filePath.isNotEmpty) {
+      print('case 1  ' );
       final callback = () => _apiHelper.putOneWithOneFile(
           endpoint() + "/" + id.toString(),
           body,
           FileUploadUtils.convertToMultipart(filePath),
           fileName);
       Response res = await AuthServices.handleUnauthorized(callback);
+      print('hey status: ' + res.statusCode.toString());
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }
     } else {
+      print('case 2  ' );
       final callback = () => _apiHelper.putOneWithOneFile(
           endpoint() + "/" + id.toString(), body, null, fileName);
       Response res = await AuthServices.handleUnauthorized(callback);
+      print('hey status: ' + res.statusCode.toString());
       if (res.statusCode == HttpStatus.noContent) {
         return true;
       }

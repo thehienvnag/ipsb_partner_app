@@ -166,12 +166,8 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                         color: Colors.grey,
                       )),
                 ),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
-              // buildTextField("Name", userInfo!.name.toString()),
-              // buildTextField("Email", userInfo.email.toString()),
-              // buildTextField("Phone", userInfo.phone.toString()),
               GestureDetector(
                 onTap: () {
                   controller.updateProfile(userInfo.id!);
@@ -207,35 +203,35 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder) {
-    return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        // color: Colors.red,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: TextFormField(
-          initialValue: placeholder,
-          onChanged: (value) {
-            // controller.changeName(value);
-          },
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(bottom: 3),
-              labelText: labelText,
-              labelStyle: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintStyle: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              )),
-        ),
-      ),
-    );
-  }
+  // Widget buildTextField(String labelText, String placeholder) {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 20, right: 20),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(4),
+  //       // color: Colors.red,
+  //     ),
+  //     child: Padding(
+  //       padding: EdgeInsets.all(10),
+  //       child: TextFormField(
+  //         initialValue: placeholder,
+  //         onChanged: (value) {
+  //           // controller.changeName(value);
+  //         },
+  //         decoration: InputDecoration(
+  //             contentPadding: EdgeInsets.only(bottom: 3),
+  //             labelText: labelText,
+  //             labelStyle: TextStyle(
+  //                 fontSize: 18,
+  //                 fontWeight: FontWeight.bold,
+  //                 color: Colors.black),
+  //             floatingLabelBehavior: FloatingLabelBehavior.always,
+  //             hintStyle: TextStyle(
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.black,
+  //             )),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
