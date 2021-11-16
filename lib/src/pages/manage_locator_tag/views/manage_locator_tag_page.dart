@@ -289,6 +289,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
 
   Widget _buildTitle(
       BuildContext context, String deviceName, String macAddress, int index) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,15 +305,11 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.all(10),
-              width: 5,
-              height: 5,
-              decoration:
-                  BoxDecoration(color: Colors.black, shape: BoxShape.circle),
-            ),
-            Text(
-              macAddress,
-              style: TextStyle(fontSize: 14),
+              margin: EdgeInsets.only(top:5),
+              child: Text(
+                macAddress,
+                style: TextStyle(fontSize: 11),
+              ),
             )
           ],
         ),
@@ -332,7 +330,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
               TextSpan(
                 text: distance,
                 // overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 22),
+                style: TextStyle(fontSize: 20),
               ),
               TextSpan(text: " m")
             ],
@@ -357,7 +355,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
           // Theme.of(context).textTheme.caption),
           SizedBox(
@@ -707,12 +705,12 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                     "CLICK TO INSERT",
                     "CLICK TO UPDATE TX POWER",
                     () => {
-                      controller.addBeacons(controller.uuidArray[index], index),
+                      controller.addBeacons(context, controller.uuidArray[index], index),
                       // controller.isInserting.remove(index),
                       // controller.isInserting.insert(index, true),
                     },
                     () => {
-                      controller.updateTxPower(
+                      controller.updateTxPower(context,
                           controller.uuidArray[index], index),
                     },
                     controller.isInserting[index],
