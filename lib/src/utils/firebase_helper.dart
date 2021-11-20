@@ -50,7 +50,7 @@ class FirebaseHelper {
                 FirebaseHelper.flutterLocalNotificationInstance().cancel(0);
               }));
       loadUnreadNotification();
-      Get.dialog(_buildDialog(data.title, data.body, message.data));
+      Get.dialog(_buildDialog(data.title, data.body, message.data), barrierDismissible: false);
     }
   }
 

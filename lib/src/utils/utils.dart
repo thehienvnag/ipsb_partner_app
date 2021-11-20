@@ -33,4 +33,13 @@ class Utils {
     }
     return NetworkImage(altUrl!);
   }
+
+  static String parseDateTimeToDate(DateTime? date) {
+    if (date == null) {
+      return "Data not set";
+    }
+    var formatter = new DateFormat.yMMMEd('en-US');
+    String formatDate = formatter.format(date);
+    return formatDate;
+  }
 }

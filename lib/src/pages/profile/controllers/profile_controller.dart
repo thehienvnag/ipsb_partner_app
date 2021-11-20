@@ -18,6 +18,6 @@ class ProfileController extends GetxController {
     }
 
     BotToast.showText(text: "Logout Success");
-    Get.offAndToNamed(Routes.login);
+    Get.offAllNamed(Routes.login);
   }
 }

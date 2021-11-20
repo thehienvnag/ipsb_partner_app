@@ -125,7 +125,7 @@ class ProfileDetailPage extends GetView<ProfileDetailController> {
                     BoxDecoration(borderRadius: BorderRadius.circular(4)),
               ),
               Container(
-                height: 48,
+                height: 60,
                 margin: EdgeInsets.only(top: 20, right: 20, left: 20),
                 child: TextFormField(
                   initialValue: userInfo.email.toString(),

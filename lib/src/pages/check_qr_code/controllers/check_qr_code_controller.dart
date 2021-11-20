@@ -115,9 +115,9 @@ class CheckQRCodeController extends GetxController {
                     '\n' +
                     'Code: ' +
                     coupon!.code! +
-                    '\n' +
-                    'Description: ' +
-                    coupon!.description! +
+                    // '\n' +
+                    // 'Description: ' +
+                    // coupon!.description! +
                     '\n' +
                     'Publish Date: ' +
                     Utils.date(coupon!.publishDate!) +
@@ -174,7 +174,7 @@ class CheckQRCodeController extends GetxController {
       child: Text(
         code,
         style: TextStyle(color: Colors.black, fontSize: 16),
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
       ),
     );
 
@@ -360,6 +360,22 @@ class CheckQRCodeController extends GetxController {
                             child: Text("Maximum discount: ")),
                         Text(
                             "${Formatter.price(coupon.maxDiscount ?? 0).toUpperCase()}")
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        left: screenSize.width * 0.08, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: screenSize.width * 0.4,
+                            child: Text("Description: ")),
+                        Container(
+                            width: screenSize.width * 0.28,
+                            child: Text("${coupon.description ?? "No description provided"}",
+                            )),
                       ],
                     ),
                   ),

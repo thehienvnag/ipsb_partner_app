@@ -41,8 +41,8 @@ class NotificationsPage extends GetView<NotificationsController> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                height: screenSize.width * 0.48,
+                width: screenSize.width * 0.48,
                 child: Image.asset(ConstImg.empty),
               ),
               Container(
@@ -58,7 +58,7 @@ class NotificationsPage extends GetView<NotificationsController> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 15),
-                width: 320,
+                width: screenSize.width * 0.77778,
                 child: Text(
                   'Come back to check after login in your account',
                   textAlign: TextAlign.center,
@@ -83,9 +83,9 @@ class NotificationsPage extends GetView<NotificationsController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 40, right: 20),
-                height: 200,
-                width: 200,
+                margin: EdgeInsets.only(top: 40),
+                height: screenSize.width * 0.48,
+                width: screenSize.width * 0.48,
                 child: Image.asset(ConstImg.empty),
               ),
               Container(
@@ -116,14 +116,14 @@ class NotificationsPage extends GetView<NotificationsController> {
           ),
         );
       }
-      return ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          height: 10,
-          thickness: 0.8,
-          color: Colors.grey,
-          indent: 10,
-          endIndent: 12,
-        ),
+      return ListView.builder(
+        // separatorBuilder: (context, index) => Divider(
+        //   height: 10,
+        //   thickness: 0.8,
+        //   color: Colors.grey,
+        //   indent: 10,
+        //   endIndent: 12,
+        // ),
         itemBuilder: (context, index) {
           return notificationItem(list[index], context);
         },
@@ -151,15 +151,15 @@ class NotificationsPage extends GetView<NotificationsController> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        elevation: 5,
+        elevation: 10,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
             Container(
               margin: const EdgeInsets.only(left: 5),
-              height: 100,
-              width: 100,
+              height: context.width * 0.25,
+              width: context.width * 0.25,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -175,7 +175,7 @@ class NotificationsPage extends GetView<NotificationsController> {
             ),
             Container(
               margin: const EdgeInsets.only(left: 20),
-              width: context.width * 0.69,
+              width: context.width * 0.6,
               height: context.height * 0.15,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,21 +183,22 @@ class NotificationsPage extends GetView<NotificationsController> {
                 children: [
                   Text(
                     element.title!,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 15,
+                    fontWeight: FontWeight.w500),
                   ),
                   Text(element.body!),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        Utils.date(element.date!),
-                        style: TextStyle(fontSize: 14),
+                        Utils.parseDateTimeToDate(element.date!),
+                        style: TextStyle(fontSize: 12),
                       ),
                       element.status == 'Unread'
                           ? Image.asset(
                               ConstImg.newNotification,
-                              width: 70,
-                              height: 70,
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              height: MediaQuery.of(context).size.width * 0.1,
                             )
                           : SizedBox(),
                     ],

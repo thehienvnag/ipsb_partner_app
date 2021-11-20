@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ipsb_partner_app/src/common/constants.dart';
 import 'package:ipsb_partner_app/src/models/coupon_in_use.dart';
 import 'package:ipsb_partner_app/src/pages/manage_feedback/controllers/manage_feedback_controller.dart';
 import 'package:ipsb_partner_app/src/services/global_states/shared_states.dart';
@@ -18,6 +19,7 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -39,19 +41,42 @@ class ManageFeedbackPage extends GetView<ManageFeedbackController> {
       body: Obx(() {
         final listFeedbacks = controller.listCouponInUse;
         if (listFeedbacks.isEmpty) {
-          return Column(
-            children: [
-              Center(
-                child: LoadingBouncingLine.circle(
-                  borderColor: Colors.cyan,
-                  borderSize: 3.0,
-                  size: 30.0,
-                  backgroundColor: Colors.cyanAccent,
-                  duration: Duration(milliseconds: 500),
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 40),
+                  height: screenSize.width * 0.48,
+                  width: screenSize.width * 0.48,
+                  child: Image.asset(ConstImg.empty),
                 ),
-              ),
-              Text('No data', style: TextStyle(fontSize: 16),)
-            ],
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child: Text(
+                    'No available feedbacks',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  width: screenSize.width * 0.7,
+                  child: Text(
+                    'Come back to check after receiving new feedback',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         } else {
           return SingleChildScrollView(
@@ -86,13 +111,13 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                 children: [
                   Row(
                     children: [
-                      CircleAvatar( radius: 20, backgroundImage: NetworkImage(feedback.visitor!.imageUrl.toString())),
+                      CircleAvatar( radius: 18, backgroundImage: NetworkImage(feedback.visitor!.imageUrl.toString())),
                       SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(feedback.visitor!.name.toString(),
-                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),),
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
                           RatingBar.builder(
                             initialRating: feedback.rateScore!.toDouble(),
                             itemSize: 20,
@@ -125,6 +150,7 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
               Container(
                 width: screenSize.width * 0.9,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       width: screenSize.width * 0.72,
@@ -137,7 +163,7 @@ Widget buildFeedbacks(BuildContext context, List<CouponInUse> listFeedBack,Manag
                       onTap: (){
                         controller.changeHideInfo(index);
                       },
-                        child: Text('View More',style: TextStyle(color: Colors.blue),)
+                        child: Text('View More',style: TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold),)
                     ),
                   ],
                 ),

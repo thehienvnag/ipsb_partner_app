@@ -36,7 +36,7 @@ class BottomItem extends SalomonBottomBarItem {
     required this.icon,
     this.color = Colors.blueAccent,
   }) : super(
-          title: Text(text),
+          title: Text(text, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),),
           icon: icon,
           selectedColor: color,
         );
@@ -48,28 +48,28 @@ List<BottomItem> getBottomItem() {
   result.add(
     BottomItem(
       text: 'Home',
-      icon: Icon(Icons.home),
+      icon: Icon(Icons.home, size: 22),
       route: Routes.home,
     ),
   );
   if (AuthServices.isInRole('Store Owner')) {
     result.add(BottomItem(
       text: 'QR Code',
-      icon: Icon(Icons.qr_code),
+      icon: Icon(Icons.qr_code, size: 22),
       route: Routes.checkQRCode,
     ));
   }
   if (AuthServices.isInRole('Store Owner')) {
     result.add(BottomItem(
       text: 'Coupons',
-      icon: Icon(Icons.local_activity),
+      icon: Icon(Icons.local_activity, size: 22),
       route: Routes.manageCoupon,
     ));
   }
   if (AuthServices.isInRole('Building Manager')) {
     result.add(BottomItem(
       text: 'Locator Tag',
-      icon: Icon(Icons.view_in_ar),
+      icon: Icon(Icons.view_in_ar, size: 22),
       route: Routes.locatorTag,
     ));
   }
@@ -79,7 +79,7 @@ List<BottomItem> getBottomItem() {
         text: 'Notification',
         icon: new Stack(
           children: <Widget>[
-            new Icon(Icons.notifications),
+            new Icon(Icons.notifications, size: 22),
             // states.unreadNotification.value != 0 ?
             Obx(() {
               if (states.unreadNotification.value != 0) {
@@ -119,7 +119,7 @@ List<BottomItem> getBottomItem() {
   result.add(
     BottomItem(
       text: 'Profile',
-      icon: Icon(Icons.person),
+      icon: Icon(Icons.person, size: 22),
       route: Routes.profile,
     ),
   );

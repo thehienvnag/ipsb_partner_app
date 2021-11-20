@@ -42,9 +42,7 @@ class CouponInUseService extends BaseService<CouponInUse>
 
   @override
   Future<bool> putCoupon(int couponInUseId, String status) {
-    DateTime applyDate = DateTime.now();
     return putBase(couponInUseId, {
-      'applyDate': applyDate.toString(),
       'status': status,
     });
   }
