@@ -89,7 +89,6 @@ class ManageLocatorTagController extends GetxController {
 
     beaconEventsController.stream.listen(
         (data) {
-          print("INSIDE DEFAULT LISTENING");
           if (data.isNotEmpty && isRunning.value) {
             macAddressValue = _getValueWithColonFromData("macAddress", data);
 
@@ -138,40 +137,10 @@ class ManageLocatorTagController extends GetxController {
     }
   }
 
-  // Future<num> initInsertRSSI(int index) async {
-  //   KalmanFilter1d filter = new KalmanFilter1d();
-  //
-  //   BeaconsPlugin.listenToBeacons(beaconEventsController);
-  //
-  //   BeaconsPlugin.setForegroundScanPeriodForAndroid(
-  //       foregroundScanPeriod: 2200, foregroundBetweenScanPeriod: 10);
-  //
-  //   BeaconsPlugin.setBackgroundScanPeriodForAndroid(
-  //       backgroundScanPeriod: 2200, backgroundBetweenScanPeriod: 10);
-  //
-  //   beaconEventsController.stream.listen(
-  //           (data) {
-  //         if (data.isNotEmpty && isRunning.value) {
-  //
-  //           filter.filter(int.parse(inser));
-  //         }
-  //       },
-  //       onDone: () {},
-  //       onError: (error) {
-  //         print("Error: $error");
-  //       });
-  //
-  //   //Send 'true' to run in background
-  //   await BeaconsPlugin.runInBackground(true);
-  //
-  //   return filter.x;
-  // }
-
   Future<void> monitoring() {
     if (!isRunning.value) {
       title.value = "Scanning";
       isRunning.value = true;
-      print("BEFORE INIT PLATFORM STATE");
       initPlatformState();
       return BeaconsPlugin.startMonitoring();
     } else {
@@ -181,7 +150,11 @@ class ManageLocatorTagController extends GetxController {
     }
   }
 
-  void addBeacons(String uuid, int index) async {
+  void addBeacons(BuildContext context, String uuid, int index) async {
+    if (insertBeaconArray.length == 3) {
+      Get.dialog(_buildAlertDialog(context, "Unable to insert", "You can only interact with 3 iBeacons at a time"));
+      return;
+    }
     int? buildingId = AuthServices.userLoggedIn.value.building!.id;
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
@@ -283,10 +256,8 @@ class ManageLocatorTagController extends GetxController {
                   BeaconsPlugin.listenToBeacons(beaconEventsController),
                   beaconEventsController.stream.listen(
                       (data) {
-                        print("DATA");
                         if (data.isNotEmpty && isRunning.value) {
-                          macAddressValue =
-                              _getValueWithColonFromData("macAddress", data);
+                          macAddressValue = jsonDecode(data)['uuid'];
 
                           if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
@@ -301,7 +272,6 @@ class ManageLocatorTagController extends GetxController {
                   // executeMethod.insertRSSI(),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  print("Add beacons " + uuid + " for 30 seconds"),
                   --countDownNumberArray[index],
                 }
             });
@@ -309,7 +279,11 @@ class ManageLocatorTagController extends GetxController {
 
   SharedStates states = Get.find();
 
-  void updateTxPower(String uuid, int index) async {
+  void updateTxPower(BuildContext context, String uuid, int index) async {
+    if (insertBeaconArray.length == 3) {
+      Get.dialog(_buildAlertDialog(context, "Unable to update", "You can only interact with 3 iBeacons at a time"));
+      return;
+    }
     insertBeaconArray.add("item_" + index.toString());
     isInserting[index] = true;
     rssiArray.add("item");
@@ -390,8 +364,6 @@ class ManageLocatorTagController extends GetxController {
                           if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
                                 double.parse(_getValueFromData("rssi", data)));
-                            print("AT TIME COUNTDOWN KALMAN FILTER");
-                            print(rssi);
                           }
                         }
                       },
@@ -541,7 +513,24 @@ class ManageLocatorTagController extends GetxController {
         rssiArray.remove("item");
       }
     } else {
-      return;
+      for (int i = 0; i < statusInSystemArray.length; i++) {
+        statusInSystemArray[i] = false;
+      }
+      rssiArray.add("item");
+      rssiArray.remove("item");
     }
+  }
+
+  Widget _buildAlertDialog(BuildContext context, String title, String content) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        TextButton(
+          onPressed: () => {Get.back()},
+          child: Text("OK"),
+        ),
+      ],
+    );
   }
 }
