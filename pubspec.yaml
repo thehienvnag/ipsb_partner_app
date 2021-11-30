@@ -122,6 +122,8 @@ dependencies:
   # Secure storage for storing credentials
   flutter_secure_storage: ^4.2.1
 
+  draw_graph: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

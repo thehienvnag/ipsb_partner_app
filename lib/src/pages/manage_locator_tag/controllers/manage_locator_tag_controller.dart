@@ -46,6 +46,9 @@ class ManageLocatorTagController extends GetxController {
   final countDownNumberArray = <int>[].obs;
 
   List<String> stringArray = [];
+
+  final List<List<double>> kalmanFilterRssiArray = <List<double>>[].obs;
+
   // String macAddressValue = "";
 
   // Map<String, List<String>> insertRSSIArray = new Map();
@@ -100,6 +103,8 @@ class ManageLocatorTagController extends GetxController {
               uuidArray.add(_getValueFromData("uuid", data));
               majorArray.add(_getValueFromData("major", data));
               minorArray.add(_getValueFromData("minor", data));
+              kalmanFilterRssiArray.add([double.parse(_getValueFromData("rssi", data))]);
+              
               isInserting.add(false);
               statusInSystemArray.add(false);
               countDownNumberArray.add(20);
@@ -109,6 +114,7 @@ class ManageLocatorTagController extends GetxController {
               //     null);
             } else {
               int index = macAddressArray.indexOf(macAddressValue);
+              kalmanFilterRssiArray[index].add(double.parse(_getValueFromData("rssi", data)));
               rssiArray.removeAt(index);
               rssiArray.insert(index, _getValueFromData("rssi", data));
               distanceArray.removeAt(index);

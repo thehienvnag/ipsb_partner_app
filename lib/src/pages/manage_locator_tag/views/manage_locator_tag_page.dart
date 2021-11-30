@@ -1,3 +1,5 @@
+import 'package:draw_graph/draw_graph.dart';
+import 'package:draw_graph/models/feature.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -319,7 +321,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
   }
 
   Widget _buildTrailing(
-      BuildContext context, String distance, DateTime scanTime) {
+      BuildContext context, String rssi, DateTime scanTime) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,14 +331,15 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(
-                text: distance,
+                text: rssi,
                 // overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 20),
               ),
-              TextSpan(text: " m")
+              TextSpan(text: " dbm")
             ],
           ),
         ),
+
         Container(
           margin: EdgeInsets.only(bottom: 5),
           child: Text(
@@ -666,6 +669,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        Feature feature = new Feature(title: "RSSI", data: controller.kalmanFilterRssiArray[index]);
+        List<Feature> features = [feature];
         return Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -677,7 +682,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             title: _buildTitle(context, controller.nameArray[index],
                 controller.uuidArray[index], index),
             trailing: _buildTrailing(
-                context, controller.distanceArray[index], DateTime.now()),
+                context, controller.rssiArray[index], DateTime.now()),
             children: <Widget>[
               Divider(
                 thickness: 1,
@@ -685,17 +690,32 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                 endIndent: 15,
               ),
               _buildAdvRow(context, 'UUID', controller.uuidArray[index]),
-              Row(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildAdvColumnRow(
-                      context, 'Major', controller.majorArray[index]),
-                  _buildAdvColumnRow(
-                      context, 'Minor', controller.minorArray[index]),
-                  _buildAdvColumnRow(
-                      context, 'RSSI', controller.rssiArray[index] + " dBm"),
-                ],
+              // Row(
+              //   // crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     _buildAdvColumnRow(
+              //         context, 'Major', controller.majorArray[index]),
+              //     _buildAdvColumnRow(
+              //         context, 'Minor', controller.minorArray[index]),
+              //     _buildAdvColumnRow(
+              //         context, 'RSSI', controller.rssiArray[index] + " dBm"),
+              //   ],
+              // ),
+              LineGraph(
+                features: features,
+                size: Size(320, 400),
+                labelX: ['RSSI 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5',
+                  'RSSI 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10',
+                  'RSSI 11', 'Day 12', 'Day 13', 'Day 14', 'Day 15',
+                  'RSSI 16', 'Day 17', 'Day 18', 'Day 19', 'Day 20',],
+                labelY: ['0', '-10', '-20', '-30', '-40',
+                  '-50', '-60', '-70', '-80', '-90', '-100'],
+                showDescription: true,
+                graphColor: Colors.white30,
+                graphOpacity: 0.2,
+                verticalFeatureDirection: true,
+                descriptionHeight: 130,
               ),
               Row(
                 children: [
