@@ -308,7 +308,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.only(top:5),
+              margin: EdgeInsets.only(top: 5),
               child: Text(
                 macAddress,
                 style: TextStyle(fontSize: 11),
@@ -320,8 +320,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     );
   }
 
-  Widget _buildTrailing(
-      BuildContext context, String rssi, DateTime scanTime) {
+  Widget _buildTrailing(BuildContext context, String rssi, DateTime scanTime) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +338,6 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             ],
           ),
         ),
-
         Container(
           margin: EdgeInsets.only(bottom: 5),
           child: Text(
@@ -667,9 +665,11 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     //     result.device.id.toString(), Constants.inactive, null, null);
     // return Obx(() {
     return ListView.builder(
+      physics: BouncingScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        Feature feature = new Feature(title: "RSSI", data: controller.kalmanFilterRssiArray[index]);
+        Feature feature = new Feature(
+            title: "RSSI", data: controller.kalmanFilterRssiArray[index]);
         List<Feature> features = [feature];
         return Card(
           shape: RoundedRectangleBorder(
@@ -690,33 +690,61 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                 endIndent: 15,
               ),
               _buildAdvRow(context, 'UUID', controller.uuidArray[index]),
-              // Row(
-              //   // crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     _buildAdvColumnRow(
-              //         context, 'Major', controller.majorArray[index]),
-              //     _buildAdvColumnRow(
-              //         context, 'Minor', controller.minorArray[index]),
-              //     _buildAdvColumnRow(
-              //         context, 'RSSI', controller.rssiArray[index] + " dBm"),
-              //   ],
-              // ),
-              LineGraph(
-                features: features,
-                size: Size(320, 400),
-                labelX: ['RSSI 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5',
-                  'RSSI 6', 'Day 7', 'Day 8', 'Day 9', 'Day 10',
-                  'RSSI 11', 'Day 12', 'Day 13', 'Day 14', 'Day 15',
-                  'RSSI 16', 'Day 17', 'Day 18', 'Day 19', 'Day 20',],
-                labelY: ['0', '-10', '-20', '-30', '-40',
-                  '-50', '-60', '-70', '-80', '-90', '-100'],
-                showDescription: true,
-                graphColor: Colors.white30,
-                graphOpacity: 0.2,
-                verticalFeatureDirection: true,
-                descriptionHeight: 130,
+              Container(
+                width: 350,
+                child: Text(controller.kalmanFilterRssiArray[index].toString()),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    controller.kalmanFilterRssiArray[index] = [];
+                  },
+                  child: Text("Click")),
+
+              // LineGraph(
+              //   features: features,
+              //   size: Size(300, 120),
+              //   labelX: [
+              //     'RSSI 1',
+              //     'Day 2',
+              //     'Day 3',
+              //     'Day 4',
+              //     'Day 5',
+              //     'RSSI 6',
+              //     'Day 7',
+              //     'Day 8',
+              //     'Day 9',
+              //     'Day 10',
+              //     'RSSI 11',
+              //     'Day 12',
+              //     'Day 13',
+              //     'Day 14',
+              //     'Day 15',
+              //     'RSSI 16',
+              //     'Day 17',
+              //     'Day 18',
+              //     'Day 19',
+              //     'Day 20',
+              //   ],
+              //   labelY: [
+              //     '0',
+              //     '-10',
+              //     '-20',
+              //     '-30',
+              //     '-40',
+              //     '-50',
+              //     '-60',
+              //     '-70',
+              //     '-80',
+              //     '-90',
+              //     '-100'
+              //   ],
+              //   showDescription: true,
+              //   graphColor: Colors.white30,
+              //   graphOpacity: 0.2,
+              //   verticalFeatureDirection: true,
+              //   descriptionHeight: 80,
+              // ),
+
               Row(
                 children: [
                   _buildButton(
@@ -726,13 +754,14 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                     "CLICK TO INSERT",
                     "CLICK TO UPDATE TX POWER",
                     () => {
-                      controller.addBeacons(context, controller.uuidArray[index], index),
+                      controller.addBeacons(
+                          context, controller.uuidArray[index], index),
                       // controller.isInserting.remove(index),
                       // controller.isInserting.insert(index, true),
                     },
                     () => {
-                      controller.updateTxPower(context,
-                          controller.uuidArray[index], index),
+                      controller.updateTxPower(
+                          context, controller.uuidArray[index], index),
                     },
                     controller.isInserting[index],
                     controller.statusInSystemArray[index],
