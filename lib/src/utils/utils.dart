@@ -42,4 +42,24 @@ class Utils {
     String formatDate = formatter.format(date);
     return formatDate;
   }
+
+  /// Uuid of beacon
+  ///
+  /// [uuid]: uuid string
+  /// [macAddress]: mac address string
+  static String getUuid(String uuid, String? macAddress) {
+    final Map<String, String> listUuid = const {
+      "65:23:A4:38:D0:E5": "fda50693-a4e2-4fb1-afcf-c6eb07647521",
+      "2C:92:E9:7B:AF:E0": "fda50693-a4e2-4fb1-afcf-c6eb07647522",
+      "C3:3B:1F:7E:1B:E1": "fda50693-a4e2-4fb1-afcf-c6eb07647523",
+      "17:43:CC:F0:61:D6": "fda50693-a4e2-4fb1-afcf-c6eb07647524",
+      "74:6C:B8:18:9D:C8": "fda50693-a4e2-4fb1-afcf-c6eb07647525",
+    };
+    if (uuid == "fda50693-a4e2-4fb1-afcf-c6eb07647825" &&
+        macAddress != null &&
+        listUuid.containsKey(macAddress)) {
+      return listUuid[macAddress]!;
+    }
+    return uuid;
+  }
 }
