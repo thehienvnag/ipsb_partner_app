@@ -262,7 +262,7 @@ class ManageLocatorTagController extends GetxController {
                           String uuidStr = jsonDecode(data)['uuid'];
                           String macAddress = jsonDecode(data)['macAddress'];
                           // macAddressValue = jsonDecode(data)['uuid'];
-                          macAddressValue = Utils.getUuid(uuid, macAddress);
+                          macAddressValue = Utils.getUuid(uuidStr, macAddress);
                           if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
                               double.parse(_getValueFromData("rssi", data)),
