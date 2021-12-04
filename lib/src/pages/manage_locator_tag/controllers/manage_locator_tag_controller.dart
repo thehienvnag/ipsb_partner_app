@@ -20,6 +20,7 @@ import 'package:ipsb_partner_app/src/utils/firebase_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:ipsb_partner_app/src/utils/utils.dart';
 
 class ManageLocatorTagController extends GetxController {
   final flutterBlueInstance = FlutterBlue.instance.obs;
@@ -152,7 +153,8 @@ class ManageLocatorTagController extends GetxController {
 
   void addBeacons(BuildContext context, String uuid, int index) async {
     if (insertBeaconArray.length == 3) {
-      Get.dialog(_buildAlertDialog(context, "Unable to insert", "You can only interact with 3 iBeacons at a time"));
+      Get.dialog(_buildAlertDialog(context, "Unable to insert",
+          "You can only interact with 3 iBeacons at a time"));
       return;
     }
     int? buildingId = AuthServices.userLoggedIn.value.building!.id;
@@ -257,11 +259,14 @@ class ManageLocatorTagController extends GetxController {
                   beaconEventsController.stream.listen(
                       (data) {
                         if (data.isNotEmpty && isRunning.value) {
-                          macAddressValue = jsonDecode(data)['uuid'];
-
+                          String uuidStr = jsonDecode(data)['uuid'];
+                          String macAddress = jsonDecode(data)['macAddress'];
+                          // macAddressValue = jsonDecode(data)['uuid'];
+                          macAddressValue = Utils.getUuid(uuid, macAddress);
                           if (macAddressValue == uuid) {
                             rssi = filter1d.filter(
-                                double.parse(_getValueFromData("rssi", data)));
+                              double.parse(_getValueFromData("rssi", data)),
+                            );
                           } else {}
                         }
                       },
@@ -281,7 +286,8 @@ class ManageLocatorTagController extends GetxController {
 
   void updateTxPower(BuildContext context, String uuid, int index) async {
     if (insertBeaconArray.length == 3) {
-      Get.dialog(_buildAlertDialog(context, "Unable to update", "You can only interact with 3 iBeacons at a time"));
+      Get.dialog(_buildAlertDialog(context, "Unable to update",
+          "You can only interact with 3 iBeacons at a time"));
       return;
     }
     insertBeaconArray.add("item_" + index.toString());

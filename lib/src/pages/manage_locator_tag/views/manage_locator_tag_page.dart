@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:ipsb_partner_app/src/pages/manage_locator_tag/controllers/manage_locator_tag_controller.dart';
 import 'package:ipsb_partner_app/src/utils/formatter.dart';
+import 'package:ipsb_partner_app/src/utils/utils.dart';
 
 class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
   @override
@@ -306,7 +307,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.only(top:5),
+              margin: EdgeInsets.only(top: 5),
               child: Text(
                 macAddress,
                 style: TextStyle(fontSize: 11),
@@ -666,6 +667,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     return ListView.builder(
       shrinkWrap: true,
       itemBuilder: (context, index) {
+        String uuidString = Utils.getUuid(
+            controller.uuidArray[index], controller.macAddressArray[index]);
         return Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
@@ -684,7 +687,11 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                 indent: 15,
                 endIndent: 15,
               ),
-              _buildAdvRow(context, 'UUID', controller.uuidArray[index]),
+              _buildAdvRow(
+                context,
+                'UUID',
+                uuidString,
+              ),
               Row(
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -706,13 +713,16 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                     "CLICK TO INSERT",
                     "CLICK TO UPDATE TX POWER",
                     () => {
-                      controller.addBeacons(context, controller.uuidArray[index], index),
+                      controller.addBeacons(
+                        context,
+                        uuidString,
+                        index,
+                      ),
                       // controller.isInserting.remove(index),
                       // controller.isInserting.insert(index, true),
                     },
                     () => {
-                      controller.updateTxPower(context,
-                          controller.uuidArray[index], index),
+                      controller.updateTxPower(context, uuidString, index),
                     },
                     controller.isInserting[index],
                     controller.statusInSystemArray[index],
