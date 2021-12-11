@@ -52,10 +52,12 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
       }),
       body: Obx(() {
         return SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               _buildLinearProgressIndicator(controller.isRunning.value),
               _buildBody(context),
+              SizedBox(height: 200)
             ],
           ),
         );
@@ -113,7 +115,6 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
           // Obx(() {
           //   return
           _buildScanResult(context),
-          // })
         ],
       ),
     );
@@ -293,6 +294,8 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
       BuildContext context, String deviceName, String macAddress, int index) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    String uuidString = Utils.getUuid(
+        controller.uuidArray[index], controller.macAddressArray[index]);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +312,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             Container(
               margin: EdgeInsets.only(top: 5),
               child: Text(
-                macAddress,
+                uuidString,
                 style: TextStyle(fontSize: 11),
               ),
             )
@@ -319,8 +322,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     );
   }
 
-  Widget _buildTrailing(
-      BuildContext context, String distance, DateTime scanTime) {
+  Widget _buildTrailing(BuildContext context, String rssi, DateTime scanTime) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,11 +332,10 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             style: DefaultTextStyle.of(context).style,
             children: <TextSpan>[
               TextSpan(
-                text: distance,
+                text: rssi,
                 // overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 20),
               ),
-              TextSpan(text: " m")
             ],
           ),
         ),
@@ -549,7 +550,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                                     (double.parse(controller
                                             .countDownNumberArray[index]
                                             .toString())) /
-                                        20,
+                                        controller.countDownNumber,
                                 valueColor: new AlwaysStoppedAnimation<Color>(
                                     Colors.blue)),
                           ),
@@ -666,6 +667,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
     // return Obx(() {
     return ListView.builder(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         String uuidString = Utils.getUuid(
             controller.uuidArray[index], controller.macAddressArray[index]);
@@ -680,7 +682,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
             title: _buildTitle(context, controller.nameArray[index],
                 controller.uuidArray[index], index),
             trailing: _buildTrailing(
-                context, controller.distanceArray[index], DateTime.now()),
+                context, controller.rssiArray[index], DateTime.now()),
             children: <Widget>[
               Divider(
                 thickness: 1,
@@ -692,18 +694,7 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                 'UUID',
                 uuidString,
               ),
-              Row(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildAdvColumnRow(
-                      context, 'Major', controller.majorArray[index]),
-                  _buildAdvColumnRow(
-                      context, 'Minor', controller.minorArray[index]),
-                  _buildAdvColumnRow(
-                      context, 'RSSI', controller.rssiArray[index] + " dBm"),
-                ],
-              ),
+
               Row(
                 children: [
                   _buildButton(
@@ -728,11 +719,12 @@ class ManageLocatorTagPage extends GetView<ManageLocatorTagController> {
                     controller.statusInSystemArray[index],
                   ),
                   _buildCountDown(
-                      context,
-                      Colors.blue,
-                      controller.isInserting[index],
-                      controller.statusInSystemArray[index],
-                      index),
+                    context,
+                    Colors.blue,
+                    controller.isInserting[index],
+                    controller.statusInSystemArray[index],
+                    index,
+                  ),
                 ],
               ),
 

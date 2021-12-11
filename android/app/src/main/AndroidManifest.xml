@@ -12,7 +12,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="indoor_positioning_visitor"
+        android:label="Partner_App"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

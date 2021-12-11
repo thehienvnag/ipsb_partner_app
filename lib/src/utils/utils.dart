@@ -62,4 +62,8 @@ class Utils {
     }
     return uuid;
   }
+
+  static double average(Iterable<double> list) {
+    return list.reduce((a, b) => a + b) / list.length;
+  }
 }

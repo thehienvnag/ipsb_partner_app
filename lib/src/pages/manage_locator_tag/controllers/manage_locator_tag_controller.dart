@@ -45,6 +45,7 @@ class ManageLocatorTagController extends GetxController {
 
   final insertBeaconArray = <String>[].obs;
   final countDownNumberArray = <int>[].obs;
+  final int countDownNumber = 30;
 
   List<String> stringArray = [];
   // String macAddressValue = "";
@@ -103,7 +104,7 @@ class ManageLocatorTagController extends GetxController {
               minorArray.add(_getValueFromData("minor", data));
               isInserting.add(false);
               statusInSystemArray.add(false);
-              countDownNumberArray.add(20);
+              countDownNumberArray.add(countDownNumber);
               // statusInSystemArray.add(beaconArray.singleWhere(
               //         (item) => item!.macAddress == macAddress,
               //         orElse: () => null) !=
@@ -200,6 +201,7 @@ class ManageLocatorTagController extends GetxController {
 
     String macAddressValue = "";
     double rssi = 0;
+    List<double> listRssi = [];
     KalmanFilter1d filter1d = new KalmanFilter1d();
 
     Timer timer = new Timer.periodic(
@@ -211,12 +213,12 @@ class ManageLocatorTagController extends GetxController {
                   insertBeaconArray.remove("item_" + index.toString()),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  countDownNumberArray[index] = 20,
+                  countDownNumberArray[index] = countDownNumber,
                   statusInSystemArray[index] = true,
                   isInserting[index] = false,
                   timer.cancel(),
                   _locatorTagService
-                      .updateLocatorTagByUUID(uuid, rssi)
+                      .updateLocatorTagByUUID(uuid, Utils.average(listRssi))
                       .then((value) => {
                             if (!value)
                               {
@@ -245,6 +247,7 @@ class ManageLocatorTagController extends GetxController {
                                     duration: const Duration(seconds: 2)),
                               }
                           }),
+                  listRssi.clear(),
                   if (insertBeaconArray.isEmpty)
                     {
                       beaconEventsController =
@@ -264,10 +267,10 @@ class ManageLocatorTagController extends GetxController {
                           // macAddressValue = jsonDecode(data)['uuid'];
                           macAddressValue = Utils.getUuid(uuidStr, macAddress);
                           if (macAddressValue == uuid) {
-                            rssi = filter1d.filter(
+                            listRssi.add(filter1d.filter(
                               double.parse(_getValueFromData("rssi", data)),
-                            );
-                          } else {}
+                            ));
+                          }
                         }
                       },
                       onDone: () {},
@@ -305,6 +308,7 @@ class ManageLocatorTagController extends GetxController {
 
     String macAddressValue = "";
     double rssi = 0;
+    List<double> listRssi = [];
     KalmanFilter1d filter1d = new KalmanFilter1d();
 
     Timer timer = new Timer.periodic(
@@ -316,12 +320,12 @@ class ManageLocatorTagController extends GetxController {
                   insertBeaconArray.remove("item_" + index.toString()),
                   rssiArray.add("item"),
                   rssiArray.remove("item"),
-                  countDownNumberArray[index] = 20,
+                  countDownNumberArray[index] = countDownNumber,
                   statusInSystemArray[index] = true,
                   isInserting[index] = false,
                   timer.cancel(),
                   _locatorTagService
-                      .updateLocatorTagByUUID(uuid, rssi)
+                      .updateLocatorTagByUUID(uuid, Utils.average(listRssi))
                       .then((value) => {
                             if (!value)
                               {
@@ -350,6 +354,7 @@ class ManageLocatorTagController extends GetxController {
                                     duration: const Duration(seconds: 2)),
                               }
                           }),
+                  listRssi.clear(),
                   if (insertBeaconArray.isEmpty)
                     {
                       beaconEventsController =
@@ -364,12 +369,14 @@ class ManageLocatorTagController extends GetxController {
                   beaconEventsController.stream.listen(
                       (data) {
                         if (data.isNotEmpty && isRunning.value) {
-                          // macAddressValue =
-                          //     _getValueWithColonFromData("uuid", data);
-                          macAddressValue = jsonDecode(data)['uuid'];
+                          String uuidStr = jsonDecode(data)['uuid'];
+                          String macAddress = jsonDecode(data)['macAddress'];
+                          // macAddressValue = jsonDecode(data)['uuid'];
+                          macAddressValue = Utils.getUuid(uuidStr, macAddress);
                           if (macAddressValue == uuid) {
-                            rssi = filter1d.filter(
-                                double.parse(_getValueFromData("rssi", data)));
+                            listRssi.add(filter1d.filter(
+                              double.parse(_getValueFromData("rssi", data)),
+                            ));
                           }
                         }
                       },
